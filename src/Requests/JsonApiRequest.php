@@ -2,6 +2,7 @@
 namespace Czim\JsonApi\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -112,6 +113,16 @@ class JsonApiRequest extends FormRequest
      */
     protected function validateJsonApiContent()
     {
+        // check whether we may have content that is not valid json
+        // and throw an exception if we do
+        if ( ! $this->hasEmptyJsonContent() && empty($this->jsonApiContent)) {
+
+            throw new HttpResponseException($this->response([
+                'Request content is not valid JSON'
+            ]));
+        }
+
+        // check if we have anything to validate (no content is fine)
         if (empty($this->jsonApiContent)) return;
 
 
@@ -120,23 +131,21 @@ class JsonApiRequest extends FormRequest
             [ app(TranslatorInterface::class), $this->jsonApiContent, $this->jsonApiRules() ]
         );
 
-        if ($validator->fails()) {
-            dd($validator->messages());
+        if ( ! $validator->passes()) {
+            $this->failedValidation($validator);
         }
+    }
 
-        // check if we have anything to validate (no content is fine)
+    /**
+     * Returns whether the body content is empty (as json data)
+     *
+     * @return bool
+     */
+    protected function hasEmptyJsonContent()
+    {
+        if (empty(trim($this->content))) return true;
 
-        // check whether we have json
-
-        // check whether the required structure is present
-        // info, success or failure
-        // different structure for post data
-        //
-
-
-
-        // check whether standard content is correct
-
+        return (bool) preg_match('#^\s*(\[\s*\]|\{\s*\})\s*&#i', $this->content);
     }
 
     /**
