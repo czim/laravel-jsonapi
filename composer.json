@@ -19,7 +19,8 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "neomerx/json-api": "dev-master"
+        "neomerx/json-api": "dev-master",
+        "czim/laravel-dataobject": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "4.*",
