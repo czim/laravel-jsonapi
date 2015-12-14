@@ -46,6 +46,26 @@ class JsonApiValidator extends Validator
     }
 
     /**
+     * Resource section when creating new resource
+     *
+     * @param string $attribute
+     * @param mixed  $value
+     * @param mixed  $parameters
+     * @return bool
+     */
+    public function validateJsonapiResourceCreate($attribute, $value, $parameters)
+    {
+        return $this->validateNested($attribute, $value, [
+            'type'          => 'required|string',
+            'id'            => 'string',
+            'attributes'    => 'array|jsonapi_attributes',
+            'relationships' => 'array|jsonapi_relationships',
+            'links'         => 'array|jsonapi_links',
+            'meta'          => 'array|jsonapi_meta',
+        ]);
+    }
+
+    /**
      * Attributes section
      *
      * @param string $attribute

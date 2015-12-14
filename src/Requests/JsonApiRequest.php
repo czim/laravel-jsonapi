@@ -47,20 +47,24 @@ class JsonApiRequest extends FormRequest
         // data validation depends on whether it is a list of resources or a single resource
         if ( ! isset($this->jsonApiContent['data']) || ! is_array($this->jsonApiContent['data'])) {
 
-            $rules['data.*'] = 'array|required_without_all:meta,errors';
+            $rules['data'] = 'array|required_without_all:meta,errors';
 
         } else {
 
             $keys = array_keys($this->jsonApiContent['data']);
 
+            $resourceRule = (strtolower($this->method()) === 'post')
+                          ?   'jsonapi_resource_create'
+                          :   'jsonapi_resource';
+
             if (    count($keys)
                 &&  count($keys) === count(array_filter($keys, function ($key) { return is_numeric($key); }))
             ) {
                 foreach ($keys as $key) {
-                    $rules[ 'data.' . $key ] = 'array|jsonapi_resource';
+                    $rules[ 'data.' . $key ] = 'array|' . $resourceRule;
                 }
             } else {
-                $rules['data'] = 'array|jsonapi_resource';
+                $rules['data'] = 'array|' . $resourceRule;
             }
         }
 
