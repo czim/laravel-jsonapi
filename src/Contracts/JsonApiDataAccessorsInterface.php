@@ -54,4 +54,46 @@ interface JsonApiDataAccessorsInterface
      */
     public function getAttributes($index = 0);
 
+    /**
+     * Returns included resources from the json api object
+     *
+     * @return DataObjects\Resource[]
+     */
+    public function getIncluded();
+
+    /**
+     * Returns whether the json api object has listed errors
+     *
+     * @return bool
+     */
+    public function hasErrors();
+
+    /**
+     * Returns errors from the json api object
+     *
+     * @return DataObjects\Error[]
+     */
+    public function getErrors();
+
+    /**
+     * Returns first errors from the json api object, if there are any
+     *
+     * @return DataObjects\Error|null
+     */
+    public function getFirstError();
+
+    /**
+     * Returns meta from the data object of the json api object
+     *
+     * @return DataObjects\Meta|null
+     */
+    public function getMeta();
+
+    /**
+     * Returns json-api section from the data object of the json api object
+     *
+     * @return DataObjects\JsonApi|null
+     */
+    public function getJsonApiMeta();
+
 }
