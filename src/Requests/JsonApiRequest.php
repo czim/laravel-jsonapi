@@ -1,15 +1,23 @@
 <?php
 namespace Czim\JsonApi\Requests;
 
+use Czim\JsonApi\DataObjects;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class JsonApiRequest extends FormRequest
 {
     /**
-     * @var
+     * @var array
+     */
+    protected $jsonApiContentArray;
+
+    /**
+     * @var DataObjects\Main
      */
     protected $jsonApiContent;
 
@@ -39,20 +47,20 @@ class JsonApiRequest extends FormRequest
     {
         $rules = [
             'errors'   => 'array|required_without_all:data,meta',
-            'meta'     => 'array|jsonapi_meta|required_without_all:data,errors',
             'included' => 'array',
-            'links'    => 'array|jsonapi_links',
             'jsonapi'  => 'array|jsonapi_jsonapi',
+            'links'    => 'array|jsonapi_links',
+            'meta'     => 'array|jsonapi_meta|required_without_all:data,errors',
         ];
 
         // data validation depends on whether it is a list of resources or a single resource
-        if ( ! isset($this->jsonApiContent['data']) || ! is_array($this->jsonApiContent['data'])) {
+        if ( ! isset($this->jsonApiContentArray['data']) || ! is_array($this->jsonApiContentArray['data'])) {
 
             $rules['data'] = 'array|required_without_all:meta,errors';
 
         } else {
 
-            $keys = array_keys($this->jsonApiContent['data']);
+            $keys = array_keys($this->jsonApiContentArray['data']);
 
             $resourceRule = (strtolower($this->method()) === 'post')
                           ?   'jsonapi_resource_create'
@@ -70,17 +78,17 @@ class JsonApiRequest extends FormRequest
         }
 
         // included is a non-associative array with items that should each be a resource
-        if (isset($this->jsonApiContent['included']) && is_array($this->jsonApiContent['included'])) {
+        if (isset($this->jsonApiContentArray['included']) && is_array($this->jsonApiContentArray['included'])) {
 
-            foreach (array_keys($this->jsonApiContent['included']) as $key) {
+            foreach (array_keys($this->jsonApiContentArray['included']) as $key) {
                 $rules[ 'included.' . $key ] = 'array|jsonapi_resource';
             }
         }
 
         // errors is a non-associative array with items that should each be an error object
-        if (isset($this->jsonApiContent['errors']) && is_array($this->jsonApiContent['errors'])) {
+        if (isset($this->jsonApiContentArray['errors']) && is_array($this->jsonApiContentArray['errors'])) {
 
-            foreach (array_keys($this->jsonApiContent['errors']) as $key) {
+            foreach (array_keys($this->jsonApiContentArray['errors']) as $key) {
                 $rules[ 'errors.' . $key ] = 'array|jsonapi_error';
             }
         }
@@ -95,6 +103,7 @@ class JsonApiRequest extends FormRequest
     {
         $this->loadJsonApiContent();
         $this->validateJsonApiContent();
+        $this->interpretJsonApiContent();
 
         parent::validate();
     }
@@ -104,9 +113,8 @@ class JsonApiRequest extends FormRequest
      */
     protected function loadJsonApiContent()
     {
-        $this->jsonApiContent = $this->json()->all();
+        $this->jsonApiContentArray = $this->json()->all();
     }
-
 
     /**
      * Validates the request's content as valid JSON-API content
@@ -115,7 +123,7 @@ class JsonApiRequest extends FormRequest
     {
         // check whether we may have content that is not valid json
         // and throw an exception if we do
-        if ( ! $this->hasEmptyJsonContent() && empty($this->jsonApiContent)) {
+        if ( ! $this->hasEmptyJsonContent() && empty($this->jsonApiContentArray)) {
 
             throw new HttpResponseException($this->response([
                 'Request content is not valid JSON'
@@ -123,17 +131,27 @@ class JsonApiRequest extends FormRequest
         }
 
         // check if we have anything to validate (no content is fine)
-        if (empty($this->jsonApiContent)) return;
+        if (empty($this->jsonApiContentArray)) return;
 
 
         $validator = app(
             JsonApiValidator::class,
-            [ app(TranslatorInterface::class), $this->jsonApiContent, $this->jsonApiRules() ]
+            [ app(TranslatorInterface::class), $this->jsonApiContentArray, $this->jsonApiRules() ]
         );
 
         if ( ! $validator->passes()) {
             $this->failedValidation($validator);
         }
+    }
+
+    /**
+     * Interprets the jsonApiContent and converts it to dataobject tree
+     */
+    protected function interpretJsonApiContent()
+    {
+        $this->jsonApiContent = app(DataObjects\Main::class, [ $this->jsonApiContentArray ]);
+
+        unset( $this->jsonApiContentArray );
     }
 
     /**
@@ -176,6 +194,143 @@ class JsonApiRequest extends FormRequest
                 ],
             ],
         ], 422);
+    }
+
+
+    // ------------------------------------------------------------------------------
+    //      Accessors for JSON-API content
+    // ------------------------------------------------------------------------------
+
+    /**
+     * Returns main data from the json api object
+     *
+     * @return Resource|Resource[]
+     */
+    protected function getJsonApiData()
+    {
+        return $this->jsonApiContent->data;
+    }
+
+    /**
+     * Returns whether the main JSON-API data contains a single resource
+     * (instead of several)
+     *
+     * @return bool
+     */
+    public function isSingleResource()
+    {
+        return ($this->getJsonApiData() instanceof DataObjects\Resource);
+    }
+
+    /**
+     * Returns data for resource, by index if multiple
+     *
+     * @param int $index
+     * @return DataObjects\Resource|null
+     */
+    public function getResource($index = 0)
+    {
+        if (is_null($this->jsonApiContent->data)) return null;
+
+        if ($this->isSingleResource()) {
+            return $this->getJsonApiData();
+        }
+
+        $index = (int) $index;
+
+        if ( ! isset($this->jsonApiContent['data'][ $index ])) {
+            throw new \InvalidArgumentException("JSON-API Data Resource with index $index is not set");
+        }
+
+        return $this->jsonApiContent['data'][ $index ];
+    }
+
+    /**
+     * Returns top-level resource type
+     *
+     * @param int $index    index of the resource if not single-resource data
+     * @return null|string
+     */
+    public function getType($index = 0)
+    {
+        if (is_null($this->jsonApiContent->data)) return null;
+
+        if ($this->isSingleResource()) {
+            return $this->jsonApiContent->data['type'];
+        }
+
+        $index = (int) $index;
+
+        if ( ! isset($this->jsonApiContent['data'][ $index ])) {
+            throw new \InvalidArgumentException("JSON-API Data Resource with index $index is not set");
+        }
+
+        return $this->jsonApiContent['data'][ $index ]['type'];
+    }
+
+    /**
+     * Returns top level resource ID
+     *
+     * @param int $index    index of the resource if not single-resource data
+     * @return string|null
+     */
+    public function getId($index = 0)
+    {
+        if ($this->isSingleResource()) {
+            return $this->jsonApiContent->data['id'];
+        }
+
+        $index = (int) $index;
+
+        if ( ! isset($this->jsonApiContent['data'][ $index ])) {
+            throw new \InvalidArgumentException("JSON-API Data Resource with index $index is not set");
+        }
+
+        return $this->jsonApiContent['data'][ $index ]['id'];
+    }
+
+    /**
+     * Returns top level relationships
+     *
+     * @param int $index    index of the resource if not single-resource data
+     * @return DataObjects\Relationship[]
+     */
+    public function getRelationships($index = 0)
+    {
+        if ($this->isSingleResource()) {
+
+            return $this->jsonApiContent->data['relationships'] ?: [];
+        }
+
+        $index = (int) $index;
+
+        if ( ! isset($this->jsonApiContent['data'][ $index ])) {
+            throw new \InvalidArgumentException("JSON-API Data Resource with index $index is not set");
+        }
+
+        return $this->jsonApiContent['data'][ $index ]['relationships'] ?: [];
+    }
+
+    /**
+     * Returns attributes from the data object of the json api object
+     *
+     * @param int $index    index of the resource if not single-resource data
+     * @return DataObjects\Attributes|null
+     */
+    public function getAttributes($index = 0)
+    {
+        if ($this->isSingleResource()) {
+
+            return $this->jsonApiContent->data['attributes'] ?: null;
+        }
+
+        $index = (int) $index;
+
+        if ( ! isset($this->jsonApiContent['data'][ $index ])) {
+            throw new \InvalidArgumentException("JSON-API Data Resource with index $index is not set");
+        }
+
+        return $this->jsonApiContent['data'][ $index ]['attributes'] ?: null;
     }
 
 }
