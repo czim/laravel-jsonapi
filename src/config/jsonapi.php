@@ -52,7 +52,47 @@ return [
         // NeoMerx Encoder default options
         'encoder_options' => JSON_UNESCAPED_SLASHES,
 
+        // FQN of the translatable trait
+        // for which to include attributes through the translations relation
+        'translatable_trait' => \Dimsav\Translatable\Translatable::class,
+
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for dealing with relationships while encoding.
+    |
+    */
+
+    'relations' => [
+
+        // relation names to always hide by default
+        'hide_defaults' => [
+            'pivot',
+            'translations',
+        ],
+
+        // per FQN of resource class, the names of relationships that should be hidden
+        'hide' => [
+
+            //\App\Models\Example::class => [
+            //    'exampleRelation',
+            //],
+
+        ],
+
+        // whether to always include data for all to-one type relationships
+        'always_show_data_for_single' => true,
+
+        // per FQN of resource class, the names of relationships that encodes
+        // should always show full data for (not just type + id)
+        'always_show_data' => [
+
+        ],
+
+    ],
 
 ];
