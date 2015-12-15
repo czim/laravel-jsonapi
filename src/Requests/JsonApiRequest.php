@@ -3,8 +3,10 @@ namespace Czim\JsonApi\Requests;
 
 use Czim\JsonApi\Contracts\JsonApiDataAccessorsInterface;
 use Czim\JsonApi\DataObjects;
+use Czim\JsonApi\Encoding\JsonApiEncoder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\JsonResponse;
+use Neomerx\JsonApi\Document\Error as JsonApiError;
 
 class JsonApiRequest extends FormRequest implements JsonApiDataAccessorsInterface
 {
@@ -85,20 +87,14 @@ class JsonApiRequest extends FormRequest implements JsonApiDataAccessorsInterfac
     /**
      * Returns an error JsonResponse on invalid request
      *
-     * @param array $errors
+     * @param string[]|JsonApiError[] $errors
      * @return JsonResponse
-     *
-     * @todo replace this with proper neomerx JsonApi error response...
      */
     public function response(array $errors)
     {
-        return new JsonResponse([
-            'errors' => [
-                [
-                    'title' => json_encode($errors),
-                ],
-            ],
-        ], 422);
+        $encoder = app(JsonApiEncoder::class, [ app(), null ]);
+
+        return $encoder->errors($errors, 422);
     }
 
 }
