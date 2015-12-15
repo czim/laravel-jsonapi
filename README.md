@@ -30,21 +30,39 @@ $ composer require czim/laravel-jsonapi
     jsonapi_links
     jsonapi_link
     jsonapi_jsonapi
-
+- add resource interface & (appliccable) trait to resource models 
+- config:
+    - add relationship hide & always_show_data per resource fqn
 
 ## To Do
 
-- good encoder basis
-- good schema provider basis
-- generator command to create schemata based on models
-- json api error responses
-- decoder/interpreter for json-api content received
-    - separate to be used in client package aswell 
-
+# json api error responses
+- consider using resource patcher
+    - or some neat alternative to dealing with updates
 
 - separate client json-api package...
     - use czim/service?
-    
+    - decoder/interpreter for json-api content received
+
+
+## Usage
+
+### Setting Meta data
+
+Meta data is prepared for the next encoding by storing data in a dataobject singleton.
+You can access it as follows:
+
+```php
+$meta = App::make(\Czim\JsonApi\Contracts\JsonApiCurrentMetaInterface::class);
+
+$meta['some-key'] = 'some value';
+```
+
+The data object is an instance of a `DataObject` ([`czim/laravel-dataobject`](https://github.com/czim/laravel-dataobject)) instance.
+
+By default, after calling the `encode()` (or `response()`) method on the Encoder, the meta-data will be reset.
+This means that the lifetime of set meta-data ordinarily lasts until a response is fired.   
+
 
 ## Contributing
 
