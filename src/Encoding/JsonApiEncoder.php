@@ -1,6 +1,7 @@
 <?php
 namespace Czim\JsonApi\Encoding;
 
+use Czim\JsonApi\Contracts\JsonApiCurrentMetaInterface;
 use Czim\JsonApi\Contracts\SchemaProviderInterface;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Support\Arrayable;
@@ -59,23 +60,31 @@ class JsonApiEncoder
      * Encodes data as valid JSON API output
      *
      * @param mixed $data
+     * @param bool  $resetMeta  if true, clears the meta data after encoding
      * @return $this
      */
-    public function encode($data)
+    public function encode($data, $resetMeta = true)
     {
-        // todo based on what data is provided,
-        // the encoding should be handled..
-        // we're expecting something that implements the resourceinterface
+        /** @var JsonApiCurrentMetaInterface $meta */
 
-        // todo handle meta properly
+        // get the meta data singleton
+        $meta = app(JsonApiCurrentMetaInterface::class);
 
+        $encoder = $this->getEncoder()
+                        ->withLinks([
+                            Link::SELF => new Link( $this->getUrlToSelf() ),
+                        ]);
 
-        return $this->getEncoder()
-            ->withLinks([
-                Link::SELF => new Link( $this->getUrlToSelf() ),
-            ])
-            //->withMeta( (EloquentSchema::$meta ?: null) )
-            ->encodeData($data);
+        if (count($meta->getKeys())) {
+            $encoder->withMeta( $meta->toArray() );
+
+            // reset meta-data to empty state
+            if ($resetMeta) {
+                $meta->setAttributes([]);
+            }
+        }
+
+        return $encoder->encodeData($data);
     }
 
     /**
