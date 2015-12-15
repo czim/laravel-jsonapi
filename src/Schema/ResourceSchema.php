@@ -36,6 +36,8 @@ class ResourceSchema extends SchemaProvider
         // the real resource will be set later, using setResource() calls
         $this->resourceInstance = (new $resourceClassname);
 
+        $this->checkResourceClass($this->resourceInstance);
+
         $this->resourceType = $this->resourceInstance->getResourceType();
         $this->selfSubUrl   = $this->resourceInstance->getResourceSubUrl();
 
@@ -52,9 +54,7 @@ class ResourceSchema extends SchemaProvider
      */
     public function setResource($resource)
     {
-        if ( ! is_a($resource, ResourceInterface::class)) {
-            throw new InvalidArgumentException('setResource parameter must implement ResourceInterface');
-        }
+        $this->checkResourceClass($resource);
 
         $this->resourceInstance = $resource;
 
@@ -64,6 +64,19 @@ class ResourceSchema extends SchemaProvider
         return $this;
     }
 
+    /**
+     * Checks whether the resource class is correct
+     *
+     * @param $resource
+     */
+    protected function checkResourceClass($resource)
+    {
+        if ( ! is_a($resource, ResourceInterface::class)) {
+            throw new InvalidArgumentException(
+                "setResource parameter (" . get_class($resource) . ") must implement ResourceInterface"
+            );
+        }
+    }
 
     /**
      * Get resource identity.
