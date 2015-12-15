@@ -1,6 +1,7 @@
 <?php
 namespace Czim\JsonApi\Schema;
 
+use Czim\JsonApi\Contracts\JsonApiParametersInterface;
 use Czim\JsonApi\Contracts\ResourceInterface;
 use InvalidArgumentException;
 use Neomerx\JsonApi\Contracts\Schema\ContainerInterface;
@@ -103,14 +104,14 @@ class ResourceSchema extends SchemaProvider
     /**
      * Get resource links.
      *
+     * @todo maybe use includeRelationships to load relations on the model
+     *
      * @param object|ResourceInterface $resource
      * @param array                    $includeRelationships    A list of relationships that will be included as full resources.
      * @return array
      */
     public function getRelationships($resource, array $includeRelationships = [])
     {
-        // todo what do with $includeRelationships?
-
         return $resource->getResourceRelations();
     }
 
@@ -122,27 +123,10 @@ class ResourceSchema extends SchemaProvider
      */
     public function getIncludePaths()
     {
-        // default is include nothing
-        //return [];
+        /** @var JsonApiParametersInterface $parameters */
+        $parameters = app(JsonApiParametersInterface::class);
 
-        //    // todo rewrite this for standardized approach,
-        //    // service provider should somehow dictate/make available the include data
-        //    // or use the request (or something sensibly 'global') to read the includes...
-        //
-        //    if ($this->resourceInstance) {
-        //
-        //        return array_intersect(
-        //            array_map(function ($v) {
-        //                return snake_case($v, '-');
-        //            }, App::make('jsonapi.include')),
-        //            array_keys($this->getRelationships($this->resourceInstance, true))
-        //        );
-        //    }
-        //
-        //    return parent::getIncludePaths();
-
-        // test
-        return [ 'test-resource-b' ];
+        return $parameters->getIncludePaths();
     }
 
     /**
@@ -155,7 +139,6 @@ class ResourceSchema extends SchemaProvider
         $this->setResource($resource);
 
         return parent::createResourceObject($resource, $isOriginallyArrayed, $attributeKeysFilter);
-
     }
 
 }
