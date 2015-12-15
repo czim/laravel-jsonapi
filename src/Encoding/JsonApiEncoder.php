@@ -4,10 +4,14 @@ namespace Czim\JsonApi\Encoding;
 use Czim\JsonApi\Contracts\SchemaProviderInterface;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Neomerx\JsonApi\Contracts\Encoder\EncoderInterface;
 use Neomerx\JsonApi\Document\Error as JsonApiError;
 use Neomerx\JsonApi\Encoder\EncoderOptions;
 use Neomerx\JsonApi\Schema\Link;
+use Znck\Eloquent\Relations\BelongsToThrough;
 
 
 class JsonApiEncoder
@@ -198,5 +202,24 @@ class JsonApiEncoder
         return $this->app->make('request')->root() . $basePath;
     }
 
+
+    /**
+     * Checks whether a relation's data should always be included
+     *
+     * @param mixed $relation
+     * @return bool
+     */
+    public static function alwaysIncludeDataForRelation($relation)
+    {
+        if (config('jsonapi.relations.always_show_data_for_single')) {
+            return (    is_a($relation, BelongsTo::class)
+                    ||  is_a($relation, BelongsToThrough::class)
+                    ||  is_a($relation, HasOne::class)
+                    ||  is_a($relation, MorphOne::class)
+                    );
+        }
+
+        return false;
+    }
 
 }
