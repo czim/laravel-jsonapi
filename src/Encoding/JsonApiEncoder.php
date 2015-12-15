@@ -22,13 +22,15 @@ class JsonApiEncoder
 
 
     /**
-     * JsonApiEncoder constructor.
-     *
      * @param Container               $app
      * @param SchemaProviderInterface $schemaProvider
      */
-    public function __construct(Container $app, SchemaProviderInterface $schemaProvider)
+    public function __construct(Container $app, SchemaProviderInterface $schemaProvider = null)
     {
+        if (is_null($schemaProvider)) {
+            $schemaProvider = app(SchemaProviderInterface::class);
+        }
+
         $this->app            = $app;
         $this->schemaProvider = $schemaProvider;
     }
