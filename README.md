@@ -16,6 +16,25 @@ Via Composer
 $ composer require czim/laravel-jsonapi
 ```
 
+If you have any problems with dev-master rights, add the following requirements:
+
+``` bash
+$ composer require znck/belongs-to-through
+$ composer require neomerx/json-api
+```
+
+Add this line of code to the providers array located in your `config/app.php` file:
+
+```php
+    Czim\JsonApi\JsonApiServiceProvider::class,
+```
+
+Publish the configuration:
+
+``` bash
+$ php artisan vendor:publish
+```
+
 - publish configuration
 - set up kernel for middleware
     - add middleware to routes
@@ -53,7 +72,11 @@ Meta data is prepared for the next encoding by storing data in a dataobject sing
 You can access it as follows:
 
 ```php
+// directly through the bound interface
 $meta = App::make(\Czim\JsonApi\Contracts\JsonApiCurrentMetaInterface::class);
+
+// through the JsonApiEncoder method
+$meta = \Czim\JsonApi\Encoding\JsonApiEncoder::getMeta();
 
 $meta['some-key'] = 'some value';
 ```
@@ -63,6 +86,31 @@ The data object is an instance of a `DataObject` ([`czim/laravel-dataobject`](ht
 By default, after calling the `encode()` (or `response()`) method on the Encoder, the meta-data will be reset.
 This means that the lifetime of set meta-data ordinarily lasts until a response is fired.   
 
+
+### Accessing Special Request Parameters
+
+Special request parameters, such as included paths, filters and sorting options are automatically read when the `JsonApiParametersSetup` middleware runs. After that, the settings read can be accessed through a bound singleton, similar to that for the Meta data.
+
+```php
+// directly through the bound interface
+$parameters = App::make(\Czim\JsonApi\Contracts\JsonApiParametersInterface::class);
+
+// through the JsonApiEncoder method
+$parameters = \Czim\JsonApi\Encoding\JsonApiEncoder::getParameters();
+
+// Get an array of paths to include, which take the dot notation
+$parameters->getIncludePaths();
+
+// Get all filter values as an array
+$parameters->getFilter();
+
+// Get a specific filter value by key
+$parameters->getFilterValue('ids');
+
+// Get an array with sort parameters in order
+// These implement the `Czim\JsonApi\Contracts\SortParameterInterface`
+$parameters->getSortParameters();
+```
 
 ## Contributing
 
