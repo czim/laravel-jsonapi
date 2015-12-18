@@ -35,6 +35,34 @@ Publish the configuration:
 $ php artisan vendor:publish
 ```
 
+## Set up middleware
+
+In `app/Http/Kernel.php`, add the following to the `$routeMiddleware` property.
+
+```php
+    'jsonapi.headers'    => \Czim\JsonApi\Middleware\JsonApiHeaders::class,
+    'jsonapi.parameters' => \Czim\JsonApi\Middleware\JsonApiParametersSetup::class,
+```
+
+Then set up the middleware for your routes in `app/routes.php`, for instance as follows:
+ 
+ ```php
+ Route::group(
+     [
+         'prefix'     => 'v1',
+         'namespace'  => 'v1',
+         'middleware' => [
+             'jsonapi.headers',
+             'jsonapi.parameters',
+         ],
+     ],
+     function () {
+ 
+         // Your API routes...
+     }
+ );
+ ```
+
 - publish configuration
 - set up kernel for middleware
     - add middleware to routes
