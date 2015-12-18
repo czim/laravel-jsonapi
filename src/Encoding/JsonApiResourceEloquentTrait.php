@@ -107,7 +107,7 @@ trait JsonApiResourceEloquentTrait
         $relations = [];
 
         /** @var JsonApiParametersInterface $jsonApiParameters */
-        $jsonApiParameters = App::make(JsonApiParametersInterface::class);
+        $jsonApiParameters = JsonApiEncoder::getMeta();
         $requestedIncludes = $jsonApiParameters->getIncludePaths();
 
         $configuredToHide     = config('jsonapi.relations.hide.' . get_class($this), []);

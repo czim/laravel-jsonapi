@@ -2,6 +2,7 @@
 namespace Czim\JsonApi\Encoding;
 
 use Czim\JsonApi\Contracts\JsonApiCurrentMetaInterface;
+use Czim\JsonApi\Contracts\JsonApiParametersInterface;
 use Czim\JsonApi\Contracts\SchemaProviderInterface;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Support\Arrayable;
@@ -68,7 +69,7 @@ class JsonApiEncoder
         /** @var JsonApiCurrentMetaInterface $meta */
 
         // get the meta data singleton
-        $meta = app(JsonApiCurrentMetaInterface::class);
+        $meta = self::getMeta();
 
         $encoder = $this->getEncoder()
                         ->withLinks([
@@ -229,6 +230,31 @@ class JsonApiEncoder
         }
 
         return false;
+    }
+
+
+    // ------------------------------------------------------------------------------
+    //      Static Methods
+    // ------------------------------------------------------------------------------
+
+    /**
+     * Returns the JSON-API Parameters singleton
+     *
+     * @return JsonApiParametersInterface
+     */
+    public static function getParameters()
+    {
+        return app(JsonApiParametersInterface::class);
+    }
+
+    /**
+     * Returns the JSON-API Meta singleton
+     *
+     * @return JsonApiCurrentMetaInterface
+     */
+    public static function getMeta()
+    {
+        return app(JsonApiCurrentMetaInterface::class);
     }
 
 }
