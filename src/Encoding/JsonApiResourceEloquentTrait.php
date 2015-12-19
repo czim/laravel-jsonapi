@@ -3,7 +3,7 @@ namespace Czim\JsonApi\Encoding;
 
 use Czim\JsonApi\Contracts\JsonApiParametersInterface;
 use Czim\JsonApi\Contracts\ResourceStaticRelationsInterface;
-use Illuminate\Support\Facades\App;
+use Czim\JsonApi\Facades\Encoder as EncoderFacade;
 use Illuminate\Support\Str;
 use Neomerx\JsonApi\Schema\SchemaProvider;
 
@@ -107,7 +107,7 @@ trait JsonApiResourceEloquentTrait
         $relations = [];
 
         /** @var JsonApiParametersInterface $jsonApiParameters */
-        $jsonApiParameters = JsonApiEncoder::getMeta();
+        $jsonApiParameters = EncoderFacade::getParameters();
         $requestedIncludes = $jsonApiParameters->getIncludePaths();
 
         $configuredToHide     = config('jsonapi.relations.hide.' . get_class($this), []);
@@ -135,7 +135,7 @@ trait JsonApiResourceEloquentTrait
 
                 $relation = $this->{$relationName}();
 
-                $showData = JsonApiEncoder::alwaysIncludeDataForRelation($relation);
+                $showData = EncoderFacade::alwaysIncludeDataForRelation($relation);
             }
 
 
