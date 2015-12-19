@@ -29,11 +29,18 @@ Add this line of code to the `providers` array located in your `config/app.php` 
     Czim\JsonApi\JsonApiServiceProvider::class,
 ```
 
+And add this line of code to the `aliases` array in `config/app.php` for the Facade:
+
+``` php
+    'Encoder' => Czim\JsonApi\Facades\Encoder::class,
+```
+
 Publish the configuration:
 
 ``` bash
 $ php artisan vendor:publish
 ```
+
 
 ## Set up
 
@@ -70,9 +77,29 @@ Additionally, do not forget to remove or alternatively handle the `VerifyCsrfTok
 ### Set up the error handler
 
 To make the error handler output errors in the correct format, you'll need to modify `app/Exceptions/Handler.php`.
-When any routes using the JSON-API standard are hit, error response should be a list of errors formatted as JSON-API error objects. This may be done as follows: 
+When any routes using the JSON-API standard are hit, error response should be a list of errors formatted as JSON-API error objects. This may be done by setting up the `render` method as follows: 
 
 ``` php
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Exception  $e
+     * @return \Illuminate\Http\Response
+     */
+    public function render($request, Exception $e)
+    {
+        if ($e instanceof ModelNotFoundException) {
+            $e = new NotFoundHttpException($e->getMessage(), $e);
+        }
+        
+        // For json, encode errors according to JSON-API formatting 
+        if ($request->isJson()) {
+            return \Encoder::errors($e);
+        }
+
+        return parent::render($request, $e);
+    }
 ```
 
 ### Set up validation messages
@@ -140,11 +167,14 @@ Meta data is prepared for the next encoding by storing data in a dataobject sing
 You can access it as follows:
 
 ``` php
-// directly through the bound interface
+// method 1: directly through the bound interface
 $meta = App::make(\Czim\JsonApi\Contracts\JsonApiCurrentMetaInterface::class);
 
-// through the JsonApiEncoder method
-$meta = \Czim\JsonApi\Encoding\JsonApiEncoder::getMeta();
+// method 2: through the Encoder facade
+$meta = \Encoder::getMeta();
+
+// method 3: through the JsonApiEncoder binding
+$meta = app(\Czim\JsonApi\Encoding\JsonApiEncoderInterface::class)->getMeta();
 
 $meta['some-key'] = 'some value';
 ```
@@ -160,11 +190,14 @@ This means that the lifetime of set meta-data ordinarily lasts until a response 
 Special request parameters, such as included paths, filters and sorting options are automatically read when the `JsonApiParametersSetup` middleware runs. After that, the settings read can be accessed through a bound singleton, similar to that for the Meta data.
 
 ```php
-// directly through the bound interface
+// method 1: directly through the bound interface
 $parameters = App::make(\Czim\JsonApi\Contracts\JsonApiParametersInterface::class);
 
-// through the JsonApiEncoder method
-$parameters = \Czim\JsonApi\Encoding\JsonApiEncoder::getParameters();
+// method 2: throught the Encoder facade
+$meta = \Encoder::getParameters();
+
+// method 3: through the JsonApiEncoder binding
+$parameters = app(\Czim\JsonApi\Encoding\JsonApiEncoderInterface::class)->getParameters();
 
 // Get an array of paths to include, which take the dot notation
 $parameters->getIncludePaths();
