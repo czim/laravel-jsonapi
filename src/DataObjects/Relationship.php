@@ -1,8 +1,6 @@
 <?php
 namespace Czim\JsonApi\DataObjects;
 
-use Czim\DataObject\AbstractDataObject;
-
 /**
  * @property Resource|Resource[] $data
  * @property Link[]              $links

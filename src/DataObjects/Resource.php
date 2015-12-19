@@ -1,7 +1,6 @@
 <?php
 namespace Czim\JsonApi\DataObjects;
 
-use Czim\DataObject\AbstractDataObject;
 use Illuminate\Support\Str;
 
 /**
