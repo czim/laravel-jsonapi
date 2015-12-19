@@ -142,8 +142,9 @@ class JsonApiEncoder implements JsonApiEncoderInterface
             if ($error instanceof Exception) {
 
                 $httpStatus = (method_exists($error, 'getStatusCode')) ? $error->getStatusCode() : $status;
+                $errorCode  = (int) $error->getCode() ? $error->getCode() : null;
 
-                $normalizedErrors[] = new JsonApiError(null, null, $httpStatus, $error->getCode(), $error->getMessage());
+                $normalizedErrors[] = new JsonApiError(null, null, $httpStatus, $errorCode, $error->getMessage());
                 continue;
             }
 
