@@ -16,16 +16,16 @@ Via Composer
 $ composer require czim/laravel-jsonapi
 ```
 
-If you have any problems with dev-master rights, add the following requirements:
+If you have any problems with 'dev-master' rights, add the following package requirements:
 
 ``` bash
 $ composer require znck/belongs-to-through
 $ composer require neomerx/json-api
 ```
 
-Add this line of code to the providers array located in your `config/app.php` file:
+Add this line of code to the `providers` array located in your `config/app.php` file:
 
-```php
+``` php
     Czim\JsonApi\JsonApiServiceProvider::class,
 ```
 
@@ -35,71 +35,111 @@ Publish the configuration:
 $ php artisan vendor:publish
 ```
 
-## Set up middleware
+## Set up
+
+### Set up middleware
 
 In `app/Http/Kernel.php`, add the following to the `$routeMiddleware` property.
 
-```php
+``` php
     'jsonapi.headers'    => \Czim\JsonApi\Middleware\JsonApiHeaders::class,
     'jsonapi.parameters' => \Czim\JsonApi\Middleware\JsonApiParametersSetup::class,
 ```
 
 Then set up the middleware for your routes in `app/routes.php`, for instance as follows:
  
- ```php
- Route::group(
-     [
-         'prefix'     => 'v1',
-         'namespace'  => 'v1',
-         'middleware' => [
-             'jsonapi.headers',
-             'jsonapi.parameters',
-         ],
-     ],
-     function () {
+``` php
+    Route::group(
+        [
+            'prefix'     => 'v1',
+            'namespace'  => 'v1',
+            'middleware' => [
+                'jsonapi.headers',
+                'jsonapi.parameters',
+            ],
+        ],
+        function () {
  
-         // Your API routes...
-     }
- );
- ```
+            // Your API routes...
+        }
+    );
+```
 
-- publish configuration
-- set up kernel for middleware
-    - add middleware to routes
+Additionally, do not forget to remove or alternatively handle the `VerifyCsrfToken` middleware, if you intend to accept POST requests to your API.
+
+### Set up the error handler
+
+To make the error handler output errors in the correct format, you'll need to modify `app/Exceptions/Handler.php`.
+When any routes using the JSON-API standard are hit, error response should be a list of errors formatted as JSON-API error objects. This may be done as follows: 
+
+``` php
+```
+
+### Set up validation messages
+
+Optionally you can set up validation message translations for JSON-API structure errors.
+To do so, add the following to, for instance, `resources/lang/en/validation.php`: 
+
+``` php
+    'jsonapi_errors'        => 'The JSON-API errors list is malformed.',
+    'jsonapi_resource'      => 'The JSON-API resource is malformed.',
+    'jsonapi_links'         => 'The JSON-API links list is malformed.',
+    'jsonapi_link'          => 'The JSON-API link object is malformed.',
+    'jsonapi_relationships' => 'The JSON-API relationships list is malformed.',
+    'jsonapi_jsonapi'       => 'The JSON-API json-api object is malformed.',
+```
+
+### Define relationships in the config
+
+- hide relationships
+- always_show_data
+
+### Set up the default controller to offer encoding methods
+
 - add trait to controllers
-- extend package request for formrequests
-- set up errorhandler for 'json' content
-- optionally set validation error messages for:
-    jsonapi_errors
-    jsonapi_links
-    jsonapi_resource
-    jsonapi_relationships
-    jsonapi_links
-    jsonapi_link
-    jsonapi_jsonapi
-- add resource interface & (appliccable) trait to resource models 
-- config:
-    - add relationship hide & always_show_data per resource fqn
 
-## To Do
 
-# json api error responses
-- consider using resource patcher
-    - or some neat alternative to dealing with updates
+### Set up models and other resource objects
 
-- separate client json-api package...
-    - use czim/service?
-    - decoder/interpreter for json-api content received
+- add the resource interface
+- add the appropriate traits (or roll your own)
 
 
 ## Usage
+
+
+### Requests and reading JSON-API Request Data 
+
+
+- using the formrequest, extending it
+    - extend package request for formrequests
+
+
+Data validation for specific requests may be handled normally.
+For instance, for a request that requires some attributes and a relationship be provided:
+
+``` php
+    public function rules()
+    {
+        return [
+            // Attribute rules
+            'data.attributes.from-date'            => 'required|date',
+            'data.attributes.to-date'              => 'required|date',
+            'data.attributes.description'          => 'string',
+            // Relationship rules
+            'data.relationships.address.data.type' => 'required|in:addresses',
+            'data.relationships.address.data.id'   => 'required|exists:addresses,id',
+        ];
+    }
+```
+
 
 ### Setting Meta data
 
 Meta data is prepared for the next encoding by storing data in a dataobject singleton.
 You can access it as follows:
 
-```php
+``` php
 // directly through the bound interface
 $meta = App::make(\Czim\JsonApi\Contracts\JsonApiCurrentMetaInterface::class);
 
