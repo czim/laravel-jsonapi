@@ -2,8 +2,10 @@
 namespace Czim\JsonApi\Encoding;
 
 use Czim\JsonApi\Contracts\JsonApiCurrentMetaInterface;
+use Czim\JsonApi\Contracts\JsonApiEncoderInterface;
 use Czim\JsonApi\Contracts\JsonApiParametersInterface;
 use Czim\JsonApi\Contracts\SchemaProviderInterface;
+use Exception;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,7 +18,7 @@ use Neomerx\JsonApi\Schema\Link;
 use Znck\Eloquent\Relations\BelongsToThrough;
 
 
-class JsonApiEncoder
+class JsonApiEncoder implements JsonApiEncoderInterface
 {
 
     /**
@@ -120,7 +122,11 @@ class JsonApiEncoder
             $status = (string) $status;
         }
 
-        if (is_a($errors, Arrayable::class)) {
+        if ($errors instanceof Exception) {
+            $errors = [ $errors ];
+        }
+
+        if ($errors instanceof Arrayable) {
             $errors = $errors->toArray();
         }
 
@@ -128,9 +134,18 @@ class JsonApiEncoder
             $errors = (array) $errors;
         }
 
+
         $normalizedErrors = [];
 
         foreach ($errors as $key => $error) {
+
+            if ($error instanceof Exception) {
+
+                $httpStatus = (method_exists($error, 'getStatusCode')) ? $error->getStatusCode() : $status;
+
+                $normalizedErrors[] = new JsonApiError(null, null, $httpStatus, $error->getCode(), $error->getMessage());
+                continue;
+            }
 
             if ($error instanceof JsonApiError) {
                 $normalizedErrors[] = $error;
@@ -219,7 +234,7 @@ class JsonApiEncoder
      * @param mixed $relation
      * @return bool
      */
-    public static function alwaysIncludeDataForRelation($relation)
+    public function alwaysIncludeDataForRelation($relation)
     {
         if (config('jsonapi.relations.always_show_data_for_single')) {
             return (    is_a($relation, BelongsTo::class)
@@ -234,7 +249,7 @@ class JsonApiEncoder
 
 
     // ------------------------------------------------------------------------------
-    //      Static Methods
+    //      Helper Methods for Singletons
     // ------------------------------------------------------------------------------
 
     /**
@@ -242,7 +257,7 @@ class JsonApiEncoder
      *
      * @return JsonApiParametersInterface
      */
-    public static function getParameters()
+    public function getParameters()
     {
         return app(JsonApiParametersInterface::class);
     }
@@ -252,9 +267,24 @@ class JsonApiEncoder
      *
      * @return JsonApiCurrentMetaInterface
      */
-    public static function getMeta()
+    public function getMeta()
     {
         return app(JsonApiCurrentMetaInterface::class);
+    }
+
+    /**
+     * Clears all JSON-API Meta data
+     *
+     * @return $this
+     */
+    public function clearMeta()
+    {
+        /** @var JsonApiCurrentMetaInterface $meta */
+        $meta = app(JsonApiCurrentMetaInterface::class);
+
+        $meta->clearAttributes();
+
+        return $this;
     }
 
 }
