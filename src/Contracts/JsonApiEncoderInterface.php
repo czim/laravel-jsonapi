@@ -25,8 +25,8 @@ interface JsonApiEncoderInterface
     /**
      * Encodes errors as JSON-API error response
      *
-     * @param array|Arrayable $errors
-     * @param int             $status HTTP status code for response
+     * @param mixed $errors
+     * @param int   $status HTTP status code for response
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function errors($errors, $status = 500);
