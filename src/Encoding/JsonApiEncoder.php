@@ -17,7 +17,6 @@ use Neomerx\JsonApi\Encoder\EncoderOptions;
 use Neomerx\JsonApi\Schema\Link;
 use Znck\Eloquent\Relations\BelongsToThrough;
 
-
 class JsonApiEncoder implements JsonApiEncoderInterface
 {
 
@@ -93,8 +92,8 @@ class JsonApiEncoder implements JsonApiEncoderInterface
     /**
      * Encodes errors as JSON-API error response
      *
-     * @param array|Arrayable $errors
-     * @param int             $status   HTTP status code for response
+     * @param mixed $errors
+     * @param int   $status   HTTP status code for response
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function errors($errors, $status = 500)
@@ -221,7 +220,7 @@ class JsonApiEncoder implements JsonApiEncoderInterface
     protected function getUrlToRoot()
     {
         $baseUrl = config('jsonapi.base_url');
-        $basePath = '/' . ltrim(config('jsonapi.base_url_path'), '/');
+        $basePath = '/' . trim(config('jsonapi.base_path'), '/') . '/';
 
         if ( ! empty($baseUrl)) return $baseUrl . $basePath;
 
