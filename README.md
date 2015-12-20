@@ -8,6 +8,12 @@
 Framework for quick and easy setup of a JSON-API compliant server.
 
 
+## To Do
+
+- see if we want to use the staticrelation interface
+- if so, discuss it in the documentation, if not, find a better approach (config based?)
+
+
 ## Install
 
 Via Composer
@@ -119,14 +125,24 @@ To do so, add the following to, for instance, `resources/lang/en/validation.php`
 
 ### Define relationships in the config
 
-- hide relationships
-- always_show_data
+The way relationships are handled during encoding can be configured in the `jsonapi.php` config file.
+
+You can define which relationships must be hidden from encoded json, per fully qualified classname of encodable resource, through the `relations.hide` and `relations.hide_defaults` entries.
+
+You can define which relationships must have their data (not just reference links) included, per fully qualified classname of encodable resource, through the `relations.always_show_data` entry.
+By default `always_show_data_for_single` is set to true, which will result in all to-one relationships to include data objects.  
+
+See [the config](https://github.com/czim/laravel-jsonapi/blob/master/src/config/jsonapi.php) (after publishing, located at `config/jsonapi.php`) for more information.
 
 
 ### Set up models and other resource objects
 
-- add the resource interface
-- add the appropriate traits (or roll your own)
+When using `Encoder::encode()`, the data provide needs to be a resource objects or an array or Collection of them.
+
+Resource objects must implement the `Czim\JsonApi\Contracts\ResourceInterface`.
+For Eloquent models, a provided trait may be used to do so (`Czim\JsonApi\Encoding\JsonApiResourceEloquentTrait`).
+
+Of course, you can roll your own implementation for any class or model.
 
 
 ## Usage
@@ -202,6 +218,38 @@ For instance, for a request that requires some attributes and a relationship be 
             'data.relationships.address.data.type' => 'required|in:addresses',
             'data.relationships.address.data.id'   => 'required|exists:addresses,id',
         ];
+    }
+```
+
+### Encoding responses
+
+Any encodable data may be encoded into a response as follows:
+
+``` php
+    // a Collection of models
+    \Encoder::encode( \App\Models\Post::all() );
+    
+    // or a single one
+    \Encoder::encode( \App\Models\Comment::with('post')->where('id', 1)->first() );
+```
+
+
+Error responses can be created with the `Encoder::errors()` method. For its parameter, it can deal with:
+
+- A single object that implements `Neomerx\JsonApi\Contracts\Document\ErrorInterface`, or an array of them.
+- The errors returned by a `Validator`'s `messages()` method.
+- An `Exception` instance or an array of them. If the Exceptions implement a `getStatusCode()` method, it will be used in the error representation.
+- A string with an error message (which will result in a single error in the errors list created).
+
+For example:
+
+``` php
+    // Though note that this would not be very useful in practice,
+    // if you already set up the Exceptions\Handler correctly.
+    try {
+        // some code that may throw some exception
+    } catch(\Exception $e) {
+        return \Encoder::errors($e);
     }
 ```
 
