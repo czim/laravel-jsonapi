@@ -79,6 +79,22 @@ trait JsonApiDataAccessorsTrait
     }
 
     /**
+     * Returns a relationship by name/key
+     *
+     * @param string $key       name of the relationship to retrieve
+     * @param int    $index     index of the resource if not single-resource data
+     * @return DataObjects\Relationship|null
+     */
+    public function getRelationship($key, $index = 0)
+    {
+        $relationships = $this->getRelationships($index);
+
+        if (is_null($relationships) || ! array_key_exists($key, $relationships)) return null;
+
+        return $relationships[$key];
+    }
+
+    /**
      * Returns attributes from the data object of the json api object
      *
      * @param int $index    index of the resource if not single-resource data
@@ -90,13 +106,51 @@ trait JsonApiDataAccessorsTrait
     }
 
     /**
+     * Returns attributes from the data object of the json api object
+     *
+     * @param string $key           attribute key name
+     * @param int    $index         index of the resource if not single-resource data
+     * @param bool   $dotNotation   whether to apply the attribute key in dot notation
+     * @return mixed|null
+     */
+    public function getAttribute($key, $index = 0, $dotNotation = true)
+    {
+        $attributes = $this->getAttributes();
+
+        if (is_null($attributes)) return null;
+
+        /** @var \Czim\JsonApi\DataObjects\Attributes $attributes */
+
+        if ($dotNotation) {
+            return $attributes->getNested($key);
+        }
+
+        return $attributes->getAttribute($key);
+    }
+
+    /**
      * Returns included resources from the json api object
      *
      * @return DataObjects\Resource[]
      */
-    public function getIncluded()
+    public function getAllIncluded()
     {
         return $this->jsonApiContent->included ?: [];
+    }
+
+    /**
+     * Returns an included resource (set) by key from the json api object
+     *
+     * @param string $key   the key of the included data
+     * @return DataObjects\Resource[]
+     */
+    public function getIncluded($key = null)
+    {
+        if ( ! $this->jsonApiContent->included) {
+            return null;
+        }
+
+        return $this->jsonApiContent->included[$key];
     }
 
     /**
