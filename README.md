@@ -223,16 +223,22 @@ For instance, for a request that requires some attributes and a relationship be 
 
 ### Encoding responses
 
+#### Encoding resources
+
 Any encodable data may be encoded into a response as follows:
 
 ``` php
     // a Collection of models
-    \Encoder::encode( \App\Models\Post::all() );
+    \Encoder::response( \App\Models\Post::all() );
     
     // or a single one
-    \Encoder::encode( \App\Models\Comment::with('post')->where('id', 1)->first() );
+    \Encoder::response( \App\Models\Comment::with('post')->where('id', 1)->first() );
 ```
 
+Relationships are only included in responses if they are (eager-) loaded into the models being encoded.
+So if you're missing relationship data in the responses, make sure the relationships are actually loaded in.
+
+#### Encoding errors 
 
 Error responses can be created with the `Encoder::errors()` method. For its parameter, it can deal with:
 
@@ -274,7 +280,7 @@ $meta['some-key'] = 'some value';
 
 The data object is an instance of a `DataObject` ([`czim/laravel-dataobject`](https://github.com/czim/laravel-dataobject)) instance.
 
-By default, after calling the `encode()` (or `response()`) method on the Encoder, the meta-data will be reset.
+By default, after calling the `response()` (or `encode()`) method on the Encoder, the meta-data will be reset.
 This means that the lifetime of set meta-data ordinarily lasts until a response is fired.   
 
 
