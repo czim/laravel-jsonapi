@@ -74,6 +74,7 @@ Then set up the middleware for your routes in `app/routes.php`, for instance as 
 
 Additionally, do not forget to remove or alternatively handle the `VerifyCsrfToken` middleware, if you intend to accept POST requests to your API.
 
+
 ### Set up the error handler
 
 To make the error handler output errors in the correct format, you'll need to modify `app/Exceptions/Handler.php`.
@@ -121,10 +122,6 @@ To do so, add the following to, for instance, `resources/lang/en/validation.php`
 - hide relationships
 - always_show_data
 
-### Set up the default controller to offer encoding methods
-
-- add trait to controllers
-
 
 ### Set up models and other resource objects
 
@@ -134,15 +131,63 @@ To do so, add the following to, for instance, `resources/lang/en/validation.php`
 
 ## Usage
 
-
 ### Requests and reading JSON-API Request Data 
 
+To validate a `POST` or `PUT` request with JSON-API content, use Laravel's service container to instantiate an instance of `Czim\JsonApi\Requests\JsonApiRequest`.
+ 
+In a controller:
 
-- using the formrequest, extending it
-    - extend package request for formrequests
+``` php
+use Czim\JsonApi\Requests\JsonApiRequest;
+
+class TestController extends Controller
+{
+    public function someAction(JsonApiRequest $request)
+    {
+        // ...
+```
+
+Or anywhere outside of it:
+
+``` php
+$request = App::make(\Czim\JsonApi\Requests\JsonApiRequest::class);
+```
+
+This will perform validation on the general JSON-API structure and throw the normal request 422 validation errors, formatted as JSON-API error list. Note that empty requests will pass validation, unless specific validation rules are set up in classes extending the `JsonApiRequest` class (for requiring content, see the section on specific validation below).
 
 
-Data validation for specific requests may be handled normally.
+#### Accessing JSON-API Request Data
+
+The instantiated request has accessor methods to make it easier to extract typical JSON-API data from the request.
+
+``` php
+    // resource data object (from single resource request or first from list) 
+    $resource = $request->getResource();
+    
+    // list of relationships as an associative array of data objects
+    $relationships = $request->getRelationships();
+    
+    // specific relationship data object
+    $relationship = $request->getRelationship('categories');
+    
+    // attributes collection data object for first or single resource
+    $attributes = $request->getAttributes();
+    
+    // value for a specific attribute by key
+    $value = $request->getAttribute('some_attribute');
+    
+    // nested value for a specific attribute by key in dot notation
+    $value = $request->getAttribute('some_array.some_attribute');
+```
+
+For more options and information, see [`JsonApiDataAccessorsInterface.php`](https://github.com/czim/laravel-jsonapi/blob/master/src/Contracts/JsonApiDataAccessorsInterface.php).
+
+
+#### Validating specific JSON-API content
+ 
+To set up normal validation, extend the `JsonApiRequest` as you would for a normal FormRequest.
+
+Data validation for specific requests may then be handled normally.
 For instance, for a request that requires some attributes and a relationship be provided:
 
 ``` php
@@ -167,11 +212,11 @@ Meta data is prepared for the next encoding by storing data in a dataobject sing
 You can access it as follows:
 
 ``` php
-// method 1: directly through the bound interface
-$meta = App::make(\Czim\JsonApi\Contracts\JsonApiCurrentMetaInterface::class);
-
-// method 2: through the Encoder facade
+// method 1: through the Encoder facade
 $meta = \Encoder::getMeta();
+
+// method 2: directly through the bound interface
+$meta = App::make(\Czim\JsonApi\Contracts\JsonApiCurrentMetaInterface::class);
 
 // method 3: through the JsonApiEncoder binding
 $meta = app(\Czim\JsonApi\Encoding\JsonApiEncoderInterface::class)->getMeta();
@@ -190,11 +235,11 @@ This means that the lifetime of set meta-data ordinarily lasts until a response 
 Special request parameters, such as included paths, filters and sorting options are automatically read when the `JsonApiParametersSetup` middleware runs. After that, the settings read can be accessed through a bound singleton, similar to that for the Meta data.
 
 ```php
-// method 1: directly through the bound interface
-$parameters = App::make(\Czim\JsonApi\Contracts\JsonApiParametersInterface::class);
-
-// method 2: throught the Encoder facade
+// method 1: through the Encoder facade
 $meta = \Encoder::getParameters();
+
+// method 2: directly through the bound interface
+$parameters = App::make(\Czim\JsonApi\Contracts\JsonApiParametersInterface::class);
 
 // method 3: through the JsonApiEncoder binding
 $parameters = app(\Czim\JsonApi\Encoding\JsonApiEncoderInterface::class)->getParameters();
