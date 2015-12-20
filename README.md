@@ -236,7 +236,7 @@ Special request parameters, such as included paths, filters and sorting options 
 
 ```php
 // method 1: through the Encoder facade
-$meta = \Encoder::getParameters();
+$parameters = \Encoder::getParameters();
 
 // method 2: directly through the bound interface
 $parameters = App::make(\Czim\JsonApi\Contracts\JsonApiParametersInterface::class);
