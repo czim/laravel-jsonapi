@@ -3,6 +3,9 @@ namespace Czim\JsonApi\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
+/**
+ * @see \Czim\JsonApi\Encoding\JsonApiEncoder
+ */
 class Encoder extends Facade
 {
 
