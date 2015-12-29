@@ -160,6 +160,34 @@ class Post extends Model implements ResourceInterface
 
 Of course, you can roll your own implementation for any class or model.
 
+#### Date Formatting on Eloquent Models
+
+If you wish to make sure that the date format output for date fields is output in a proper timezoned format, you can take the following approach. Let all your API-relevant models extend an abstract class such as this:
+
+``` php
+<?php
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class AbstractModel extends Model
+{
+    protected $jsonDateFormat = 'c';
+
+    /**
+     * Prepare a date for array / JSON serialization.
+     *
+     * @param DateTime $date
+     * @return string
+     */
+    protected function serializeDate(DateTime $date)
+    {
+        return $date->format($this->jsonDateFormat);
+    }
+    
+}
+```
+
 
 ## Usage
 
