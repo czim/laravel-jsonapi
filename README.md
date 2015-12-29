@@ -142,6 +142,22 @@ When using `Encoder::encode()`, the data provide needs to be a resource objects 
 Resource objects must implement the `Czim\JsonApi\Contracts\ResourceInterface`.
 For Eloquent models, a provided trait may be used to do so (`Czim\JsonApi\Encoding\JsonApiResourceEloquentTrait`).
 
+Example setup:
+
+``` php
+<?php
+namespace App\Models;
+
+use Czim\JsonApi\Contracts\ResourceInterface;
+use Czim\JsonApi\Encoding\JsonApiResourceEloquentTrait;
+use Illuminate\Database\Eloquent\Model;
+
+class Post extends Model implements ResourceInterface
+{
+    use JsonApiResourceEloquentTrait;
+    
+```
+
 Of course, you can roll your own implementation for any class or model.
 
 
