@@ -7,11 +7,12 @@
 
 Framework for quick and easy setup of a JSON-API compliant server.
 
+# Deprecation warning
 
-## To Do
+This package is abandoned. It was never a really clean solution and I won't be picking up its development.
 
-- see if we want to use the staticrelation interface
-- if so, discuss it in the documentation, if not, find a better approach (config based?)
+If you were interested in or are using this package, please check out [this JSON-API base package](https://github.com/Pixelindustries/laravel-jsonapi) that I'm currently developing.
+It will offer roughly the same functionality, but will be much cleaner, more closely tailored to the specs and will be supported for new/future Laravel versions.
 
 
 ## Install
