@@ -4,6 +4,7 @@ namespace Czim\JsonApi\Http\Requests;
 use Czim\JsonApi\Contracts\Support\Validation\JsonApiValidatorInterface;
 use Czim\JsonApi\Support\Request\RequestQueryParser;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exception\HttpResponseException;
 
 class JsonApiRequest extends FormRequest
 {
@@ -47,16 +48,6 @@ class JsonApiRequest extends FormRequest
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function validate()
-    {
-        $this->validateAgainstSchema();
-
-        parent::validate();
-    }
-
-    /**
      * Default authorization: allow.
      *
      * @return bool
@@ -77,6 +68,16 @@ class JsonApiRequest extends FormRequest
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function validate()
+    {
+        $this->validateAgainstSchema();
+
+        parent::validate();
+    }
+
+    /**
      * Validates the request's contents against the relevant JSON Schema.
      */
     protected function validateAgainstSchema()
@@ -87,7 +88,13 @@ class JsonApiRequest extends FormRequest
 
         $validator = $this->getSchemaValidator();
 
-        $validator->validateSchema($this->all(), $this->schemaValidationType);
+        if ( ! $validator->validateSchema($this->all(), $this->schemaValidationType)) {
+
+            throw new HttpResponseException(
+                $this->response($validator->getErrors()->toArray())
+                    ->setStatusCode(422)
+            );
+        }
     }
 
     /**
