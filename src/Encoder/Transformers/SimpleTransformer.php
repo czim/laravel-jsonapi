@@ -1,8 +1,8 @@
 <?php
 namespace Czim\JsonApi\Encoder\Transformers;
 
-use Illuminate\Contracts\Support\Arrayable;
 use Czim\JsonApi\Exceptions\EncodingException;
+use Illuminate\Contracts\Support\Arrayable;
 
 class SimpleTransformer extends AbstractTransformer
 {

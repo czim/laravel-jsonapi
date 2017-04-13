@@ -1,8 +1,8 @@
 <?php
 namespace Czim\JsonApi\Support\Request;
 
-use Illuminate\Http\Request;
 use Czim\JsonApi\Contracts\Support\Request\RequestQueryParserInterface;
+use Illuminate\Http\Request;
 
 /**
  * Class RequestQueryParser

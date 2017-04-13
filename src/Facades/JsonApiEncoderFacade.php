@@ -1,8 +1,8 @@
 <?php
 namespace Czim\JsonApi\Facades;
 
-use Illuminate\Support\Facades\Facade;
 use Czim\JsonApi\Contracts\Encoder\EncoderInterface;
+use Illuminate\Support\Facades\Facade;
 
 /**
  * Class JsonApiEncoderFacade

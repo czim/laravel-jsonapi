@@ -1,8 +1,8 @@
 <?php
 namespace Czim\JsonApi\Support\Type;
 
-use Illuminate\Database\Eloquent\Model;
 use Czim\JsonApi\Contracts\Support\Type\TypeMakerInterface;
+use Illuminate\Database\Eloquent\Model;
 
 class TypeMaker implements TypeMakerInterface
 {

@@ -1,8 +1,8 @@
 <?php
 namespace Czim\JsonApi\Contracts\Encoder;
 
-use Illuminate\Database\Eloquent\Model;
 use Czim\JsonApi\Contracts\Resource\ResourceInterface;
+use Illuminate\Database\Eloquent\Model;
 
 interface EncoderInterface
 {

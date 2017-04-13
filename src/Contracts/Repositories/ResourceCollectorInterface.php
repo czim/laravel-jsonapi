@@ -1,8 +1,8 @@
 <?php
 namespace Czim\JsonApi\Contracts\Repositories;
 
-use Illuminate\Support\Collection;
 use Czim\JsonApi\Contracts\Resource\ResourceInterface;
+use Illuminate\Support\Collection;
 
 interface ResourceCollectorInterface
 {

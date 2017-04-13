@@ -1,9 +1,9 @@
 <?php
 namespace Czim\JsonApi\Encoder\Transformers;
 
+use Czim\JsonApi\Enums\Key;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\AbstractPaginator;
-use Czim\JsonApi\Enums\Key;
 use UnexpectedValueException;
 
 class PaginatedModelsTransformer extends ModelCollectionTransformer

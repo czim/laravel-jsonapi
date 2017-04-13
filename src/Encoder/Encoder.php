@@ -1,14 +1,14 @@
 <?php
 namespace Czim\JsonApi\Encoder;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 use Czim\JsonApi\Enums\Key;
 use Czim\JsonApi\Contracts\Encoder\EncoderInterface;
 use Czim\JsonApi\Contracts\Encoder\TransformerFactoryInterface;
 use Czim\JsonApi\Contracts\Encoder\TransformerInterface;
 use Czim\JsonApi\Contracts\Repositories\ResourceRepositoryInterface;
 use Czim\JsonApi\Contracts\Resource\ResourceInterface;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class Encoder implements EncoderInterface
 {

@@ -1,7 +1,6 @@
 <?php
 namespace Czim\JsonApi\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Czim\JsonApi\Contracts\Encoder\EncoderInterface;
 use Czim\JsonApi\Contracts\Encoder\TransformerFactoryInterface;
 use Czim\JsonApi\Contracts\Repositories\ResourceCollectorInterface;
@@ -17,6 +16,7 @@ use Czim\JsonApi\Repositories\ResourceRepository;
 use Czim\JsonApi\Support\Request\RequestQueryParser;
 use Czim\JsonApi\Support\Type\TypeMaker;
 use Czim\JsonApi\Support\Validation\JsonApiValidator;
+use Illuminate\Support\ServiceProvider;
 
 class JsonApiServiceProvider extends ServiceProvider
 {

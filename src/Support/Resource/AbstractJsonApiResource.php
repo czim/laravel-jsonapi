@@ -1,11 +1,11 @@
 <?php
 namespace Czim\JsonApi\Support\Resource;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Czim\JsonApi\Contracts\Resource\ResourceInterface;
 use Czim\JsonApi\Contracts\Support\Type\TypeMakerInterface;
 use Czim\JsonApi\Exceptions\InvalidIncludeException;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use RuntimeException;
 
 class AbstractJsonApiResource implements ResourceInterface

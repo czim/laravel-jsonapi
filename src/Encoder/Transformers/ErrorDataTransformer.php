@@ -1,9 +1,9 @@
 <?php
 namespace Czim\JsonApi\Encoder\Transformers;
 
-use InvalidArgumentException;
 use Czim\JsonApi\Contracts\Support\Error\ErrorDataInterface;
 use Czim\JsonApi\Enums\Key;
+use InvalidArgumentException;
 
 class ErrorDataTransformer extends AbstractTransformer
 {

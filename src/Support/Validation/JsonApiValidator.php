@@ -1,12 +1,12 @@
 <?php
 namespace Czim\JsonApi\Support\Validation;
 
+use Czim\JsonApi\Contracts\Support\Validation\JsonApiValidatorInterface;
+use Czim\JsonApi\Enums\SchemaType;
 use Illuminate\Contracts\Support\MessageBag as MessageBagContract;
 use Illuminate\Support\Collection;
 use Illuminate\Support\MessageBag;
 use JsonSchema\Validator;
-use Czim\JsonApi\Contracts\Support\Validation\JsonApiValidatorInterface;
-use Czim\JsonApi\Enums\SchemaType;
 
 class JsonApiValidator implements JsonApiValidatorInterface
 {

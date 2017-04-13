@@ -1,10 +1,10 @@
 <?php
 namespace Czim\JsonApi\Encoder\Transformers;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 use Czim\JsonApi\Contracts\Resource\ResourceInterface;
 use Czim\JsonApi\Enums\Key;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use UnexpectedValueException;
 
 class ModelCollectionTransformer extends ModelTransformer

@@ -1,11 +1,11 @@
 <?php
 namespace Czim\JsonApi\Repositories;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 use Czim\JsonApi\Contracts\Repositories\ResourceCollectorInterface;
 use Czim\JsonApi\Contracts\Repositories\ResourceRepositoryInterface;
 use Czim\JsonApi\Contracts\Resource\ResourceInterface;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class ResourceRepository implements ResourceRepositoryInterface
 {

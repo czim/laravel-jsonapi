@@ -1,10 +1,10 @@
 <?php
 namespace Czim\JsonApi\Encoder\Transformers;
 
-use Exception;
-use InvalidArgumentException;
 use Czim\JsonApi\Contracts\Support\Error\ErrorDataInterface;
 use Czim\JsonApi\Support\Error\ErrorData;
+use Exception;
+use InvalidArgumentException;
 
 class ExceptionTransformer extends ErrorDataTransformer
 {

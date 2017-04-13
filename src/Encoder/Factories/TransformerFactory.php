@@ -1,14 +1,14 @@
 <?php
 namespace Czim\JsonApi\Encoder\Factories;
 
+use Czim\JsonApi\Contracts\Encoder\TransformerFactoryInterface;
+use Czim\JsonApi\Contracts\Encoder\TransformerInterface;
+use Czim\JsonApi\Encoder\Transformers;
 use Exception;
 use Illuminate\Database\Eloquent\Collection as ModelCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\AbstractPaginator;
 use Illuminate\Support\Collection;
-use Czim\JsonApi\Contracts\Encoder\TransformerFactoryInterface;
-use Czim\JsonApi\Contracts\Encoder\TransformerInterface;
-use Czim\JsonApi\Encoder\Transformers;
 
 class TransformerFactory implements TransformerFactoryInterface
 {

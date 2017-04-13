@@ -1,13 +1,13 @@
 <?php
 namespace Czim\JsonApi\Encoder\Transformers;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Czim\JsonApi\Contracts\Resource\ResourceInterface;
 use Czim\JsonApi\Enums\Key;
 use Czim\JsonApi\Exceptions\EncodingException;
 use Czim\JsonApi\Support\Resource\RelationData;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use RuntimeException;
 use UnexpectedValueException;
 

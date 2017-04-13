@@ -2,8 +2,8 @@
 namespace Czim\JsonApi\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
 use Czim\JsonApi\Http\Requests\JsonApiRequest;
+use Illuminate\Http\Request;
 
 class DecorateJsonApiRequest
 {
