@@ -1,8 +1,7 @@
 <?php
 namespace Czim\JsonApi\Test;
 
-use Czim\JsonApi\JsonApiServiceProvider;
-use Mockery;
+use Czim\JsonApi\Providers\JsonApiServiceProvider;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -10,12 +9,10 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     /**
      * Define environment setup.
      *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @return void
+     * @param \Illuminate\Foundation\Application $app
      */
     protected function getEnvironmentSetUp($app)
     {
-        // set bindings
         $app->register(JsonApiServiceProvider::class);
 
         // Setup default database to use sqlite :memory:
@@ -25,15 +22,34 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'database' => ':memory:',
             'prefix'   => '',
         ]);
-
-        $app['config']->set('jsonapi.base_url', 'http://www.test.com');
-        $app['config']->set('jsonapi.base_path', 'v1');
-
-        $app['config']->set('jsonapi.relations.always_show_data', [
-            \Czim\JsonApi\Test\Helpers\Models\TestModel::class => [
-                'testRelatedModels',
-            ],
-        ]);
     }
 
+    /**
+     * Performs simple assertion of validity of JSON-API serialized data.
+     *
+     * @param mixed|array     $data
+     * @param string          $type
+     * @param string          $id
+     * @param array           $attributes   if nonempty, attributes to match the values for
+     */
+    protected function assertBasicJsonApiResponse($data, $type, $id, $attributes = [])
+    {
+        static::assertInternalType('array', $data);
+        static::assertArrayHasKey('data', $data);
+
+        static::assertArrayHasKey('type', $data['data'], "Data has no 'type' key");
+        static::assertEquals($type, $data['data']['type']);
+
+        static::assertArrayHasKey('id', $data['data'], "Data has no 'id' key");
+        static::assertSame($id, $data['data']['id']);
+
+        if ( ! empty($attributes)) {
+            static::assertArrayHasKey('attributes', $data['data']);
+
+            foreach ($attributes as $key => $value) {
+                static::assertArrayHasKey($key, $data['data']['attributes'], "Attributes does not have key '{$key}''");
+                static::assertSame($value, $data['data']['attributes'][$key], "Attribute value for {$key} is incorrect");
+            }
+        }
+    }
 }
