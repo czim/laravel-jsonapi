@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonapi.org/schemas/1_1/creation.json",
+  "title": "JSON API Schema",
+  "description": "This is the v 1.1 schema for creating (e.g. via POST) in the JSON API format. For more, see http://jsonapi.org ...",
+  "allOf": [
+    {
+      "$ref": "#/definitions/creation"
+    }
+  ],
+  "definitions": {
+    "creation": {
+      "allOf": [
+        {
+          "$ref": "http://jsonapi.org/schemas/1_1/request.json#/definitions/request"
+        },
+        {
+          "properties": {
+            "data": {
+              "$ref": "#/definitions/data"
+            }
+          }
+        }
+      ]
+    },
+    "data": {
+      "description": "The document's \"primary data\" is a representation of the resource or collection of resources targeted by a request.",
+      "oneOf": [
+        {
+          "$ref": "#/definitions/resource"
+        },
+        {
+          "description": "An array of resource objects, an array of resource identifier objects, or an empty array ([]), for requests that target resource collections.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/resource"
+          },
+          "uniqueItems": true
+        }
+      ]
+    },
+    "resource": {
+      "description": "\"Resource objects\" appear in a JSON API document to represent resources. Ids are required, except on the creation request.",
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "attributes": {
+          "$ref": "http://jsonapi.org/schemas/1_1/request.json#/definitions/attributes"
+        },
+        "relationships": {
+          "$ref": "http://jsonapi.org/schemas/1_1/request.json#/definitions/relationships"
+        },
+        "links": {
+          "$ref": "http://jsonapi.org/schemas/1_1/request.json#/definitions/links"
+        },
+        "meta": {
+          "$ref": "http://jsonapi.org/schemas/1_1/response.json#/definitions/meta"
+        }
+      }
+    }
+  }
+}
