@@ -36,6 +36,9 @@ class RequestParserTest extends TestCase
         $parser = new RequestQueryParser($this->getSetUpRequest());
 
         static::assertEquals(2, $parser->getFilterValue('id'));
+
+        // Check it again (this covers the single-analysis check)
+        static::assertEquals(2, $parser->getFilterValue('id'));
     }
 
     /**
@@ -67,6 +70,13 @@ class RequestParserTest extends TestCase
      */
     function it_returns_include_array()
     {
+        $this->include = null;
+
+        $parser = new RequestQueryParser($this->getSetUpRequest());
+
+        static::assertEquals([], $parser->getIncludes());
+
+
         $this->include = 'test,include.attribute';
 
         $parser = new RequestQueryParser($this->getSetUpRequest());
@@ -163,6 +173,13 @@ class RequestParserTest extends TestCase
      */
     function it_returns_sort_array()
     {
+        $this->sort = null;
+
+        $parser = new RequestQueryParser($this->getSetUpRequest());
+
+        static::assertEquals([], $parser->getSort());
+
+
         $this->sort = 'test,include|desc';
 
         $parser = new RequestQueryParser($this->getSetUpRequest());
