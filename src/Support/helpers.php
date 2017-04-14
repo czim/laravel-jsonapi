@@ -50,11 +50,11 @@ if ( ! function_exists('jsonapi_response')) {
      * @param  int    $status
      * @param  array  $headers
      * @param  int    $options
-     * @return \Czim\JsonApi\Http\Responses\JsonApiReponse
+     * @return \Czim\JsonApi\Http\Responses\JsonApiResponse
      */
     function jsonapi_response($data = null, $status = 200, $headers = [], $options = 0)
     {
-        return new \Czim\JsonApi\Http\Responses\JsonApiReponse($data, $status, $headers, $options);
+        return new \Czim\JsonApi\Http\Responses\JsonApiResponse($data, $status, $headers, $options);
     }
 }
 
@@ -80,7 +80,7 @@ if ( ! function_exists('jsonapi_error')) {
      * Makes a JSON-API response instance for an error or exception.
      *
      * @param  mixed $data
-     * @return \Czim\JsonApi\Http\Responses\JsonApiReponse
+     * @return \Czim\JsonApi\Http\Responses\JsonApiResponse
      */
     function jsonapi_error($data)
     {

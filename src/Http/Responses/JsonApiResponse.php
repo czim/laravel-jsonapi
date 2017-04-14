@@ -3,7 +3,7 @@ namespace Czim\JsonApi\Http\Responses;
 
 use Illuminate\Http\JsonResponse;
 
-class JsonApiReponse extends JsonResponse
+class JsonApiResponse extends JsonResponse
 {
 
     /**
