@@ -205,11 +205,11 @@ class Encoder implements EncoderInterface
      */
     public function getTopResourceUrl()
     {
-        if (null === $this->topResourceUrl || $this->topResourceAbsolute) {
+        if ( ! is_string($this->topResourceUrl) || $this->topResourceAbsolute) {
             return $this->topResourceUrl;
         }
 
-        return $this->getBaseUrl() . '/' . ltrim($this->getTopResourceUrl(), '/');
+        return $this->getBaseUrl() . '/' . ltrim($this->topResourceUrl, '/');
     }
 
     /**
