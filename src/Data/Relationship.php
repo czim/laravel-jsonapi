@@ -4,9 +4,9 @@ namespace Czim\JsonApi\Data;
 /**
  * Class Relationship
  *
- * @property Resource|Resource[]|null $data
- * @property Links                    $links
- * @property Meta                     $meta
+ * @property \Czim\JsonApi\Data\Resource|\Czim\JsonApi\Data\Resource[]|null $data
+ * @property Links $links
+ * @property Meta  $meta
  */
 class Relationship extends AbstractDataObject
 {
