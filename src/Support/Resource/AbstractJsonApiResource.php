@@ -154,7 +154,7 @@ class AbstractJsonApiResource implements ResourceInterface
             $value = $this->model->{$name};
         }
 
-        return $value ?: $default;
+        return null !== $value ? $value : $default;
     }
 
     /**
