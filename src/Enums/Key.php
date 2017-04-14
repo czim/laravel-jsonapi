@@ -7,7 +7,7 @@ class Key extends Enum
 {
     const ATTRIBUTES    = 'attributes';
     const DATA          = 'data';
-    const ERROR         = 'error';
+    const ERRORS        = 'errors';
     const INCLUDED      = 'included';
     const LINKS         = 'links';
     const LINK_SELF     = 'self';

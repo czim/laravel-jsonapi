@@ -21,7 +21,9 @@ class ErrorDataTransformer extends AbstractTransformer
         }
 
         return [
-            Key::ERROR => $error->toCleanArray()
+            Key::ERRORS => [
+                $error->toCleanArray()
+            ],
         ];
     }
 
