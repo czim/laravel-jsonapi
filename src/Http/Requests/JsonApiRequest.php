@@ -2,6 +2,7 @@
 namespace Czim\JsonApi\Http\Requests;
 
 use Czim\JsonApi\Contracts\Support\Validation\JsonApiValidatorInterface;
+use Czim\JsonApi\Data\Root;
 use Czim\JsonApi\Support\Request\RequestQueryParser;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exception\HttpResponseException;
@@ -13,6 +14,13 @@ class JsonApiRequest extends FormRequest
      * @var RequestQueryParser
      */
     protected $jsonApiQuery;
+
+    /**
+     * Data object tree with input data.
+     *
+     * @var Root|null
+     */
+    protected $rootData;
 
     /**
      * Whether to perform JSON Schema validation for the request.
@@ -45,6 +53,20 @@ class JsonApiRequest extends FormRequest
     public function jsonApiQuery()
     {
         return $this->jsonApiQuery;
+    }
+
+    /**
+     * Returns data object tree for request body.
+     *
+     * @return Root
+     */
+    public function data()
+    {
+        if ( ! $this->rootData) {
+            $this->rootData = new Root($this->all());
+        }
+
+        return $this->rootData;
     }
 
     /**
