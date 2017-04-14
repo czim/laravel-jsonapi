@@ -16,6 +16,20 @@ if ( ! function_exists('jsonapi_request')) {
     }
 }
 
+if ( ! function_exists('jsonapi_request_create')) {
+    /**
+     * Returns JSON-API request instance for create request.
+     *
+     * This may be used as `request()` would, but adds JSON-API related information.
+     *
+     * @return \Czim\JsonApi\Http\Requests\JsonApiCreateRequest
+     */
+    function jsonapi_request_create()
+    {
+        return app(\Czim\JsonApi\Http\Requests\JsonApiCreateRequest::class);
+    }
+}
+
 if ( ! function_exists('jsonapi_query')) {
     /**
      * Returns JSON-API request query parser.
