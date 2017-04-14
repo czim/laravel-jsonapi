@@ -110,7 +110,9 @@ class TransformerFactory implements TransformerFactoryInterface
         $map = config('jsonapi.transform.map', []);
 
         if (empty($map)) {
+            // @codeCoverageIgnoreStart
             return null;
+            // @codeCoverageIgnoreEnd
         }
 
         foreach ($map as $class => $transformer) {
