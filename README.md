@@ -122,18 +122,44 @@ You can ofcourse also instantiate the request parser yourself to access these me
 
 #### Request Body Data
 
-For `PUT` and `POST` requests with JSON-API formatted body content, a special FormRequest is provided to validate and access request body data (\Czim\JsonApi\Http\Requests\JsonApiRequest).
+For `PUT` and `POST` requests with JSON-API formatted body content, special FormRequests are provided to validate 
+and access request body data: `\Czim\JsonApi\Http\Requests\JsonApiRequest`.
 
-This class may be extended and used as any FormRequest class in Laravel.
+For `POST` requests where `id` may be omitted while creating a resource, use `\Czim\JsonApi\Http\Requests\JsonApiRequest` instead.
 
-There is also a global help function `jsonapi_request()`, that returns an instance of this class (and thus mimics Laravel's `request()`).
+These classes may be extended and used as any other FormRequest class in Laravel.
+
+There are also a global help functions `jsonapi_request()` and `jsonapi_request_create()`, 
+that returns an instance of the relevant request class (and so mimics Laravel's `request()`).
+
+Using this approach guarantees that requests are valid JSON-API by validating the input against a JSON Schema.
 
 ```php
 <?php
-    // Get validated data for the current request
-    $jsonApiType = jsonapi_request()->getType();
-    $jsonApiId   = jsonapi_request()->getId();
+    // Get the root type of the object (which may be 'resource', 'error' or 'meta').
+    $rootType = jsonapi_request()->data()->getRootType();
+    
+    // Get validated data for the current request.
+    // This returns an instance of \Czim\JsonApi\Data\Root, which is a data object tree.
+    $root = jsonapi_request()->data();
+    
+    // You can check what kind of resource data is contained.
+    if ( ! $root->hasSingleResourceData()) {
+        // In this case, the request would either have no "data" key,
+        // or it would contain NULL or an array of multiple resources.
+    } elseif ($root->hasMultipleResourceData()) {
+        // In this case, the request has a "data" key that contains an array of resources.
+    }
+    
+    // Embedded data may be accessed as follows (for single resource).
+    $resourceId     = $root->data->id;
+    $resourceType   = $root->data->type; 
+    $attributeValue = $root->data->attributes->name;
+    $relationType   = $root->data->relationships['some-relationship']->data->type;
 ```
+
+For more information on the data object tree, see [the Data classes](https://github.com/czim/laravel-jsonapi/tree/master/src/Data).
+
 
 ### Encoding
 
