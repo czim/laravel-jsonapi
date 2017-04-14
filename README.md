@@ -158,6 +158,10 @@ Using this approach guarantees that requests are valid JSON-API by validating th
     $relationType   = $root->data->relationships['some-relationship']->data->type;
 ```
 
+The request data tree for a single-resource request:
+ 
+![Request Data: Single Resource](http://czim.github.io/laravel-jsonapi/images/jsonapi_data_tree_resource.png)
+
 For more information on the data object tree, see [the Data classes](https://github.com/czim/laravel-jsonapi/tree/master/src/Data).
 
 
