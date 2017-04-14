@@ -4,7 +4,7 @@ namespace Czim\JsonApi\Encoder\Transformers;
 use Czim\JsonApi\Enums\Key;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\AbstractPaginator;
-use UnexpectedValueException;
+use InvalidArgumentException;
 
 class PaginatedModelsTransformer extends ModelCollectionTransformer
 {
@@ -19,7 +19,7 @@ class PaginatedModelsTransformer extends ModelCollectionTransformer
     public function transform($paginator)
     {
         if ( ! ($paginator instanceof AbstractPaginator)) {
-            throw new UnexpectedValueException("ModelTransformer expects AbstractPaginator instance");
+            throw new InvalidArgumentException('ModelTransformer expects AbstractPaginator instance');
         }
 
         $this->injectPaginationLinks($paginator);

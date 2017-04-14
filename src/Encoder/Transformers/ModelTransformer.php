@@ -8,6 +8,7 @@ use Czim\JsonApi\Support\Resource\RelationData;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use InvalidArgumentException;
 use RuntimeException;
 use UnexpectedValueException;
 
@@ -24,7 +25,7 @@ class ModelTransformer extends AbstractTransformer
     public function transform($model)
     {
         if ( ! ($model instanceof Model)) {
-            throw new UnexpectedValueException("ModelTransformer expects Eloquent model instance");
+            throw new InvalidArgumentException('ModelTransformer expects Eloquent model instance');
         }
 
         if ( ! ($resource = $this->getResourceForModel($model))) {
@@ -296,11 +297,11 @@ class ModelTransformer extends AbstractTransformer
         }
 
         $includeKey = $relation->key;
-        $keyName    = $relation->model->getQualifiedKeyName();
+        $keyName    = $relation->model->getKeyName();
         $method     = $resource->getRelationMethodForInclude($includeKey);
 
         if ($resource->getModel()->relationLoaded($method)) {
-            $ids = $resource->{$method}->pluck($keyName)->toArray();
+            $ids = $resource->getModel()->{$method}->pluck($keyName)->toArray();
         } else {
             $ids = $resource->includeRelation($includeKey)->pluck($keyName)->toArray();
         }

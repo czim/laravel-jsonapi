@@ -5,7 +5,7 @@ use Czim\JsonApi\Contracts\Resource\ResourceInterface;
 use Czim\JsonApi\Enums\Key;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use UnexpectedValueException;
+use InvalidArgumentException;
 
 class ModelCollectionTransformer extends ModelTransformer
 {
@@ -27,7 +27,7 @@ class ModelCollectionTransformer extends ModelTransformer
     public function transform($models)
     {
         if ( ! ($models instanceof Collection)) {
-            throw new UnexpectedValueException("ModelTransformer expects collection instance with models");
+            throw new InvalidArgumentException('ModelTransformer expects collection instance with models');
         }
 
         if ($models->isEmpty()) {
