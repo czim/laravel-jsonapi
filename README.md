@@ -10,6 +10,10 @@ Offers means for quickly scaffolding JSON-API compliance for Laravel application
 
 This does *NOT* provide the means to set up the API or the means for user authorisation.
 
+## Disclaimer
+
+This is very much a work in progress at this time. Interface- and other breaking changes may happen.  
+The old, discontinued version of this project is in the `0.9.5` branch.
 
 ## Version Compatibility
 
