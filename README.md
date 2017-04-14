@@ -1,6 +1,6 @@
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
-[![Build Status](https://travis-ci.org/czim/laravel-cms-core.svg?branch=master)](https://travis-ci.org/czim/laravel-cms-core)
+[![Build Status](https://travis-ci.org/czim/laravel-jsonapi.svg?branch=master)](https://travis-ci.org/czim/laravel-jsonapi)
 
 # JSON-API Base
 
@@ -16,7 +16,6 @@ This does *NOT* provide the means to set up the API or the means for user author
  Laravel      | Package 
 :-------------|:--------
  5.3.x        | 1.3.x
- 5.4.x        | ?
 
 
 ## Installation
