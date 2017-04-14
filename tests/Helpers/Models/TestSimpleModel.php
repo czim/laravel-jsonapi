@@ -13,9 +13,23 @@ class TestSimpleModel extends Model
         'hidden',
     ];
 
+    protected $casts = [
+        'active' => 'boolean',
+    ];
+
     // for testing with hide/unhide attributes
     protected $hidden = [
         'hidden',
     ];
+
+    public function children()
+    {
+        return $this->hasMany(TestRelatedModel::class, 'test_simple_model_id');
+    }
+
+    public function related()
+    {
+        return $this->belongsTo(TestRelatedModel::class, 'test_related_model_id');
+    }
 
 }
