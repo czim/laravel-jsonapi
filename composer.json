@@ -20,6 +20,7 @@
         "php": ">=5.6.0",
         "czim/laravel-dataobject": "^1.0",
         "myclabs/php-enum": "^1.5",
+        "doctrine/dbal": "^2.5",
         "justinrainbow/json-schema": "^5.2"
     },
     "require-dev": {
