@@ -341,7 +341,9 @@ class ModelTransformer extends AbstractTransformer
     protected function addRelatedDataToEncoder($data, $singular = true)
     {
         if ( ! is_array($data)) {
+            // @codeCoverageIgnoreStart
             return;
+            // @codeCoverageIgnoreEnd
         }
 
         if ($singular) {
