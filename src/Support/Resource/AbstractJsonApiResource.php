@@ -323,6 +323,7 @@ class AbstractJsonApiResource implements ResourceInterface
      * Returns optional meta section.
      *
      * @return array|null   ignored if null
+     * @codeCoverageIgnore
      */
     public function getMeta()
     {
