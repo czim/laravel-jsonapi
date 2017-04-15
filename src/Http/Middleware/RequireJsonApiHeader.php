@@ -45,7 +45,7 @@ class RequireJsonApiHeader
             return empty($acceptHeader->get('application/vnd.api+json')->getAttributes());
         }
 
-        return true;
+        return false;
     }
 
     /**
@@ -68,7 +68,7 @@ class RequireJsonApiHeader
 
             return (    empty($attributes)
                     ||  (   count($attributes) === 1
-                        &&  $contentTypeHeader->get('application/vnd.api+json')->getAttribute('charset') === 'UTF-8'
+                        &&  strtolower(array_get($attributes, 'charset')) === 'utf-8'
                         )
                     );
         }
