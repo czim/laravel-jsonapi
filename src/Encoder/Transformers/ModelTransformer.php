@@ -236,13 +236,16 @@ class ModelTransformer extends AbstractTransformer
     {
         $data = [
             Key::LINK_SELF => $this->getBaseResourceUrl($resource) . '/'
-                            . $this->getRelationshipsSegment()
-                            . '/' . $key,
+                            . $resource->id() . '/'
+                            . $this->getRelationshipsSegment() . '/'
+                            . $key,
         ];
 
         // If the relation is not morph/variable, add the related link
         if ($relatedType) {
-            $data[ KEY::LINK_RELATED ] = $this->getBaseResourceUrl($resource) . '/' . $relatedType;
+            $data[ KEY::LINK_RELATED ] = $this->getBaseResourceUrl($resource) . '/'
+                                       . $resource->id() . '/'
+                                       . $relatedType;
         }
 
         return $data;
@@ -311,12 +314,12 @@ class ModelTransformer extends AbstractTransformer
                 return null;
             }
 
-            return [ 'type' => $relatedResource->type(), 'id' => head($ids) ];
+            return [ 'type' => $relatedResource->type(), 'id' => (string) head($ids) ];
         }
 
         return array_map(
             function ($id) use ($relatedResource) {
-                return [ 'type' => $relatedResource->type(), 'id' => $id ];
+                return [ 'type' => $relatedResource->type(), 'id' => (string) $id ];
             },
             $ids
         );
