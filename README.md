@@ -1,6 +1,7 @@
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
 [![Build Status](https://travis-ci.org/czim/laravel-jsonapi.svg?branch=master)](https://travis-ci.org/czim/laravel-jsonapi)
+[![Coverage Status](https://coveralls.io/repos/github/czim/laravel-jsonapi/badge.svg?branch=master)](https://coveralls.io/github/czim/laravel-jsonapi?branch=master)
 
 # JSON-API Base
 
