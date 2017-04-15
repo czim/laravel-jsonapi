@@ -50,8 +50,8 @@ class ExceptionTransformer extends ErrorDataTransformer
     protected function getStatusCode(Exception $exception)
     {
         // special case: fully formed response exception (laravel 5.2 validation)
-        if (is_a($exception, \Illuminate\Http\Exception\HttpResponseException::class)) {
-            /** @var \Illuminate\Http\Exception\HttpResponseException $exception */
+        if (is_a($exception, \Illuminate\Http\Exceptions\HttpResponseException::class)) {
+            /** @var \Illuminate\Http\Exceptions\HttpResponseException $exception */
             return $exception->getResponse()->getStatusCode();
         }
 
