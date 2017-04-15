@@ -129,6 +129,7 @@ abstract class AbstractDataObject extends CzimAbstractDataObject
      *
      * @param mixed $offset
      * @return mixed
+     * @codeCoverageIgnore
      */
     public function offsetGet($offset)
     {
@@ -136,39 +137,6 @@ abstract class AbstractDataObject extends CzimAbstractDataObject
         if ( ! $this->offsetExists($offset)) return null;
 
         return $this->getAttribute($offset);
-    }
-
-    /**
-     * Merges a single attribute by key with a new given value.
-     *
-     * @param string $key
-     * @param mixed  $mergeValue
-     */
-    protected function mergeAttribute($key, $mergeValue)
-    {
-        $current = $this[$key];
-
-        if ($current instanceof DataObjectInterface && method_exists($current, 'merge')) {
-
-            $class = get_class($current);
-
-            if (is_array($mergeValue)) {
-                $mergeValue = new $class($mergeValue);
-            }
-
-            // If we have nothing to merge with, don't bother
-            if (null === $mergeValue) {
-                return;
-            }
-
-            $mergeValue = $current->merge($mergeValue);
-        }
-
-        if (null === $mergeValue) {
-            return;
-        }
-
-        $this[$key] = $mergeValue;
     }
 
 }

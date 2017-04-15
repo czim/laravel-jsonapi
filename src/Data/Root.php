@@ -31,30 +31,32 @@ class Root extends AbstractDataObject
     {
         if ($key === 'data') {
 
-            if ($this->attributes[$key] instanceof Resource) {
-                return $this->attributes[$key];
+            if ($this->attributes['data'] instanceof Resource) {
+                return $this->attributes['data'];
             }
 
-            if (is_array($this->attributes[$key])) {
+            if (is_array($this->attributes['data'])) {
 
                 // The primary data may be either a single resoure (identifier),
                 // or an array of them (or null)
-                if (array_key_exists('type', $this->attributes[$key])) {
+                if (array_key_exists('type', $this->attributes['data'])) {
 
-                    $this->attributes[$key] = $this->makeNestedDataObject(
+                    $this->attributes['data'] = $this->makeNestedDataObject(
                         Resource::class,
-                        $this->attributes[$key],
+                        $this->attributes['data'],
                         'data'
                     );
 
-                    return $this->attributes[$key];
+                    return $this->attributes['data'];
 
                 } else {
 
-                    foreach ($this->attributes[$key] as $index => &$item) {
+                    foreach ($this->attributes['data'] as $index => &$item) {
 
                         if (null === $item) {
+                            // @codeCoverageIgnoreStart
                             continue;
+                            // @codeCoverageIgnoreEnd
                         }
 
                         if ( ! is_a($item, Resource::class)) {
