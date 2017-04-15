@@ -132,15 +132,10 @@ class PaginatedModelsTransformerTest extends TestCase
         $encoderMock->shouldReceive('getResourceForModel')->with(Mockery::type(TestSimpleModel::class))
             ->andReturn(new TestSimpleModelResource);
 
-        $encoderMock->shouldReceive('setLink')->with('first', '/testing/path?pg_test=1')
-            ->once()->andReturnSelf();
-        $encoderMock->shouldReceive('setLink')->with('next', '/testing/path?pg_test=3')
-            ->once()->andReturnSelf();
-        $encoderMock->shouldReceive('setLink')->with('prev', '/testing/path?pg_test=1')
-            ->once()->andReturnSelf();
-        $encoderMock->shouldReceive('setLink')->with('last', '/testing/path?pg_test=4')
-            ->once()->andReturnSelf();
-
+        $encoderMock->shouldReceive('setLink')->with('first', '/testing/path?pg_test=1')->once()->andReturnSelf();
+        $encoderMock->shouldReceive('setLink')->with('next', '/testing/path?pg_test=3')->once()->andReturnSelf();
+        $encoderMock->shouldReceive('setLink')->with('prev', '/testing/path?pg_test=1')->once()->andReturnSelf();
+        $encoderMock->shouldReceive('setLink')->with('last', '/testing/path?pg_test=4')->once()->andReturnSelf();
 
         $transformer = new PaginatedModelsTransformer;
         $transformer->setEncoder($encoderMock);
