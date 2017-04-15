@@ -47,16 +47,12 @@ class TransformerFactory implements TransformerFactoryInterface
         }
 
         // If we get a collection with only models in it, treat it as a model collection
-        if ($data instanceof Collection) {
-            if ($this->isCollectionWithOnlyModels($data)) {
-                return Transformers\ModelCollectionTransformer::class;
-            }
+        if ($data instanceof Collection && $this->isCollectionWithOnlyModels($data)) {
+            return Transformers\ModelCollectionTransformer::class;
         }
 
-        if ($data instanceof AbstractPaginator) {
-            if ($this->isPaginatorWithOnlyModels($data)) {
-                return Transformers\PaginatedModelsTransformer::class;
-            }
+        if ($data instanceof AbstractPaginator && $this->isPaginatorWithOnlyModels($data)) {
+            return Transformers\PaginatedModelsTransformer::class;
         }
 
         // Fallback: class fqn map to transformers with is_a() checking
