@@ -63,7 +63,7 @@ class ResourceRepository implements ResourceRepositoryInterface
         $resources = $this->collector->collect();
 
         if ( ! $this->resources->isEmpty()) {
-            $this->resources->merge($resources);
+            $this->resources = $this->resources->merge($resources);
         } else {
             $this->resources = $resources;
         }
@@ -174,7 +174,9 @@ class ResourceRepository implements ResourceRepositoryInterface
         foreach ($this->resources as $type => $resource) {
 
             if ( ! $resource->getModel()) {
+                // @codeCoverageIgnoreStart
                 continue;
+                // @codeCoverageIgnoreEnd
             }
 
             $this->classMap[ get_class($resource->getModel()) ] = $type;
