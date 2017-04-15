@@ -110,7 +110,7 @@ class JsonApiRequest extends FormRequest
 
         $validator = $this->getSchemaValidator();
 
-        if ( ! $validator->validateSchema($this->all(), $this->schemaValidationType)) {
+        if ( ! $validator->validateSchema($this->getInputSource()->all(), $this->schemaValidationType)) {
 
             throw new HttpResponseException(
                 $this->response($validator->getErrors()->toArray())
