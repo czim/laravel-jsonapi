@@ -206,9 +206,10 @@ class ModelTransformer extends AbstractTransformer
      */
     protected function shouldIncludeFully(ResourceInterface $resource, $key, array $defaults = null)
     {
-        $requested = $this->encoder->isIncludeRequested(
-            $this->prefixParentToIncludeKey($key)
-        );
+        // Always include relations specifically requested
+        if ($this->encoder->isIncludeRequested($this->prefixParentToIncludeKey($key))) {
+            return true;
+        };
 
         // Only consider default includes if we're at top level or allowing nested defaults.
         // Also ignore the defaults if we have configured requested defaults to cancel them out,
@@ -216,16 +217,14 @@ class ModelTransformer extends AbstractTransformer
         if (    ! $this->isTop && $this->shouldAllowTopLevelIncludesOnly()
             ||  $this->encoder->hasRequestedIncludes() && $this->shouldIgnoreDefaultIncludesWhenRequestedSet()
         ) {
-            return $requested;
+            return false;
         }
 
-        // Otherwise, check whether the include is requested or default
-        if ($requested) {
-            return $requested;
-        }
-
+        // Otherwise, allow default includes
         if (null === $defaults) {
+            // @codeCoverageIgnoreStart
             $defaults = $this->getDefaultIncludesIndex($resource);
+            // @codeCoverageIgnoreEnd
         }
 
         return array_key_exists($key, $defaults);
@@ -274,6 +273,7 @@ class ModelTransformer extends AbstractTransformer
 
         $transformer = $this->encoder->makeTransformer($related);
         $transformer->setParent($this->parent . '.' . $includeKey);
+        $transformer->setIsVariable($relation->variable);
 
         // For nullable singular relations, make sure we return data normalized under a data key
         // The recursive transformer call cannot detect this, since it will only see a NULL value.
@@ -297,7 +297,9 @@ class ModelTransformer extends AbstractTransformer
                 return $relation->singular ? null : [];
             }
 
+            // @codeCoverageIgnoreStart
             throw new UnexpectedValueException("Could not determine related model for related reference data lookup");
+            // @codeCoverageIgnoreEnd
         }
 
         $relatedResource = $this->encoder->getResourceForModel($relation->model);
