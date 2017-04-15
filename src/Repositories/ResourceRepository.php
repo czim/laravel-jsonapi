@@ -6,6 +6,7 @@ use Czim\JsonApi\Contracts\Repositories\ResourceRepositoryInterface;
 use Czim\JsonApi\Contracts\Resource\ResourceInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 
 class ResourceRepository implements ResourceRepositoryInterface
 {
@@ -78,14 +79,18 @@ class ResourceRepository implements ResourceRepositoryInterface
      * This will overwrite any previous resource assigned for the model,
      * regardless of whether this is done before or after initialization.
      *
-     * @param Model|string      $model
-     * @param ResourceInterface $resource
+     * @param Model|string             $model
+     * @param ResourceInterface|string $resource
      * @return $this
      */
-    public function register($model, ResourceInterface $resource)
+    public function register($model, $resource)
     {
         if ($model instanceof Model) {
             $model = get_class($model);
+        }
+
+        if ( ! ($resource instanceof ResourceInterface)) {
+            $resource = $this->instantiateResource($resource);
         }
 
         // Resource must have a model set before type() is guaranteed to work.
@@ -174,6 +179,23 @@ class ResourceRepository implements ResourceRepositoryInterface
 
             $this->classMap[ get_class($resource->getModel()) ] = $type;
         }
+    }
+
+    /**
+     * Makes an instance of a resource by FQN.
+     *
+     * @param string $class
+     * @return ResourceInterface
+     */
+    protected function instantiateResource($class)
+    {
+        $resource = app($class);
+
+        if ( ! ($resource instanceof ResourceInterface)) {
+            throw new InvalidArgumentException("{$class} does not implement ResourceInterface");
+        }
+
+        return $resource;
     }
 
 }

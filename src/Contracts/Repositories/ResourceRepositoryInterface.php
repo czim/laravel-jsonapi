@@ -16,11 +16,11 @@ interface ResourceRepositoryInterface
     /**
      * Registers a resource instance for a given model or model class.
      *
-     * @param Model|string      $model
-     * @param ResourceInterface $resource
+     * @param Model|string             $model       class or instance
+     * @param ResourceInterface|string $resource    class or instance
      * @return $this
      */
-    public function register($model, ResourceInterface $resource);
+    public function register($model, $resource);
 
     /**
      * Returns all registered resources.
