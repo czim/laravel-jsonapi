@@ -7,6 +7,11 @@ use Czim\JsonApi\Support\Error\ErrorData;
 use Czim\JsonApi\Test\TestCase;
 use Mockery;
 
+/**
+ * Class ErrorDataTransformerTest
+ *
+ * @group encoding
+ */
 class ErrorDataTransformerTest extends TestCase
 {
 

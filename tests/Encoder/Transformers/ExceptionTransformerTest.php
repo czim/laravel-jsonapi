@@ -8,6 +8,11 @@ use Czim\JsonApi\Test\TestCase;
 use Illuminate\Http\Exception\HttpResponseException;
 use Mockery;
 
+/**
+ * Class ExceptionTransformerTest
+ *
+ * @group encoding
+ */
 class ExceptionTransformerTest extends TestCase
 {
 

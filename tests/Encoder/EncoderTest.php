@@ -10,6 +10,11 @@ use Czim\JsonApi\Test\Helpers\Models\TestSimpleModel;
 use Czim\JsonApi\Test\TestCase;
 use Mockery;
 
+/**
+ * Class EncoderTest
+ *
+ * @group encoding
+ */
 class EncoderTest extends TestCase
 {
 

@@ -3,16 +3,19 @@ namespace Czim\JsonApi\Test\Helpers\Resources;
 
 use Czim\JsonApi\Support\Resource\AbstractJsonApiResource;
 
-class TestRelatedModelResource extends AbstractJsonApiResource
+class TestCommentResource extends AbstractJsonApiResource
 {
 
     protected $availableAttributes = [
-        'name',
+        'title',
+        'body',
+        'description',
     ];
 
     protected $availableIncludes = [
-        'simples',
-        'parent',
+        'author',
+        'post',
+        'seos',
     ];
 
 }

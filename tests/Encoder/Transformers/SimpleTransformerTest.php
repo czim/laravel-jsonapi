@@ -7,6 +7,11 @@ use Czim\JsonApi\Support\Resource\RelationData;
 use Czim\JsonApi\Test\TestCase;
 use Mockery;
 
+/**
+ * Class SimpleTransformerTest
+ *
+ * @group encoding
+ */
 class SimpleTransformerTest extends TestCase
 {
 

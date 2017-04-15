@@ -1,8 +1,9 @@
 <?php
 namespace Czim\JsonApi\Test;
 
-use Czim\JsonApi\Test\Helpers\Models\TestSimpleModel;
-use Czim\JsonApi\Test\Helpers\Models\TestRelatedModel;
+use Czim\JsonApi\Test\Helpers\Models\TestAuthor;
+use Czim\JsonApi\Test\Helpers\Models\TestComment;
+use Czim\JsonApi\Test\Helpers\Models\TestPost;
 use Illuminate\Support\Facades\Schema;
 
 abstract class AbstractSeededTestCase extends DatabaseTestCase
@@ -10,7 +11,7 @@ abstract class AbstractSeededTestCase extends DatabaseTestCase
 
     protected function migrateDatabase()
     {
-        Schema::create('test_simple_models', function($table) {
+        Schema::create('test_simple_models', function ($table) {
             /** @var \Illuminate\Database\Schema\Blueprint $table */
             $table->increments('id');
             $table->string('unique_field', 255);
@@ -22,11 +23,48 @@ abstract class AbstractSeededTestCase extends DatabaseTestCase
             $table->nullableTimestamps();
         });
 
-        Schema::create('test_related_models', function($table) {
+        Schema::create('test_authors', function ($table) {
             /** @var \Illuminate\Database\Schema\Blueprint $table */
             $table->increments('id');
             $table->string('name', 255);
-            $table->integer('test_simple_model_id')->nullable();
+            $table->enum('gender', ['m', 'f'])->default('f');
+            $table->string('image_file_name')->nullable();
+            $table->integer('image_file_size')->nullable();
+            $table->string('image_content_type')->nullable();
+            $table->timestamp('image_updated_at')->nullable();
+            $table->nullableTimestamps();
+        });
+
+        Schema::create('test_posts', function ($table) {
+            /** @var \Illuminate\Database\Schema\Blueprint $table */
+            $table->increments('id');
+            $table->integer('test_author_id')->nullable()->unsigned();
+            $table->integer('test_genre_id')->nullable()->unsigned();
+            $table->string('title', 50);
+            $table->text('body');
+            $table->string('description', 255)->nullable();
+            $table->enum('type', ['announcement', 'news', 'notice', 'periodical'])->default('news');
+            $table->boolean('checked')->default(false);
+            $table->nullableTimestamps();
+        });
+
+        Schema::create('test_comments', function ($table) {
+            /** @var \Illuminate\Database\Schema\Blueprint $table */
+            $table->increments('id');
+            $table->integer('test_post_id')->unsigned();
+            $table->integer('test_author_id')->nullable()->unsigned();
+            $table->string('title', 50)->nullable();
+            $table->text('body')->nullable();
+            $table->string('description', 255)->nullable();
+            $table->nullableTimestamps();
+        });
+
+        Schema::create('test_seos', function ($table) {
+            /** @var \Illuminate\Database\Schema\Blueprint $table */
+            $table->increments('id');
+            $table->integer('seoable_id')->unsigned()->nullable();
+            $table->string('seoable_type', 255)->nullable();
+            $table->string('slug', 255);
             $table->nullableTimestamps();
         });
     }
@@ -34,53 +72,89 @@ abstract class AbstractSeededTestCase extends DatabaseTestCase
 
     protected function seedDatabase()
     {
-        $this->seedSimpleModels()
-             ->seedRelatedModels();
+        $this->seedAuthors()
+            ->seedPosts()
+            ->seedComments();
     }
 
 
-    protected function seedSimpleModels()
+    protected function seedAuthors()
     {
-        TestSimpleModel::create([
-            'name'         => 'Test A',
-            'unique_field' => 'test-a',
-            'second_field' => 'testing something',
-            'active'       => true,
-            'hidden'       => 'okay',
+        TestAuthor::create([
+            'name' => 'Test Testington',
         ]);
 
-        TestSimpleModel::create([
-            'name'         => 'Test B',
-            'unique_field' => 'test-b',
-            'second_field' => 'another testing',
-            'active'       => false,
-            'hidden'       => 'done',
+        TestAuthor::create([
+            'name' => 'Tosti Tortellini Von Testering',
         ]);
 
         return $this;
     }
 
-    protected function seedRelatedModels()
+    protected function seedPosts()
     {
-        $related = new TestRelatedModel([
-            'name' => 'Related X',
+        $post = new TestPost([
+            'title'       => 'Some Basic Title',
+            'body'        => 'Lorem ipsum dolor sit amet, egg beater batter pan consectetur adipiscing elit.',
+            'type'        => 'notice',
+            'checked'     => true,
+            'description' => 'the best possible post for testing',
         ]);
-        $related->parent()->associate(TestSimpleModel::first());
-        $related->save();
+        $post->author()->associate(TestAuthor::first());
+        $post->save();
 
-        $related->simples()->save(TestSimpleModel::skip(1)->first());
 
-        $related = new TestRelatedModel([
-            'name' => 'Related Y',
+        $post = new TestPost([
+            'title'       => 'Elaborate Alternative Title',
+            'body'        => 'Donec nec metus urna. Tosti pancake frying pan tortellini Fusce ex massa.',
+            'type'        => 'news',
+            'checked'     => false,
+            'description' => 'some alternative testing post',
         ]);
-        $related->parent()->associate(TestSimpleModel::first());
-        $related->save();
+        $post->author()->associate(TestAuthor::first());
+        $post->save();
 
-        $related = new TestRelatedModel([
-            'name' => 'Related Z',
+
+        $post = new TestPost([
+            'title'       => 'Surprising Testing Title',
+            'body'        => 'Aliquam pancake batter frying pan ut mauris eros.',
+            'type'        => 'warning',
+            'checked'     => true,
+            'description' => 'something else',
         ]);
-        $related->parent()->associate(TestSimpleModel::first());
-        $related->save();
+        $post->author()->associate(TestAuthor::skip(1)->first());
+        $post->save();
+
+        return $this;
+    }
+
+    protected function seedComments()
+    {
+        $comment = new TestComment([
+            'title'       => 'Comment Title A',
+            'body'        => 'Lorem ipsum dolor sit amet.',
+            'description' => 'comment one',
+        ]);
+        $comment->author()->associate(TestAuthor::skip(1)->first());
+        TestPost::find(1)->comments()->save($comment);
+
+
+        $comment = new TestComment([
+            'title'       => 'Comment Title B',
+            'body'        => 'Phasellus iaculis velit nec purus rutrum eleifend.',
+            'description' => 'comment two',
+        ]);
+        $comment->author()->associate(TestAuthor::skip(1)->first());
+        TestPost::find(1)->comments()->save($comment);
+
+
+        $comment = new TestComment([
+            'title'       => 'Comment Title C',
+            'body'        => 'Nam eget magna quis arcu consectetur pellentesque.',
+            'description' => 'comment three',
+        ]);
+        $comment->author()->associate(TestAuthor::first());
+        TestPost::find(3)->comments()->save($comment);
 
         return $this;
     }

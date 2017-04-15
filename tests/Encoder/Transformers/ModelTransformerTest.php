@@ -9,6 +9,11 @@ use Czim\JsonApi\Test\Helpers\Resources\TestSimpleModelWithoutAttributesResource
 use Czim\JsonApi\Test\TestCase;
 use Mockery;
 
+/**
+ * Class ModelTransformerTest
+ *
+ * @group encoding
+ */
 class ModelTransformerTest extends TestCase
 {
 

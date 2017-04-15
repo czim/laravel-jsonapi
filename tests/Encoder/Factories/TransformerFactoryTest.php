@@ -13,6 +13,11 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
+/**
+ * Class TransformerFactoryTest
+ *
+ * @group encoding
+ */
 class TransformerFactoryTest extends TestCase
 {
 
