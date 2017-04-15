@@ -407,7 +407,7 @@ class ModelTransformer extends AbstractTransformer
         $model    = $variable ? null : $relation->getRelated();
 
         if ($relation instanceof Relations\MorphTo) {
-            $modelClass = $relation->getMorphType();
+            $modelClass = $resource->getModel()->{$relation->getMorphType()};
             if ($modelClass && is_a($modelClass, Model::class, true)) {
                 $model = new $modelClass;
             }
