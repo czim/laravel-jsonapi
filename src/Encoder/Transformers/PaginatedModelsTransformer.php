@@ -40,7 +40,7 @@ class PaginatedModelsTransformer extends ModelCollectionTransformer
         if ($paginator->currentPage() - 1 >= static::FIRST_PAGE) {
             $this->encoder->setLink(
                 Key::PAGE_PREV,
-                $this->makePaginationLink($paginator, $paginator->currentPage())
+                $this->makePaginationLink($paginator, max($paginator->currentPage() - 1, static::FIRST_PAGE))
             );
         }
 
