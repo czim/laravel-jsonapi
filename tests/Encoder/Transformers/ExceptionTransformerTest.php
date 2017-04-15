@@ -5,7 +5,7 @@ use Czim\JsonApi\Contracts\Encoder\EncoderInterface;
 use Czim\JsonApi\Encoder\Transformers\ExceptionTransformer;
 use Czim\JsonApi\Test\Helpers\Exceptions\TestStatusException;
 use Czim\JsonApi\Test\TestCase;
-use Illuminate\Http\Exception\HttpResponseException;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Mockery;
 
 /**
