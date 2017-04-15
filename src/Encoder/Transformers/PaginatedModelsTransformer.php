@@ -68,7 +68,7 @@ class PaginatedModelsTransformer extends ModelCollectionTransformer
     protected function makePaginationLink(AbstractPaginator $paginator, $page)
     {
         if ($topUrl = $this->encoder->getTopResourceUrl()) {
-            return $topUrl . '?' . config('jsonapi.request.keys.page') . '=' . $page;
+            return $topUrl . '?' . config('jsonapi.request.keys.page') . '[number]=' . $page;
         }
 
         return $paginator->url($page);
