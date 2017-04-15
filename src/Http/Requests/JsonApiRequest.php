@@ -104,7 +104,10 @@ class JsonApiRequest extends FormRequest
      */
     protected function validateAgainstSchema()
     {
-        if ( ! $this->schemaValidation || ! $this->schemaValidationType) {
+        if (    ! $this->schemaValidation
+            ||  ! $this->schemaValidationType
+            ||  ! in_array($this->getMethod(), ['PATCH', 'POST', 'PUT'])
+        ) {
             return;
         }
 
