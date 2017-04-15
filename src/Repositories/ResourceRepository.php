@@ -124,7 +124,11 @@ class ResourceRepository implements ResourceRepositoryInterface
     {
         $this->initialize();
 
-        return $this->resources->get($type);
+        if ($resource = $this->resources->get($type)) {
+            return clone $resource;
+        }
+
+        return null;
     }
 
     /**
