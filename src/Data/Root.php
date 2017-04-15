@@ -183,6 +183,10 @@ class Root extends AbstractDataObject
      */
     public function hasMultipleResourceData()
     {
+        if ( ! $this->hasData()) {
+            return false;
+        }
+
         return ! $this->hasSingleResourceData();
     }
 
