@@ -206,22 +206,29 @@ class ModelTransformer extends AbstractTransformer
      */
     protected function shouldIncludeFully(ResourceInterface $resource, $key, array $defaults = null)
     {
+        $requested = $this->encoder->isIncludeRequested(
+            $this->prefixParentToIncludeKey($key)
+        );
+
         // Only consider default includes if we're at top level or allowing nested defaults.
         // Also ignore the defaults if we have configured requested defaults to cancel them out,
         // and they are set.
         if (    ! $this->isTop && $this->shouldAllowTopLevelIncludesOnly()
             ||  $this->encoder->hasRequestedIncludes() && $this->shouldIgnoreDefaultIncludesWhenRequestedSet()
         ) {
-            return $this->encoder->isIncludeRequested($key);
+            return $requested;
         }
 
         // Otherwise, check whether the include is requested or default
+        if ($requested) {
+            return $requested;
+        }
 
         if (null === $defaults) {
             $defaults = $this->getDefaultIncludesIndex($resource);
         }
 
-        return $this->encoder->isIncludeRequested($key) || array_key_exists($key, $defaults);
+        return array_key_exists($key, $defaults);
     }
 
     /**
@@ -473,6 +480,21 @@ class ModelTransformer extends AbstractTransformer
     protected function getRelationshipsSegment()
     {
         return config('jsonapi.transform.links.relationships-segment', 'relationships');
+    }
+
+    /**
+     * Prefixes the parent key chain to an include key.
+     *
+     * @param string $key
+     * @return string
+     */
+    protected function prefixParentToIncludeKey($key)
+    {
+        if (null === $this->parent) {
+            return $key;
+        }
+
+        return $this->parent . '.'  . $key;
     }
 
 }
