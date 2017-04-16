@@ -1,12 +1,60 @@
 <?php
 namespace Czim\JsonApi\Test\Support\Type;
 
+use Czim\JsonApi\Enums\RootType;
 use Czim\JsonApi\Support\Type\TypeMaker;
 use Czim\JsonApi\Test\Helpers\Models\TestSimpleModel;
 use Czim\JsonApi\Test\TestCase;
 
 class TypeMakerTest extends TestCase
 {
+
+    /**
+     * @test
+     */
+    function it_makes_a_type_for_a_model_instance()
+    {
+        $maker = new TypeMaker;
+        $model = new TestSimpleModel;
+
+        static::assertEquals('test-simple-models', $maker->makeFor($model));
+    }
+
+    /**
+     * @test
+     */
+    function it_makes_a_type_from_an_object()
+    {
+        $maker = new TypeMaker;
+
+        static::assertEquals('root-types', $maker->makeFor(new RootType('meta')));
+    }
+
+    /**
+     * @test
+     */
+    function it_makes_a_type_from_a_string()
+    {
+        $maker = new TypeMaker;
+
+        static::assertEquals('some-string-here', $maker->makeFor('SomeStringHere'));
+    }
+
+    /**
+     * @test
+     * @expectedException \InvalidArgumentException
+     */
+    function it_throws_an_exception_if_it_cannot_make_a_type()
+    {
+        $maker = new TypeMaker;
+
+        $maker->makeFor(['some', 'array']);
+    }
+
+
+    // ------------------------------------------------------------------------------
+    //      Model
+    // ------------------------------------------------------------------------------
 
     /**
      * @test

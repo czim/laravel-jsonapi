@@ -1,7 +1,9 @@
 <?php
 namespace Czim\JsonApi\Test\Helpers\Resources\AbstractTest;
 
-class TestAbstractResource extends AbstractTestResource
+use Czim\JsonApi\Support\Resource\AbstractEloquentResource;
+
+class TestAbstractEloquentResource extends AbstractEloquentResource
 {
 
     protected $availableAttributes = [

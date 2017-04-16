@@ -2,6 +2,7 @@
 namespace Czim\JsonApi\Test\Integration\Encoding;
 
 use Czim\JsonApi\Contracts\Repositories\ResourceCollectorInterface;
+use Czim\JsonApi\Contracts\Repositories\ResourceRepositoryInterface;
 use Czim\JsonApi\Encoder\Encoder;
 use Czim\JsonApi\Encoder\Factories\TransformerFactory;
 use Czim\JsonApi\Encoder\Transformers\ModelTransformer;
@@ -40,12 +41,13 @@ class ModelEncodingTest extends AbstractSeededTestCase
         $factory    = new TransformerFactory;
         $repository = new ResourceRepository($collector);
         $encoder    = new Encoder($factory, $repository);
+        $this->app->instance(ResourceRepositoryInterface::class, $repository);
 
         $repository->register(TestPost::class, new TestPostResource);
         $repository->register(TestComment::class, new TestCommentResource);
         $repository->register(TestAuthor::class, new TestAuthorResource);
         $repository->register(TestSeo::class, new TestSeoResource);
-        
+
         $transformer = new ModelTransformer;
         $transformer->setEncoder($encoder);
 
@@ -111,6 +113,7 @@ class ModelEncodingTest extends AbstractSeededTestCase
         $factory    = new TransformerFactory;
         $repository = new ResourceRepository($collector);
         $encoder    = new Encoder($factory, $repository);
+        $this->app->instance(ResourceRepositoryInterface::class, $repository);
 
         $repository->register(TestPost::class, TestPostResource::class);
         $repository->register(TestComment::class, TestCommentResource::class);
@@ -177,6 +180,7 @@ class ModelEncodingTest extends AbstractSeededTestCase
         $factory    = new TransformerFactory;
         $repository = new ResourceRepository($collector);
         $encoder    = new Encoder($factory, $repository);
+        $this->app->instance(ResourceRepositoryInterface::class, $repository);
 
         $repository->register(TestPost::class, TestPostResource::class);
         $repository->register(TestComment::class, TestCommentResource::class);
@@ -248,6 +252,7 @@ class ModelEncodingTest extends AbstractSeededTestCase
         $factory    = new TransformerFactory;
         $repository = new ResourceRepository($collector);
         $encoder    = new Encoder($factory, $repository);
+        $this->app->instance(ResourceRepositoryInterface::class, $repository);
 
         $repository->register(TestPost::class, TestPostResource::class);
 
@@ -276,6 +281,7 @@ class ModelEncodingTest extends AbstractSeededTestCase
         $factory    = new TransformerFactory;
         $repository = new ResourceRepository($collector);
         $encoder    = new Encoder($factory, $repository);
+        $this->app->instance(ResourceRepositoryInterface::class, $repository);
 
         $repository->register(TestSeo::class, TestSeoResource::class);
 
@@ -325,6 +331,7 @@ class ModelEncodingTest extends AbstractSeededTestCase
         $factory    = new TransformerFactory;
         $repository = new ResourceRepository($collector);
         $encoder    = new Encoder($factory, $repository);
+        $this->app->instance(ResourceRepositoryInterface::class, $repository);
 
         // Set the request for includes
         $encoder->setRequestedIncludes(['comments', 'main-author', 'seo']);
@@ -516,6 +523,7 @@ class ModelEncodingTest extends AbstractSeededTestCase
         $factory    = new TransformerFactory;
         $repository = new ResourceRepository($collector);
         $encoder    = new Encoder($factory, $repository);
+        $this->app->instance(ResourceRepositoryInterface::class, $repository);
 
         // Set the request for includes
         $encoder->setRequestedIncludes(['comments', 'main-author', 'seo']);
@@ -598,6 +606,7 @@ class ModelEncodingTest extends AbstractSeededTestCase
         $factory    = new TransformerFactory;
         $repository = new ResourceRepository($collector);
         $encoder    = new Encoder($factory, $repository);
+        $this->app->instance(ResourceRepositoryInterface::class, $repository);
 
         $repository->register(TestPost::class, TestPostResourceWithDefaults::class);
         $repository->register(TestComment::class, TestCommentResource::class);
@@ -716,6 +725,7 @@ class ModelEncodingTest extends AbstractSeededTestCase
         $factory    = new TransformerFactory;
         $repository = new ResourceRepository($collector);
         $encoder    = new Encoder($factory, $repository);
+        $this->app->instance(ResourceRepositoryInterface::class, $repository);
 
         $repository->register(TestPost::class, TestPostResourceWithDefaults::class);
         $repository->register(TestComment::class, TestCommentResource::class);

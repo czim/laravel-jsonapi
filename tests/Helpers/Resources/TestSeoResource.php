@@ -1,9 +1,9 @@
 <?php
 namespace Czim\JsonApi\Test\Helpers\Resources;
 
-use Czim\JsonApi\Support\Resource\AbstractJsonApiResource;
+use Czim\JsonApi\Support\Resource\AbstractEloquentResource;
 
-class TestSeoResource extends AbstractJsonApiResource
+class TestSeoResource extends AbstractEloquentResource
 {
 
     protected $availableAttributes = [

@@ -1,9 +1,7 @@
 <?php
 namespace Czim\JsonApi\Test\Helpers\Resources\AbstractTest;
 
-use Czim\JsonApi\Support\Resource\AbstractJsonApiResource;
-
-class TestResourceWithBlacklistedReferences extends AbstractJsonApiResource
+class TestResourceWithBlacklistedReferences extends AbstractTestResource
 {
 
     protected $availableIncludes = [
