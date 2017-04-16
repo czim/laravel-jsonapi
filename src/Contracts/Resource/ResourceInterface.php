@@ -1,31 +1,8 @@
 <?php
 namespace Czim\JsonApi\Contracts\Resource;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Czim\JsonApi\Exceptions\InvalidIncludeException;
-
 interface ResourceInterface
 {
-
-    /**
-     * Sets the model instance to use.
-     *
-     * This should be done before calling any other method, unless
-     * a model is guaranteed to be set using the constructor.
-     *
-     * @param Model $model
-     * @return $this
-     */
-    public function setModel(Model $model);
-
-    /**
-     * Returns the model instance used.
-     *
-     * @return Model
-     */
-    public function getModel();
-
 
     /**
      * Returns the JSON-API type.
@@ -62,22 +39,44 @@ interface ResourceInterface
     public function attributeValue($name, $default = null);
 
     /**
-     * Returns the Eloquent relation method for an include key/name, if possible.
+     * Returns reference-only data for relationship include key.
      *
-     * @param string $name
-     * @return Relation|null
-     * @throws InvalidIncludeException
+     * @param string $include
+     * @return array|array[]|null
      */
-    public function includeRelation($name);
+    public function relationshipReferences($include);
 
     /**
-     * Returns the Eloquent relation method for a given include name.
+     * Returns full data for relationship include key.
      *
-     * @param string $name
-     * @return string
-     * @throws InvalidIncludeException
+     * @param string $include
+     * @return mixed
      */
-    public function getRelationMethodForInclude($name);
+    public function relationshipData($include);
+
+    /**
+     * Returns the JSON-API type for a given include
+     *
+     * @param string $include
+     * @return null|string
+     */
+    public function relationshipType($include);
+
+    /**
+     * Returns whether a given include belongs to a singular relationship.
+     *
+     * @param string $include
+     * @return bool
+     */
+    public function isRelationshipSingular($include);
+
+    /**
+     * Returns whether a given include belongs to a relationship with variable content.
+     *
+     * @param string $include
+     * @return bool
+     */
+    public function isRelationshipVariable($include);
 
     /**
      * Returns a list of available includes.

@@ -2,19 +2,9 @@
 namespace Czim\JsonApi\Support\Resource;
 
 use Czim\JsonApi\Contracts\Resource\ResourceInterface;
-use Czim\JsonApi\Contracts\Support\Type\TypeMakerInterface;
-use Czim\JsonApi\Exceptions\InvalidIncludeException;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use RuntimeException;
 
-class AbstractJsonApiResource implements ResourceInterface
+abstract class AbstractJsonApiResource implements ResourceInterface
 {
-
-    /**
-     * @var Model
-     */
-    protected $model;
 
     /**
      * @var string[]
@@ -76,148 +66,61 @@ class AbstractJsonApiResource implements ResourceInterface
      */
     protected $defaultSortAttributes = [];
 
-    /**
-     * Optional mapping for includes to Eloquent relation methods.
-     *
-     * For instance:
-     *
-     *      'your-include' => 'includeMethod'
-     *
-     * Would make 'your-include' refer to model->includeMethod() to access the relation.
-     *
-     * @var string[]    associative, keyed by include key
-     */
-    protected $includeRelations = [];
-
-
-
-    /**
-     * Sets the model instance to use.
-     *
-     * This should be done before calling any other method, unless
-     * a model is guaranteed to be set using the constructor.
-     *
-     * @param Model $model
-     * @return $this
-     */
-    public function setModel(Model $model)
-    {
-        $this->model = $model;
-
-        return $this;
-    }
-
-    /**
-     * Returns the model instance used.
-     *
-     * @return Model
-     */
-    public function getModel()
-    {
-        return $this->model;
-    }
 
     /**
      * Returns the JSON-API type.
      *
      * @return string
      */
-    public function type()
-    {
-        return $this->getTypeMaker()->makeForModel($this->model);
-    }
+    abstract public function type();
 
     /**
      * Returns the JSON-API ID.
      *
      * @return string
      */
-    public function id()
-    {
-        return (string) $this->model->getKey();
-    }
+    abstract public function id();
 
     /**
-     * Returns an attribute value, directly from the model, or decorated for the resource.
+     * Returns an attribute value.
      *
      * @param string $name attribute name or key
      * @param mixed  $default
      * @return mixed
      */
-    public function attributeValue($name, $default = null)
-    {
-        $accessorMethod = 'get' . studly_case($name) . 'Attribute';
-
-        if (method_exists($this, $accessorMethod)) {
-            $value = call_user_func([ $this, $accessorMethod ]);
-        } else {
-            $value = $this->model->{$name};
-        }
-
-        return null !== $value ? $value : $default;
-    }
+    abstract public function attributeValue($name, $default = null);
 
     /**
-     * Returns the Eloquent relation method for an include key/name, if possible.
+     * Returns reference-only data for relationship include key.
      *
-     * @param string $name
-     * @return Relation|null
-     * @throws InvalidIncludeException
+     * @param string $include
+     * @return array|array[]|null
      */
-    public function includeRelation($name)
-    {
-        $method = $this->getRelationMethodForInclude($name);
-
-        return $this->getModelRelation($method);
-    }
+    abstract public function relationshipReferences($include);
 
     /**
-     * Returns the Eloquent relation method for a given include name.
+     * Returns full data for relationship include key.
      *
-     * @param string $name
-     * @return string
-     * @throws InvalidIncludeException
+     * @param string $include
+     * @return mixed
      */
-    public function getRelationMethodForInclude($name)
-    {
-        if ( ! in_array($name, $this->availableIncludes())) {
-            throw new InvalidIncludeException("'{$name}' is not a valid include for '" . get_class($this) . "'");
-        }
-
-        if (empty($this->includeRelations) || ! array_key_exists($name, $this->includeRelations)) {
-            return $name;
-        }
-
-        return $this->includeRelations[ $name ];
-    }
+    abstract public function relationshipData($include);
 
     /**
-     * Returns relation type string for include method name from Eloquent model.
+     * Returns whether a given include belongs to a singular relationship.
      *
-     * @param string $method
-     * @return Relation
+     * @param string $include
+     * @return bool
      */
-    protected function getModelRelation($method)
-    {
-        $model          = $this->getModel();
-        $relationMethod = camel_case($method);
+    abstract public function isRelationshipSingular($include);
 
-        if ( ! method_exists($model, $relationMethod)) {
-            throw new RuntimeException(
-                "No method '{$relationMethod}' exists on model " . get_class($model) . " for relation '{$method}"
-            );
-        }
-
-        $relation = $model->{$relationMethod}();
-
-        if ( ! ($relation instanceof Relation)) {
-            throw new RuntimeException(
-                "Method '{$relationMethod}' on model " . get_class($model) . " is not a relation method"
-            );
-        }
-
-        return $relation;
-    }
+    /**
+     * Returns whether a given include belongs to a relationship with variable content.
+     *
+     * @param string $include
+     * @return bool
+     */
+    abstract public function isRelationshipVariable($include);
 
     /**
      * Returns list of attributes to include by key.
@@ -328,14 +231,6 @@ class AbstractJsonApiResource implements ResourceInterface
     public function getMeta()
     {
         return null;
-    }
-
-    /**
-     * @return TypeMakerInterface
-     */
-    protected function getTypeMaker()
-    {
-        return app(TypeMakerInterface::class);
     }
 
 }
