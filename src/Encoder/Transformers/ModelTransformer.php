@@ -1,16 +1,12 @@
 <?php
 namespace Czim\JsonApi\Encoder\Transformers;
 
+use Czim\JsonApi\Contracts\Resource\EloquentResourceInterface;
 use Czim\JsonApi\Contracts\Resource\ResourceInterface;
 use Czim\JsonApi\Enums\Key;
 use Czim\JsonApi\Exceptions\EncodingException;
-use Czim\JsonApi\Support\Resource\RelationData;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use InvalidArgumentException;
-use RuntimeException;
-use UnexpectedValueException;
 
 class ModelTransformer extends AbstractTransformer
 {
@@ -32,7 +28,10 @@ class ModelTransformer extends AbstractTransformer
             throw new EncodingException("Could not determine resource for '" . get_class($model) . "'");
         }
 
-        $resource->setModel($model);
+        if ($resource instanceof EloquentResourceInterface) {
+            $resource->setModel($model);
+        }
+
 
         $data = [
             'id'               => $resource->id(),
@@ -123,20 +122,7 @@ class ModelTransformer extends AbstractTransformer
 
         foreach ($resource->availableIncludes() as $key) {
 
-            // Analyze the relationship, determine the JSON-API type
-            $relationData = $this->getRelationData($resource, $key);
-            $relatedType  = null;
-
-            if ($relationData->model) {
-
-                $relatedResource = $this->encoder->getResourceForModel($relationData->model);
-
-                if ($relatedResource) {
-                    $relatedResource->setModel($relationData->model);
-                    $relatedType = $relatedResource->type();
-                }
-            }
-
+            $relatedType = $resource->relationshipType($key);
 
             $data[ $key ] = [
                 Key::LINKS => $this->getLinksData($resource, $key, $relatedType)
@@ -163,21 +149,21 @@ class ModelTransformer extends AbstractTransformer
                     // If fully included, get the type/id references from the transformed data
                     // to prevent redundant processing.
 
-                    $related = $this->getRelatedFullData($resource, $relationData);
-                    $this->addRelatedDataToEncoder($related, $relationData->singular);
+                    $singular = $resource->isRelationshipSingular($key);
+
+                    $related = $this->getRelatedFullData($resource, $key);
+
+                    $this->addRelatedDataToEncoder($related, $singular);
 
                     if (empty(array_get($related, Key::DATA))) {
                         $data[ $key ][ Key::DATA ] = array_get($related, Key::DATA);
                     } else {
-                        $data[ $key ][ Key::DATA ] = $this->getRelatedReferencesFromRelatedData(
-                            $related,
-                            $relationData->singular
-                        );
+                        $data[ $key ][ Key::DATA ] = $this->getRelatedReferencesFromRelatedData($related, $singular);
                     }
 
                 } else {
 
-                    $data[ $key ][ Key::DATA ] = $this->getRelatedReferenceData($resource, $relationData);
+                    $data[ $key ][ Key::DATA ] = $this->getRelatedReferenceData($resource, $key);
                 }
             }
         }
@@ -261,19 +247,16 @@ class ModelTransformer extends AbstractTransformer
      * Returns transformed data for full includes
      *
      * @param ResourceInterface $resource
-     * @param RelationData      $relation
+     * @param string            $includeKey
      * @return array
      */
-    protected function getRelatedFullData(ResourceInterface $resource, RelationData $relation)
+    protected function getRelatedFullData(ResourceInterface $resource, $includeKey)
     {
-        $includeKey = $relation->key;
-        $method     = $resource->getRelationMethodForInclude($includeKey);
-
-        $related = $resource->getModel()->{$method};
+        $related = $resource->relationshipData($includeKey);
 
         $transformer = $this->encoder->makeTransformer($related);
         $transformer->setParent($this->parent . '.' . $includeKey);
-        $transformer->setIsVariable($relation->variable);
+        $transformer->setIsVariable($resource->isRelationshipVariable($includeKey));
 
         // For nullable singular relations, make sure we return data normalized under a data key
         // The recursive transformer call cannot detect this, since it will only see a NULL value.
@@ -286,52 +269,12 @@ class ModelTransformer extends AbstractTransformer
 
     /**
      * @param ResourceInterface $resource
-     * @param RelationData      $relation
+     * @param string            $includeKey
      * @return array
      */
-    protected function getRelatedReferenceData(ResourceInterface $resource, RelationData $relation)
+    protected function getRelatedReferenceData(ResourceInterface $resource, $includeKey)
     {
-        if ( ! $relation->model) {
-            // Should be acceptable for morphTo, since it simply means that the FK is null
-            if ($relation->variable) {
-                return $relation->singular ? null : [];
-            }
-
-            // @codeCoverageIgnoreStart
-            throw new UnexpectedValueException("Could not determine related model for related reference data lookup");
-            // @codeCoverageIgnoreEnd
-        }
-
-        $relatedResource = $this->encoder->getResourceForModel($relation->model);
-
-        if ( ! $relatedResource) {
-            throw new RuntimeException("Could not determine resource for model '" . get_class($relation->model) . "'");
-        }
-
-        $includeKey = $relation->key;
-        $keyName    = $relation->model->getKeyName();
-        $method     = $resource->getRelationMethodForInclude($includeKey);
-
-        if ($resource->getModel()->relationLoaded($method)) {
-            $ids = $resource->getModel()->{$method}->pluck($keyName)->toArray();
-        } else {
-            $ids = $resource->includeRelation($includeKey)->pluck($keyName)->toArray();
-        }
-
-        if ($relation->singular) {
-            if ( ! count($ids)) {
-                return null;
-            }
-
-            return [ 'type' => $relatedResource->type(), 'id' => (string) head($ids) ];
-        }
-
-        return array_map(
-            function ($id) use ($relatedResource) {
-                return [ 'type' => $relatedResource->type(), 'id' => (string) $id ];
-            },
-            $ids
-        );
+        return $resource->relationshipReferences($includeKey);
     }
 
     /**
@@ -391,64 +334,6 @@ class ModelTransformer extends AbstractTransformer
             },
             $data
         );
-    }
-
-    // ------------------------------------------------------------------------------
-    //      Analyze Relations
-    // ------------------------------------------------------------------------------
-
-    /**
-     * Makes relation data for relation key on resource.
-     *
-     * @param ResourceInterface $resource
-     * @param string            $key
-     * @return RelationData
-     */
-    protected function getRelationData(ResourceInterface $resource, $key)
-    {
-        $relation = $resource->includeRelation($key);
-        $variable = $this->isVariableRelation($relation);
-        $model    = $variable ? null : $relation->getRelated();
-
-        if ($relation instanceof Relations\MorphTo) {
-            $modelClass = $resource->getModel()->{$relation->getMorphType()};
-            if ($modelClass && is_a($modelClass, Model::class, true)) {
-                $model = new $modelClass;
-            }
-        }
-
-        return new RelationData([
-            'key'      => $key,
-            'variable' => $variable,
-            'singular' => $this->isSingularRelation($relation),
-            'relation' => $relation,
-            'model'    => $model,
-        ]);
-    }
-
-    /**
-     * Returns whether given relation is singular.
-     *
-     * @param Relation $relation
-     * @return bool
-     */
-    protected function isSingularRelation(Relation $relation)
-    {
-        return  $relation instanceof Relations\BelongsTo
-            ||  $relation instanceof Relations\HasOne
-            ||  $relation instanceof Relations\MorphOne
-            ||  $relation instanceof Relations\MorphTo;
-    }
-
-    /**
-     * Returns whether given relation is variable (morphed).
-     *
-     * @param Relation $relation
-     * @return bool
-     */
-    protected function isVariableRelation(Relation $relation)
-    {
-        return $relation instanceof Relations\MorphTo;
     }
 
     /**
