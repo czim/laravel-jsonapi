@@ -3,11 +3,35 @@ namespace Czim\JsonApi\Support\Type;
 
 use Czim\JsonApi\Contracts\Support\Type\TypeMakerInterface;
 use Illuminate\Database\Eloquent\Model;
+use InvalidArgumentException;
 
 class TypeMaker implements TypeMakerInterface
 {
     const WORD_SEPARATOR      = '-';
     const NAMESPACE_SEPARATOR = '--';
+
+    /**
+     * Makes a JSON-API type string for any source content.
+     *
+     * @param mixed $source
+     * @return string
+     */
+    public function makeFor($source)
+    {
+        if ($source instanceof Model) {
+            return $this->makeForModel($source);
+        }
+
+        if (is_object($source)) {
+            return str_plural(snake_case(class_basename($source), static::WORD_SEPARATOR));
+        }
+
+        if (is_string($source)) {
+            return snake_case($source, static::WORD_SEPARATOR);
+        }
+
+        throw new InvalidArgumentException("Cannot make type for given source");
+    }
 
     /**
      * Makes a JSON-API type for a given model instance.
@@ -76,5 +100,4 @@ class TypeMaker implements TypeMakerInterface
 
         return implode(static::NAMESPACE_SEPARATOR, $parts);
     }
-
 }

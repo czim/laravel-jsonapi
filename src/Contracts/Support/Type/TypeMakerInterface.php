@@ -7,6 +7,14 @@ interface TypeMakerInterface
 {
 
     /**
+     * Makes a JSON-API type string for any source content.
+     *
+     * @param mixed $source
+     * @return string
+     */
+    public function makeFor($source);
+
+    /**
      * Makes a JSON-API type for a given model instance.
      *
      * @param Model       $record
