@@ -8,6 +8,7 @@ use Czim\JsonApi\Exceptions\InvalidIncludeException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Query\Builder;
 use RuntimeException;
 use UnexpectedValueException;
 
@@ -274,7 +275,7 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
      * Returns relation type string for include method name from Eloquent model.
      *
      * @param string $method
-     * @return Relation
+     * @return Relation|Builder
      */
     protected function getModelRelation($method)
     {
