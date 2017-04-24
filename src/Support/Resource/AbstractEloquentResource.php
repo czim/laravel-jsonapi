@@ -135,12 +135,10 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
             throw new RuntimeException("Could not determine resource for model '" . get_class($relatedModel) . "'");
         }
 
-        $keyName = $relatedModel->getQualifiedKeyName();
-
         if ($this->model->relationLoaded($method)) {
-            $ids = $this->model->{$method}->pluck($keyName)->toArray();
+            $ids = $this->model->{$method}->pluck($relatedModel->getKeyName())->toArray();
         } else {
-            $ids = $relation->pluck($keyName)->toArray();
+            $ids = $relation->pluck($relatedModel->getQualifiedKeyName())->toArray();
         }
 
         if ($singular) {
