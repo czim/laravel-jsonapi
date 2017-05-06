@@ -44,6 +44,21 @@ class TestPost extends Model
         return $this->morphOne(TestSeo::class, 'seoable');
     }
 
+    public function related()
+    {
+        return $this->belongsToMany(TestPost::class, 'post_related', 'from_id', 'to_id');
+    }
+
+    public function pivotRelated()
+    {
+        return $this->belongsToMany(TestPost::class, 'post_pivot_related', 'from_id', 'to_id')
+            ->withPivot([
+                'type',
+                'date',
+            ])
+            ->withTimestamps();
+    }
+
     /**
      * @return string
      */

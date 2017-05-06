@@ -79,7 +79,7 @@ class ModelEncodingTest extends AbstractSeededTestCase
                                 'self'    => '/api/test-posts/1/relationships/main-author',
                                 'related' => '/api/test-posts/1/test-authors',
                             ],
-                            'data' => ['type' => 'test-authors', 'id' => 1],
+                            'data' => ['type' => 'test-authors', 'id' => '1'],
                         ],
                         'seo' => [
                             'links' => [
@@ -87,6 +87,26 @@ class ModelEncodingTest extends AbstractSeededTestCase
                                 'related' => '/api/test-posts/1/test-seos',
                             ],
                             'data' => null,
+                        ],
+                        'related' => [
+                            'links' => [
+                                'self'    => '/api/test-posts/1/relationships/related',
+                                'related' => '/api/test-posts/1/test-posts',
+                            ],
+                            'data' => [
+                                ['type' => 'test-posts', 'id' => '2'],
+                                ['type' => 'test-posts', 'id' => '3'],
+                            ],
+                        ],
+                        'pivot-related' => [
+                            'links' => [
+                                'self'    => '/api/test-posts/1/relationships/pivot-related',
+                                'related' => '/api/test-posts/1/test-posts',
+                            ],
+                            'data' => [
+                                ['type' => 'test-posts', 'id' => '2'],
+                                ['type' => 'test-posts', 'id' => '3'],
+                            ],
                         ],
                     ],
                 ],
@@ -157,6 +177,20 @@ class ModelEncodingTest extends AbstractSeededTestCase
                             ],
                             'data' => null,
                         ],
+                        'related' => [
+                            'links' => [
+                                'self'    => '/api/test-posts/2/relationships/related',
+                                'related' => '/api/test-posts/2/test-posts',
+                            ],
+                            'data' => [],
+                        ],
+                        'pivot-related' => [
+                            'links' => [
+                                'self'    => '/api/test-posts/2/relationships/pivot-related',
+                                'related' => '/api/test-posts/2/test-posts',
+                            ],
+                            'data' => [],
+                        ],
                     ],
                 ],
             ],
@@ -170,7 +204,7 @@ class ModelEncodingTest extends AbstractSeededTestCase
     function it_transforms_a_model_with_eager_loaded_data()
     {
         $model = TestPost::first();
-        $model->load('comments', 'author');
+        $model->load('comments', 'author', 'related', 'pivotRelated');
 
 
         /** @var ResourceCollectorInterface|Mockery\Mock $collector */
@@ -226,6 +260,26 @@ class ModelEncodingTest extends AbstractSeededTestCase
                                 'related' => '/api/test-posts/1/test-seos',
                             ],
                             'data' => null,
+                        ],
+                        'related' => [
+                            'links' => [
+                                'self'    => '/api/test-posts/1/relationships/related',
+                                'related' => '/api/test-posts/1/test-posts',
+                            ],
+                            'data' => [
+                                ['type' => 'test-posts', 'id' => '2'],
+                                ['type' => 'test-posts', 'id' => '3'],
+                            ],
+                        ],
+                        'pivot-related' => [
+                            'links' => [
+                                'self'    => '/api/test-posts/1/relationships/pivot-related',
+                                'related' => '/api/test-posts/1/test-posts',
+                            ],
+                            'data' => [
+                                ['type' => 'test-posts', 'id' => '2'],
+                                ['type' => 'test-posts', 'id' => '3'],
+                            ],
                         ],
                     ],
                 ],
@@ -382,6 +436,26 @@ class ModelEncodingTest extends AbstractSeededTestCase
                                 'related' => '/api/test-posts/1/test-seos',
                             ],
                             'data' => ['type' => 'test-seos', 'id' => '1'],
+                        ],
+                        'related' => [
+                            'links' => [
+                                'self'    => '/api/test-posts/1/relationships/related',
+                                'related' => '/api/test-posts/1/test-posts',
+                            ],
+                            'data' => [
+                                ['type' => 'test-posts', 'id' => '2'],
+                                ['type' => 'test-posts', 'id' => '3'],
+                            ],
+                        ],
+                        'pivot-related' => [
+                            'links' => [
+                                'self'    => '/api/test-posts/1/relationships/pivot-related',
+                                'related' => '/api/test-posts/1/test-posts',
+                            ],
+                            'data' => [
+                                ['type' => 'test-posts', 'id' => '2'],
+                                ['type' => 'test-posts', 'id' => '3'],
+                            ],
                         ],
                     ],
                 ],
@@ -571,6 +645,20 @@ class ModelEncodingTest extends AbstractSeededTestCase
                                 'related' => '/api/test-posts/2/test-seos',
                             ],
                             'data' => null,
+                        ],
+                        'related' => [
+                            'links' => [
+                                'self'    => '/api/test-posts/2/relationships/related',
+                                'related' => '/api/test-posts/2/test-posts',
+                            ],
+                            'data' => [],
+                        ],
+                        'pivot-related' => [
+                            'links' => [
+                                'self'    => '/api/test-posts/2/relationships/pivot-related',
+                                'related' => '/api/test-posts/2/test-posts',
+                            ],
+                            'data' => [],
                         ],
                     ],
                 ],

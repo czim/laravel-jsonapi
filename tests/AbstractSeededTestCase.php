@@ -4,6 +4,7 @@ namespace Czim\JsonApi\Test;
 use Czim\JsonApi\Test\Helpers\Models\TestAuthor;
 use Czim\JsonApi\Test\Helpers\Models\TestComment;
 use Czim\JsonApi\Test\Helpers\Models\TestPost;
+use DB;
 use Illuminate\Support\Facades\Schema;
 
 abstract class AbstractSeededTestCase extends DatabaseTestCase
@@ -67,6 +68,23 @@ abstract class AbstractSeededTestCase extends DatabaseTestCase
             $table->string('slug', 255);
             $table->nullableTimestamps();
         });
+
+        Schema::create('post_related', function ($table) {
+            /** @var \Illuminate\Database\Schema\Blueprint $table */
+            $table->increments('id');
+            $table->integer('from_id')->unsigned()->nullable();
+            $table->integer('to_id')->unsigned()->nullable();
+        });
+
+        Schema::create('post_pivot_related', function ($table) {
+            /** @var \Illuminate\Database\Schema\Blueprint $table */
+            $table->increments('id');
+            $table->integer('from_id')->unsigned()->nullable();
+            $table->integer('to_id')->unsigned()->nullable();
+            $table->string('type', 100);
+            $table->date('date')->nullable();
+            $table->nullableTimestamps();
+        });
     }
 
 
@@ -124,6 +142,14 @@ abstract class AbstractSeededTestCase extends DatabaseTestCase
         ]);
         $post->author()->associate(TestAuthor::skip(1)->first());
         $post->save();
+
+
+        // Seed the related pivot tables
+        DB::table('post_related')->insert(['from_id' => 1, 'to_id' => 2]);
+        DB::table('post_related')->insert(['from_id' => 1, 'to_id' => 3]);
+
+        DB::table('post_pivot_related')->insert(['from_id' => 1, 'to_id' => 2, 'type' => 'a', 'date' => '2017-01-01']);
+        DB::table('post_pivot_related')->insert(['from_id' => 1, 'to_id' => 3, 'type' => 'a', 'date' => '2017-02-01']);
 
         return $this;
     }

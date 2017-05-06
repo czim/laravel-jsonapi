@@ -18,10 +18,13 @@ class TestPostResource extends AbstractEloquentResource
         'comments',
         'main-author',
         'seo',
+        'related',
+        'pivot-related'
     ];
 
     protected $includeRelations = [
-        'main-author' => 'author',
+        'main-author'   => 'author',
+        'pivot-related' => 'pivotRelated',
     ];
 
     public function getSimpleAppendedAttribute()
