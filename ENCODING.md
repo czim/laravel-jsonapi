@@ -66,14 +66,41 @@ Resources may describe:
 
 ... TO DO: chapter on resources ...
 
+
+### Configure Mapped Resources
+
+You can register resources for Eloquent models by defining them in the configuration file, under the `jsonapi.repository.resource.map` key.
+
+List the mapping as key-value pairs, with model FQNs as keys, and Resource class FQNs as values.
+
+```php
+<?php
+    'repository' => [
+        'resource' => [
+            
+            // ...
+            
+            'map' => [
+                \App\Models\YourModel::class => \App\JsonApi\Resources\YourModelResource::class,
+            ],
+        
+        ],
+    ],
+    
+    // ...
+```
+
+
 ### Automatic Collection of Resources
 
-Note: this is a W.I.P., please use manual registration for now.
+Note: this is a W.I.P., please use a configured map or manual registration for now.
 
 ... TO DO: describe resource collector, namespace & config options ...
 
 
 ### Manually Registering Resources
+
+Keep in mind that it is recommended to use the configuration or automatic collection methods described above.
 
 If you want to manually set resources for your encoding, you can replace or append normal collection of resources
 with manual registration on the repository:
