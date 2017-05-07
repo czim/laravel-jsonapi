@@ -22,11 +22,20 @@ return [
             // configurations should be placed.
             //
             // A model:
-            //      App\\Models\\Pages\\Post
+            //      App\Models\Pages\Post
             // should have a resource in:
-            //      App\\JsonApi\\Resources\\Pages\\Post.php
+            //      App\JsonApi\Resources\Pages\Post.php
             //
             'namespace' => 'App\\JsonApi\\Resources\\',
+
+            // Whether namespace-based collection of resources is enabled.
+            'collect' => false,
+
+            // Mapping of resources per model.
+            // List of key value pairs: model class FQN => resource class FQN
+            // These maps will overrule collected resources, if there are conflicts.
+            'map' => [
+            ],
         ],
     ],
 
