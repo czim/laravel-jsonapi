@@ -4,7 +4,6 @@ namespace Czim\JsonApi\Test\Http\Middleware;
 use Czim\JsonApi\Http\Middleware\RequireJsonApiHeader;
 use Czim\JsonApi\Test\TestCase;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Mockery;
 
 /**
@@ -45,10 +44,11 @@ class RequireJsonApiHeaderTest extends TestCase
 
         $next = function ($request) { return $request; };
 
-        $response = $middleware->handle($requestMock, $next);
-
-        static::assertInstanceOf(Response::class, $response);
-        static::assertEquals(406, $response->getStatusCode());
+        try {
+            $middleware->handle($requestMock, $next);
+        } catch (\Symfony\Component\HttpKernel\Exception\HttpException $e) {
+            static::assertEquals(406, $e->getStatusCode());
+        }
     }
 
     /**
@@ -65,10 +65,11 @@ class RequireJsonApiHeaderTest extends TestCase
 
         $next = function ($request) { return $request; };
 
-        $response = $middleware->handle($requestMock, $next);
-
-        static::assertInstanceOf(Response::class, $response);
-        static::assertEquals(415, $response->getStatusCode());
+        try {
+            $middleware->handle($requestMock, $next);
+        } catch (\Symfony\Component\HttpKernel\Exception\HttpException $e) {
+            static::assertEquals(415, $e->getStatusCode());
+        }
     }
 
     /**
