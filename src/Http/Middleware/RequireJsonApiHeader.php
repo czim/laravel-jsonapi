@@ -23,11 +23,11 @@ class RequireJsonApiHeader
     public function handle($request, Closure $next)
     {
         if ( ! $this->acceptHeaderValid($request)) {
-            return response('', 406);
+            return abort(406);
         }
 
         if ( ! $this->contentTypeHeaderValid(($request))) {
-            return response('', 415);
+            return abort(415);
         }
 
         return $next($request);
