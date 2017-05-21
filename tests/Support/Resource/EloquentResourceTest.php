@@ -111,6 +111,50 @@ class EloquentResourceTest extends TestCase
     /**
      * @test
      */
+    function it_returns_a_datetime_value_formatted_by_a_default_format()
+    {
+        $resource = new TestAbstractEloquentResource;
+
+        $model = new TestSimpleModel;
+        $model->created_at = '2017-01-01 01:02:03';
+
+        $resource->setModel($model);
+
+        static::assertEquals('2017-01-01T01:02:03+00:00', $resource->attributeValue('created_at'));
+    }
+
+    /**
+     * @test
+     */
+    function it_returns_a_datetime_value_formatted_by_a_configured_format()
+    {
+        $resource = new TestAbstractEloquentResource;
+
+        $model = new TestSimpleModel;
+        $model->updated_at = '2017-01-01 01:02:03';
+
+        $resource->setModel($model);
+
+        static::assertEquals('2017-01-01 01:02', $resource->attributeValue('updated_at'));
+    }
+
+    /**
+     * @test
+     */
+    function it_returns_a_custom_value_as_a_datetime_if_it_is_listed_as_a_datetime_attribute()
+    {
+        $resource = new TestAbstractEloquentResource;
+
+        $model = new TestSimpleModel;
+
+        $resource->setModel($model);
+
+        static::assertEquals('2017-01-02', $resource->attributeValue('date_accessor'));
+    }
+
+    /**
+     * @test
+     */
     function it_returns_the_relation_method_name_for_an_include_key()
     {
         $resource = new TestAbstractEloquentResource;

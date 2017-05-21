@@ -3,14 +3,13 @@ namespace Czim\JsonApi\Test\Helpers\Resources\AbstractTest;
 
 use Czim\JsonApi\Support\Resource\AbstractEloquentResource;
 
-class TestAbstractEloquentResource extends AbstractEloquentResource
+class TestAbstractEloquentResourceWithDateTimeFormat extends AbstractEloquentResource
 {
 
     protected $availableAttributes = [
         'name',
         'title',
         'accessor',
-        'date_accessor',
     ];
 
     protected $availableIncludes = [
@@ -51,23 +50,9 @@ class TestAbstractEloquentResource extends AbstractEloquentResource
         '-id',
     ];
 
-    protected $dateAttributes = [
-        'date-accessor',
-    ];
-
-    protected $dateAttributeFormats = [
-        'updated-at'    => 'Y-m-d H:i',
-        'date-accessor' => 'Y-m-d',
-    ];
-
     public function getAccessorAttribute()
     {
         return 'custom';
-    }
-
-    public function getDateAccessorAttribute()
-    {
-        return '2017-01-02 03:04:05';
     }
 
 }
