@@ -1,7 +1,9 @@
 <?php
 namespace Czim\JsonApi\Support\Resource;
 
+use Carbon\Carbon;
 use Czim\JsonApi\Contracts\Resource\ResourceInterface;
+use DateTime;
 
 abstract class AbstractJsonApiResource implements ResourceInterface
 {
@@ -65,6 +67,20 @@ abstract class AbstractJsonApiResource implements ResourceInterface
      * @var string[]
      */
     protected $defaultSortAttributes = [];
+
+    /**
+     * Attribute keys that should be interpreted and formatted as date(time) values.
+     *
+     * @var array
+     */
+    protected $dateAttributes = [];
+
+    /**
+     * Date formats for attributes.
+     *
+     * @var array   associative, key is attribute name, value is format string
+     */
+    protected $dateAttributeFormats = [];
 
 
     /**
@@ -231,6 +247,58 @@ abstract class AbstractJsonApiResource implements ResourceInterface
     public function getMeta()
     {
         return null;
+    }
+
+    /**
+     * Normalizes attribute names for internal comparison.
+     *
+     * @param string $name
+     * @return string
+     */
+    protected function normalizeAttributeName($name)
+    {
+        return snake_case(str_replace('_', '-', $name), '-');
+    }
+
+    /**
+     * Returns whether a given attribute should be treated as a datetime value.
+     *
+     * @param string $name
+     * @param mixed  $value
+     * @return bool
+     */
+    protected function isAttributeDate($name, $value)
+    {
+        return $value instanceof DateTime || in_array($this->normalizeAttributeName($name), $this->dateAttributes);
+    }
+
+    /**
+     * Returns the PHP datetime format to use for an attribute, if any.
+     *
+     * @param string $name
+     * @return string|null
+     */
+    protected function getConfiguredFormatForAttribute($name)
+    {
+        return array_get($this->dateAttributeFormats, $this->normalizeAttributeName($name));
+    }
+
+    /**
+     * Formats a given value in a PHP datetime format.
+     *
+     * @param string|DateTime $value
+     * @param string|null     $format
+     * @return string
+     */
+    protected function formatDate($value, $format = null)
+    {
+        $format = $format ?: config('jsonapi.transform.default-datetime-format', 'c');
+
+        if ( ! ($value instanceof DateTime)) {
+            $value = new Carbon($value);
+        }
+
+        return $value->format($format);
     }
 
 }

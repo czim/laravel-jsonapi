@@ -61,6 +61,9 @@ return [
         // URL to be used for links relative to the top level resource.
         'auto-determine-top-resource-url' => true,
 
+        // The default datetime format to apply to date attributes.
+        'default-datetime-format' => 'c',
+
         'links' => [
             // The segment to add for relationship links:
             // as in

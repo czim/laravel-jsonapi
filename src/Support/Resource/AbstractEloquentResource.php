@@ -5,6 +5,7 @@ use Czim\JsonApi\Contracts\Repositories\ResourceRepositoryInterface;
 use Czim\JsonApi\Contracts\Resource\EloquentResourceInterface;
 use Czim\JsonApi\Contracts\Support\Type\TypeMakerInterface;
 use Czim\JsonApi\Exceptions\InvalidIncludeException;
+use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -95,6 +96,10 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
             $value = call_user_func([ $this, $accessorMethod ]);
         } else {
             $value = $this->model->{$name};
+        }
+
+        if ($this->isAttributeDate($name, $value)) {
+            $value = $this->formatDate($value, $this->getConfiguredFormatForAttribute($name));
         }
 
         return null !== $value ? $value : $default;
