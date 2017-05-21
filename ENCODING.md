@@ -62,6 +62,7 @@ Resources may describe:
 - Available filter options and defaults.
 - Available sorting options and defaults.
 - Optional relationship name mapping to Eloquent Relation methods on the model.
+- Whether attributes should be formatted as date values, and what format they should use.
 
 
 ... TO DO: chapter on resources ...
