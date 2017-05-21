@@ -6,7 +6,7 @@ use Czim\JsonApi\Encoder\Transformers\ErrorDataTransformer;
 return [
 
     // The base relative API url to use for JSON-API links.
-    'base_url' => '/api',
+    'base_url' => 'http://localhost/api',
 
     /*
     |--------------------------------------------------------------------------

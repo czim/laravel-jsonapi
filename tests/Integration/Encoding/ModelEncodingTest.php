@@ -66,8 +66,8 @@ class ModelEncodingTest extends AbstractSeededTestCase
                     'relationships' => [
                         'comments' => [
                             'links' => [
-                                'self'    => '/api/test-posts/1/relationships/comments',
-                                'related' => '/api/test-posts/1/test-comments',
+                                'self'    => 'http://localhost/api/test-posts/1/relationships/comments',
+                                'related' => 'http://localhost/api/test-posts/1/test-comments',
                             ],
                             'data' => [
                                 ['id' => '1', 'type' => 'test-comments'],
@@ -76,22 +76,22 @@ class ModelEncodingTest extends AbstractSeededTestCase
                         ],
                         'main-author' => [
                             'links' => [
-                                'self'    => '/api/test-posts/1/relationships/main-author',
-                                'related' => '/api/test-posts/1/test-authors',
+                                'self'    => 'http://localhost/api/test-posts/1/relationships/main-author',
+                                'related' => 'http://localhost/api/test-posts/1/test-authors',
                             ],
                             'data' => ['type' => 'test-authors', 'id' => '1'],
                         ],
                         'seo' => [
                             'links' => [
-                                'self'    => '/api/test-posts/1/relationships/seo',
-                                'related' => '/api/test-posts/1/test-seos',
+                                'self'    => 'http://localhost/api/test-posts/1/relationships/seo',
+                                'related' => 'http://localhost/api/test-posts/1/test-seos',
                             ],
                             'data' => null,
                         ],
                         'related' => [
                             'links' => [
-                                'self'    => '/api/test-posts/1/relationships/related',
-                                'related' => '/api/test-posts/1/test-posts',
+                                'self'    => 'http://localhost/api/test-posts/1/relationships/related',
+                                'related' => 'http://localhost/api/test-posts/1/test-posts',
                             ],
                             'data' => [
                                 ['type' => 'test-posts', 'id' => '2'],
@@ -100,8 +100,8 @@ class ModelEncodingTest extends AbstractSeededTestCase
                         ],
                         'pivot-related' => [
                             'links' => [
-                                'self'    => '/api/test-posts/1/relationships/pivot-related',
-                                'related' => '/api/test-posts/1/test-posts',
+                                'self'    => 'http://localhost/api/test-posts/1/relationships/pivot-related',
+                                'related' => 'http://localhost/api/test-posts/1/test-posts',
                             ],
                             'data' => [
                                 ['type' => 'test-posts', 'id' => '2'],
@@ -158,36 +158,36 @@ class ModelEncodingTest extends AbstractSeededTestCase
                     'relationships' => [
                         'comments' => [
                             'links' => [
-                                'self'    => '/api/test-posts/2/relationships/comments',
-                                'related' => '/api/test-posts/2/test-comments',
+                                'self'    => 'http://localhost/api/test-posts/2/relationships/comments',
+                                'related' => 'http://localhost/api/test-posts/2/test-comments',
                             ],
                             'data' => [],
                         ],
                         'main-author' => [
                             'links' => [
-                                'self'    => '/api/test-posts/2/relationships/main-author',
-                                'related' => '/api/test-posts/2/test-authors',
+                                'self'    => 'http://localhost/api/test-posts/2/relationships/main-author',
+                                'related' => 'http://localhost/api/test-posts/2/test-authors',
                             ],
                             'data' => null,
                         ],
                         'seo' => [
                             'links' => [
-                                'self'    => '/api/test-posts/2/relationships/seo',
-                                'related' => '/api/test-posts/2/test-seos',
+                                'self'    => 'http://localhost/api/test-posts/2/relationships/seo',
+                                'related' => 'http://localhost/api/test-posts/2/test-seos',
                             ],
                             'data' => null,
                         ],
                         'related' => [
                             'links' => [
-                                'self'    => '/api/test-posts/2/relationships/related',
-                                'related' => '/api/test-posts/2/test-posts',
+                                'self'    => 'http://localhost/api/test-posts/2/relationships/related',
+                                'related' => 'http://localhost/api/test-posts/2/test-posts',
                             ],
                             'data' => [],
                         ],
                         'pivot-related' => [
                             'links' => [
-                                'self'    => '/api/test-posts/2/relationships/pivot-related',
-                                'related' => '/api/test-posts/2/test-posts',
+                                'self'    => 'http://localhost/api/test-posts/2/relationships/pivot-related',
+                                'related' => 'http://localhost/api/test-posts/2/test-posts',
                             ],
                             'data' => [],
                         ],
@@ -239,8 +239,8 @@ class ModelEncodingTest extends AbstractSeededTestCase
                     'relationships' => [
                         'comments' => [
                             'links' => [
-                                'self'    => '/api/test-posts/1/relationships/comments',
-                                'related' => '/api/test-posts/1/test-comments',
+                                'self'    => 'http://localhost/api/test-posts/1/relationships/comments',
+                                'related' => 'http://localhost/api/test-posts/1/test-comments',
                             ],
                             'data' => [
                                 ['id' => '1', 'type' => 'test-comments'],
@@ -249,22 +249,22 @@ class ModelEncodingTest extends AbstractSeededTestCase
                         ],
                         'main-author' => [
                             'links' => [
-                                'self'    => '/api/test-posts/1/relationships/main-author',
-                                'related' => '/api/test-posts/1/test-authors',
+                                'self'    => 'http://localhost/api/test-posts/1/relationships/main-author',
+                                'related' => 'http://localhost/api/test-posts/1/test-authors',
                             ],
                             'data' => ['type' => 'test-authors', 'id' => 1],
                         ],
                         'seo' => [
                             'links' => [
-                                'self'    => '/api/test-posts/1/relationships/seo',
-                                'related' => '/api/test-posts/1/test-seos',
+                                'self'    => 'http://localhost/api/test-posts/1/relationships/seo',
+                                'related' => 'http://localhost/api/test-posts/1/test-seos',
                             ],
                             'data' => null,
                         ],
                         'related' => [
                             'links' => [
-                                'self'    => '/api/test-posts/1/relationships/related',
-                                'related' => '/api/test-posts/1/test-posts',
+                                'self'    => 'http://localhost/api/test-posts/1/relationships/related',
+                                'related' => 'http://localhost/api/test-posts/1/test-posts',
                             ],
                             'data' => [
                                 ['type' => 'test-posts', 'id' => '2'],
@@ -273,8 +273,8 @@ class ModelEncodingTest extends AbstractSeededTestCase
                         ],
                         'pivot-related' => [
                             'links' => [
-                                'self'    => '/api/test-posts/1/relationships/pivot-related',
-                                'related' => '/api/test-posts/1/test-posts',
+                                'self'    => 'http://localhost/api/test-posts/1/relationships/pivot-related',
+                                'related' => 'http://localhost/api/test-posts/1/test-posts',
                             ],
                             'data' => [
                                 ['type' => 'test-posts', 'id' => '2'],
@@ -353,7 +353,7 @@ class ModelEncodingTest extends AbstractSeededTestCase
                     'relationships' => [
                         'seoable' => [
                             'links' => [
-                                'self' => '/api/test-seos/1/relationships/seoable',
+                                'self' => 'http://localhost/api/test-seos/1/relationships/seoable',
                             ],
                             'data' => null,
                         ],
@@ -415,8 +415,8 @@ class ModelEncodingTest extends AbstractSeededTestCase
                     'relationships' => [
                         'comments' => [
                             'links' => [
-                                'self'    => '/api/test-posts/1/relationships/comments',
-                                'related' => '/api/test-posts/1/test-comments',
+                                'self'    => 'http://localhost/api/test-posts/1/relationships/comments',
+                                'related' => 'http://localhost/api/test-posts/1/test-comments',
                             ],
                             'data' => [
                                 ['type' => 'test-comments', 'id' => '1'],
@@ -425,22 +425,22 @@ class ModelEncodingTest extends AbstractSeededTestCase
                         ],
                         'main-author' => [
                             'links' => [
-                                'self'    => '/api/test-posts/1/relationships/main-author',
-                                'related' => '/api/test-posts/1/test-authors',
+                                'self'    => 'http://localhost/api/test-posts/1/relationships/main-author',
+                                'related' => 'http://localhost/api/test-posts/1/test-authors',
                             ],
                             'data' => ['type' => 'test-authors', 'id' => 1],
                         ],
                         'seo' => [
                             'links' => [
-                                'self'    => '/api/test-posts/1/relationships/seo',
-                                'related' => '/api/test-posts/1/test-seos',
+                                'self'    => 'http://localhost/api/test-posts/1/relationships/seo',
+                                'related' => 'http://localhost/api/test-posts/1/test-seos',
                             ],
                             'data' => ['type' => 'test-seos', 'id' => '1'],
                         ],
                         'related' => [
                             'links' => [
-                                'self'    => '/api/test-posts/1/relationships/related',
-                                'related' => '/api/test-posts/1/test-posts',
+                                'self'    => 'http://localhost/api/test-posts/1/relationships/related',
+                                'related' => 'http://localhost/api/test-posts/1/test-posts',
                             ],
                             'data' => [
                                 ['type' => 'test-posts', 'id' => '2'],
@@ -449,8 +449,8 @@ class ModelEncodingTest extends AbstractSeededTestCase
                         ],
                         'pivot-related' => [
                             'links' => [
-                                'self'    => '/api/test-posts/1/relationships/pivot-related',
-                                'related' => '/api/test-posts/1/test-posts',
+                                'self'    => 'http://localhost/api/test-posts/1/relationships/pivot-related',
+                                'related' => 'http://localhost/api/test-posts/1/test-posts',
                             ],
                             'data' => [
                                 ['type' => 'test-posts', 'id' => '2'],
@@ -471,22 +471,22 @@ class ModelEncodingTest extends AbstractSeededTestCase
                         'relationships' => [
                             'author' => [
                                 'links' => [
-                                    'self'    => '/api/test-comments/1/relationships/author',
-                                    'related' => '/api/test-comments/1/test-authors',
+                                    'self'    => 'http://localhost/api/test-comments/1/relationships/author',
+                                    'related' => 'http://localhost/api/test-comments/1/test-authors',
                                 ],
                                 'data' => ['type' => 'test-authors', 'id' => '2'],
                             ],
                             'post' => [
                                 'links' => [
-                                    'self'    => '/api/test-comments/1/relationships/post',
-                                    'related' => '/api/test-comments/1/test-posts',
+                                    'self'    => 'http://localhost/api/test-comments/1/relationships/post',
+                                    'related' => 'http://localhost/api/test-comments/1/test-posts',
                                 ],
                                 'data' => ['type' => 'test-posts', 'id' => '1'],
                             ],
                             'seos' => [
                                 'links' => [
-                                    'self'    => '/api/test-comments/1/relationships/seos',
-                                    'related' => '/api/test-comments/1/test-seos',
+                                    'self'    => 'http://localhost/api/test-comments/1/relationships/seos',
+                                    'related' => 'http://localhost/api/test-comments/1/test-seos',
                                 ],
                                 'data' => [],
                             ],
@@ -504,22 +504,22 @@ class ModelEncodingTest extends AbstractSeededTestCase
                         'relationships' => [
                             'author' => [
                                 'links' => [
-                                    'self'    => '/api/test-comments/2/relationships/author',
-                                    'related' => '/api/test-comments/2/test-authors',
+                                    'self'    => 'http://localhost/api/test-comments/2/relationships/author',
+                                    'related' => 'http://localhost/api/test-comments/2/test-authors',
                                 ],
                                 'data' => ['type' => 'test-authors', 'id' => '2'],
                             ],
                             'post' => [
                                 'links' => [
-                                    'self'    => '/api/test-comments/2/relationships/post',
-                                    'related' => '/api/test-comments/2/test-posts',
+                                    'self'    => 'http://localhost/api/test-comments/2/relationships/post',
+                                    'related' => 'http://localhost/api/test-comments/2/test-posts',
                                 ],
                                 'data' => ['type' => 'test-posts', 'id' => '1'],
                             ],
                             'seos' => [
                                 'links' => [
-                                    'self'    => '/api/test-comments/2/relationships/seos',
-                                    'related' => '/api/test-comments/2/test-seos',
+                                    'self'    => 'http://localhost/api/test-comments/2/relationships/seos',
+                                    'related' => 'http://localhost/api/test-comments/2/test-seos',
                                 ],
                                 'data' => [],
                             ],
@@ -534,8 +534,8 @@ class ModelEncodingTest extends AbstractSeededTestCase
                         'relationships' => [
                             'posts' => [
                                 'links' => [
-                                    'self'    => '/api/test-authors/1/relationships/posts',
-                                    'related' => '/api/test-authors/1/test-posts',
+                                    'self'    => 'http://localhost/api/test-authors/1/relationships/posts',
+                                    'related' => 'http://localhost/api/test-authors/1/test-posts',
                                 ],
                                 'data' => [
                                     ['type' => 'test-posts', 'id' => '1'],
@@ -544,8 +544,8 @@ class ModelEncodingTest extends AbstractSeededTestCase
                             ],
                             'comments' => [
                                 'links' => [
-                                    'self'    => '/api/test-authors/1/relationships/comments',
-                                    'related' => '/api/test-authors/1/test-comments',
+                                    'self'    => 'http://localhost/api/test-authors/1/relationships/comments',
+                                    'related' => 'http://localhost/api/test-authors/1/test-comments',
                                 ],
                                 'data' => [
                                     ['type' => 'test-comments', 'id' => '3']
@@ -562,8 +562,8 @@ class ModelEncodingTest extends AbstractSeededTestCase
                         'relationships' => [
                             'seoable' => [
                                 'links' => [
-                                    'self'    => '/api/test-seos/1/relationships/seoable',
-                                    'related' => '/api/test-seos/1/test-posts'
+                                    'self'    => 'http://localhost/api/test-seos/1/relationships/seoable',
+                                    'related' => 'http://localhost/api/test-seos/1/test-posts'
                                 ],
                                 'data' => ['type' => 'test-posts', 'id' => '1'],
                             ],
@@ -627,36 +627,36 @@ class ModelEncodingTest extends AbstractSeededTestCase
                     'relationships' => [
                         'comments' => [
                             'links' => [
-                                'self'    => '/api/test-posts/2/relationships/comments',
-                                'related' => '/api/test-posts/2/test-comments',
+                                'self'    => 'http://localhost/api/test-posts/2/relationships/comments',
+                                'related' => 'http://localhost/api/test-posts/2/test-comments',
                             ],
                             'data' => [],
                         ],
                         'main-author' => [
                             'links' => [
-                                'self'    => '/api/test-posts/2/relationships/main-author',
-                                'related' => '/api/test-posts/2/test-authors',
+                                'self'    => 'http://localhost/api/test-posts/2/relationships/main-author',
+                                'related' => 'http://localhost/api/test-posts/2/test-authors',
                             ],
                             'data' => null,
                         ],
                         'seo' => [
                             'links' => [
-                                'self'    => '/api/test-posts/2/relationships/seo',
-                                'related' => '/api/test-posts/2/test-seos',
+                                'self'    => 'http://localhost/api/test-posts/2/relationships/seo',
+                                'related' => 'http://localhost/api/test-posts/2/test-seos',
                             ],
                             'data' => null,
                         ],
                         'related' => [
                             'links' => [
-                                'self'    => '/api/test-posts/2/relationships/related',
-                                'related' => '/api/test-posts/2/test-posts',
+                                'self'    => 'http://localhost/api/test-posts/2/relationships/related',
+                                'related' => 'http://localhost/api/test-posts/2/test-posts',
                             ],
                             'data' => [],
                         ],
                         'pivot-related' => [
                             'links' => [
-                                'self'    => '/api/test-posts/2/relationships/pivot-related',
-                                'related' => '/api/test-posts/2/test-posts',
+                                'self'    => 'http://localhost/api/test-posts/2/relationships/pivot-related',
+                                'related' => 'http://localhost/api/test-posts/2/test-posts',
                             ],
                             'data' => [],
                         ],
@@ -721,8 +721,8 @@ class ModelEncodingTest extends AbstractSeededTestCase
                     'relationships' => [
                         'comments' => [
                             'links' => [
-                                'self'    => '/api/test-posts/1/relationships/comments',
-                                'related' => '/api/test-posts/1/test-comments',
+                                'self'    => 'http://localhost/api/test-posts/1/relationships/comments',
+                                'related' => 'http://localhost/api/test-posts/1/test-comments',
                             ],
                             'data' => [
                                 ['type' => 'test-comments', 'id' => '1'],
@@ -731,15 +731,15 @@ class ModelEncodingTest extends AbstractSeededTestCase
                         ],
                         'main-author' => [
                             'links' => [
-                                'self'    => '/api/test-posts/1/relationships/main-author',
-                                'related' => '/api/test-posts/1/test-authors',
+                                'self'    => 'http://localhost/api/test-posts/1/relationships/main-author',
+                                'related' => 'http://localhost/api/test-posts/1/test-authors',
                             ],
                             'data' => ['type' => 'test-authors', 'id' => 1],
                         ],
                         'seo' => [
                             'links' => [
-                                'self'    => '/api/test-posts/1/relationships/seo',
-                                'related' => '/api/test-posts/1/test-seos',
+                                'self'    => 'http://localhost/api/test-posts/1/relationships/seo',
+                                'related' => 'http://localhost/api/test-posts/1/test-seos',
                             ],
                             'data' => ['type' => 'test-seos', 'id' => '1'],
                         ],
@@ -755,8 +755,8 @@ class ModelEncodingTest extends AbstractSeededTestCase
                         'relationships' => [
                             'posts' => [
                                 'links' => [
-                                    'self'    => '/api/test-authors/1/relationships/posts',
-                                    'related' => '/api/test-authors/1/test-posts',
+                                    'self'    => 'http://localhost/api/test-authors/1/relationships/posts',
+                                    'related' => 'http://localhost/api/test-authors/1/test-posts',
                                 ],
                                 'data' => [
                                     ['type' => 'test-posts', 'id' => '1'],
@@ -765,8 +765,8 @@ class ModelEncodingTest extends AbstractSeededTestCase
                             ],
                             'comments' => [
                                 'links' => [
-                                    'self'    => '/api/test-authors/1/relationships/comments',
-                                    'related' => '/api/test-authors/1/test-comments',
+                                    'self'    => 'http://localhost/api/test-authors/1/relationships/comments',
+                                    'related' => 'http://localhost/api/test-authors/1/test-comments',
                                 ],
                                 'data' => [
                                     ['type' => 'test-comments', 'id' => '3']
@@ -783,8 +783,8 @@ class ModelEncodingTest extends AbstractSeededTestCase
                         'relationships' => [
                             'seoable' => [
                                 'links' => [
-                                    'self'    => '/api/test-seos/1/relationships/seoable',
-                                    'related' => '/api/test-seos/1/test-posts'
+                                    'self'    => 'http://localhost/api/test-seos/1/relationships/seoable',
+                                    'related' => 'http://localhost/api/test-seos/1/test-posts'
                                 ],
                                 'data' => ['type' => 'test-posts', 'id' => '1'],
                             ],
@@ -842,8 +842,8 @@ class ModelEncodingTest extends AbstractSeededTestCase
                     'relationships' => [
                         'comments' => [
                             'links' => [
-                                'self'    => '/api/test-posts/1/relationships/comments',
-                                'related' => '/api/test-posts/1/test-comments',
+                                'self'    => 'http://localhost/api/test-posts/1/relationships/comments',
+                                'related' => 'http://localhost/api/test-posts/1/test-comments',
                             ],
                             'data' => [
                                 ['type' => 'test-comments', 'id' => '1'],
@@ -852,15 +852,15 @@ class ModelEncodingTest extends AbstractSeededTestCase
                         ],
                         'main-author' => [
                             'links' => [
-                                'self'    => '/api/test-posts/1/relationships/main-author',
-                                'related' => '/api/test-posts/1/test-authors',
+                                'self'    => 'http://localhost/api/test-posts/1/relationships/main-author',
+                                'related' => 'http://localhost/api/test-posts/1/test-authors',
                             ],
                             'data' => ['type' => 'test-authors', 'id' => 1],
                         ],
                         'seo' => [
                             'links' => [
-                                'self'    => '/api/test-posts/1/relationships/seo',
-                                'related' => '/api/test-posts/1/test-seos',
+                                'self'    => 'http://localhost/api/test-posts/1/relationships/seo',
+                                'related' => 'http://localhost/api/test-posts/1/test-seos',
                             ],
                             'data' => null,
                         ],
