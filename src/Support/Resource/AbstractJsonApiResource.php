@@ -3,22 +3,39 @@ namespace Czim\JsonApi\Support\Resource;
 
 use Carbon\Carbon;
 use Czim\JsonApi\Contracts\Resource\ResourceInterface;
+use Czim\JsonApi\Contracts\Support\Rsource\ResourcePathHelperInterface;
 use DateTime;
 
 abstract class AbstractJsonApiResource implements ResourceInterface
 {
 
     /**
+     * The relative path or absolute URL for this resource.
+     *
+     * If this is not set, a relative path will be based on the namespace of the resource.
+     * @see ResourcePathHelper
+     *
+     * @var null|string
+     */
+    protected $url;
+
+    /**
+     * The attributes to include in the transform.
+     *
      * @var string[]
      */
     protected $availableAttributes = [];
 
     /**
+     * The includes that may be used.
+     *
      * @var string[]
      */
     protected $availableIncludes = [];
 
     /**
+     * The includes that will be used by default, if they are available.
+     *
      * @var string[]
      */
     protected $defaultIncludes = [];
@@ -49,21 +66,30 @@ abstract class AbstractJsonApiResource implements ResourceInterface
     protected $excludeReferences = [];
 
     /**
+     * List of filter keys available.
+     *
      * @var string[]
      */
     protected $availableFilters = [];
 
     /**
-     * @var string[]
+     * List of filter values to use by default.
+     *
+     * @var array   associative, keyed by filter key
      */
     protected $defaultFilters = [];
 
     /**
+     * List of sort attribute keys available.
+     *
      * @var string[]
      */
     protected $availableSortAttributes = [];
 
     /**
+     * List of sort keys, in order, to use by default.
+     * Prefix with '-' to reverse.
+     *
      * @var string[]
      */
     protected $defaultSortAttributes = [];
@@ -96,6 +122,24 @@ abstract class AbstractJsonApiResource implements ResourceInterface
      * @return string
      */
     abstract public function id();
+
+    /**
+     * Returns the full URL for this resource.
+     *
+     * @return string
+     */
+    public function url()
+    {
+        if (null === $this->url) {
+            return $this->getResourcePathHelper()->makePath($this);
+        }
+
+        if ($this->isUrlAbsolute($this->url)) {
+            return $this->url;
+        }
+
+        return rtrim(config('jsonapi.base_url'), '/') . '/' . ltrim($this->url);
+    }
 
     /**
      * Returns an attribute value.
@@ -299,6 +343,25 @@ abstract class AbstractJsonApiResource implements ResourceInterface
         }
 
         return $value->format($format);
+    }
+
+    /**
+     * @return ResourcePathHelperInterface
+     */
+    protected function getResourcePathHelper()
+    {
+        return app(ResourcePathHelperInterface::class);
+    }
+
+    /**
+     * Returns whether a given URL is absolute.
+     *
+     * @param string $url
+     * @return bool
+     */
+    protected function isUrlAbsolute($url)
+    {
+        return (bool) preg_match('#^(https?:)//#', $url);
     }
 
 }

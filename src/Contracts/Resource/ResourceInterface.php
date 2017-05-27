@@ -18,6 +18,12 @@ interface ResourceInterface
      */
     public function id();
 
+    /**
+     * Returns the full URL for this resource.
+     *
+     * @return string
+     */
+    public function url();
 
     /**
      * Returns list of attributes to include by key.
