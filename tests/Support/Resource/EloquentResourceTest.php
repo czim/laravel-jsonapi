@@ -5,6 +5,8 @@ use Czim\JsonApi\Contracts\Support\Type\TypeMakerInterface;
 use Czim\JsonApi\Test\Helpers\Models\TestPost;
 use Czim\JsonApi\Test\Helpers\Models\TestSimpleModel;
 use Czim\JsonApi\Test\Helpers\Resources\AbstractTest\TestAbstractEloquentResource;
+use Czim\JsonApi\Test\Helpers\Resources\AbstractTest\TestResourceWithAbsoluteUrl;
+use Czim\JsonApi\Test\Helpers\Resources\AbstractTest\TestResourceWithRelativeUrl;
 use Czim\JsonApi\Test\TestCase;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Mockery;
@@ -64,6 +66,31 @@ class EloquentResourceTest extends TestCase
         $resource->setModel($model);
 
         static::assertEquals('13', $resource->id());
+    }
+
+    /**
+     * @test
+     */
+    function it_returns_the_url()
+    {
+        static::assertEquals(
+            'czim/json-api/test/helpers/resources/abstract-test/test-abstract-eloquent-resource',
+            (new TestAbstractEloquentResource)->url()
+        );
+
+        $this->app['config']->set('jsonapi.base_url', 'https://base_url/api');
+
+        // With a set relative path
+        static::assertEquals(
+            'https://base_url/api/test/resource-path',
+            (new TestResourceWithRelativeUrl())->url()
+        );
+
+        // With a set absolute path
+        static::assertEquals(
+            'https://localhost/v1/test/resource-path',
+            (new TestResourceWithAbsoluteUrl())->url()
+        );
     }
 
     /**
