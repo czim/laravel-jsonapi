@@ -122,8 +122,6 @@ class ModelTransformer extends AbstractTransformer
 
         foreach ($resource->availableIncludes() as $key) {
 
-            $relatedType = $resource->relationshipType($key);
-
             $data[ $key ] = [
                 Key::LINKS => $this->getLinksData($resource, $key)
             ];
