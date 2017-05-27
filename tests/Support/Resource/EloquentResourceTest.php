@@ -234,6 +234,18 @@ class EloquentResourceTest extends TestCase
     /**
      * @test
      */
+    function it_returns_the_relationship_type_for_a_given_include()
+    {
+        $resource = new TestAbstractEloquentResource;
+
+        $resource->setModel(new TestPost);
+
+        static::assertEquals('test-comments', $resource->relationshipType('comments'));
+    }
+
+    /**
+     * @test
+     */
     function it_returns_the_relation_method_instance_of_the_model_for_an_include_key_by_alias()
     {
         $resource = new TestAbstractEloquentResource;

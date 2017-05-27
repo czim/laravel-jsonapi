@@ -177,7 +177,7 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
     }
 
     /**
-     * Returns the JSON-API type for a given include
+     * Returns the JSON-API type for a given include.
      *
      * @param string $include
      * @return null|string
@@ -188,11 +188,9 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
         $relation = $this->includeRelation($include);
 
         if ($this->isVariableRelation($relation)) {
-
+            // @codeCoverageIgnoreStart
             if ( ! $this->isSingularRelation($relation)) {
-                // @codeCoverageIgnoreStart
                 return null;
-                // @codeCoverageIgnoreEnd
             }
 
             // Get the type for the actually related item
@@ -204,6 +202,7 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
             }
 
             return $this->getTypeMaker()->makeFor(new $modelClass);
+            // @codeCoverageIgnoreEnd
         }
 
         return $this->getTypeMaker()->makeFor(
