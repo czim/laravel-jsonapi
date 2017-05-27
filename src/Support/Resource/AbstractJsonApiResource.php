@@ -130,15 +130,17 @@ abstract class AbstractJsonApiResource implements ResourceInterface
      */
     public function url()
     {
-        if (null === $this->url) {
-            return $this->getResourcePathHelper()->makePath($this);
+        $url = $this->url;
+
+        if ($url === null) {
+            $url = $this->getResourcePathHelper()->makePath($this);
         }
 
-        if ($this->isUrlAbsolute($this->url)) {
-            return $this->url;
+        if ($this->isUrlAbsolute($url)) {
+            return $url;
         }
 
-        return rtrim(config('jsonapi.base_url'), '/') . '/' . ltrim($this->url);
+        return rtrim(config('jsonapi.base_url'), '/') . '/' . ltrim($url);
     }
 
     /**

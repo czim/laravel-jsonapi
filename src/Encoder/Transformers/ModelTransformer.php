@@ -77,7 +77,7 @@ class ModelTransformer extends AbstractTransformer
      */
     protected function getBaseResourceUrl(ResourceInterface $resource)
     {
-        return $this->encoder->getBaseUrl() . '/' . $resource->type();
+        return $resource->url();
     }
 
     /**

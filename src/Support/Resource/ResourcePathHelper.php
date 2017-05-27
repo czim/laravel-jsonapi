@@ -24,13 +24,23 @@ class ResourcePathHelper
 
         $prefix = config('jsonapi.repository.resource.namespace');
 
-        if ($prefix && starts_with($classname, $prefix)) {
-            $classname = ltrim(substr($classname, strlen($prefix)), '\\');
+        // If no prefix is available, or it cannot be stripped from the resource's namespace,
+        // the namespace should just default to the top-level type.
+        if ( ! $prefix || ! starts_with($classname, $prefix)) {
+            return $resource->type();
         }
+
+        $classname = ltrim(substr($classname, strlen($prefix)), '\\');
 
         // Dasherize path elements
         $segments = explode('\\', $classname);
         $segments = array_map(function ($segment) { return snake_case($segment, '-'); }, $segments);
+
+        // The final segment should not be trusted, but replaced with the resource type,
+        // to avoid creating paths that don't match up with defined resource types.
+        array_pop($segments);
+
+        $segments[] = $resource->type();
 
         return implode('/', $segments);
     }
