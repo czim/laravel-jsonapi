@@ -65,11 +65,27 @@ return [
         'default-datetime-format' => 'c',
 
         'links' => [
+
+            // Whether the 'relationships' link should be included where possible.
+            'relationships' => true,
+
             // The segment to add for relationship links:
             // as in
-            //      <base URL>/<resource>/<relationships>/<include key>
-            //      http://api.somewhere.com/post/relationships/comments
+            //      <base URL>/<resource>/<id>/<relationships>/<include key>
+            //      http://api.somewhere.com/post/1/relationships/comments
             'relationships-segment' => 'relationships',
+
+
+            // Whether the 'related' link should be included where possible.
+            'related' => true,
+
+            // The segment to add for the related links:
+            // as in
+            //      <base URL>/<resource>/<id>/<related>/<include key>
+            //      http://api.somewhere.com/post/1/related/comments
+            // May be empty, in which the URL would like this:
+            //      http://api.somewhere.com/post/1/comments
+            'related-segment' => 'related',
         ],
 
         // Generating JSON-API type from Eloquent models.

@@ -125,7 +125,7 @@ class ModelTransformer extends AbstractTransformer
             $relatedType = $resource->relationshipType($key);
 
             $data[ $key ] = [
-                Key::LINKS => $this->getLinksData($resource, $key, $relatedType)
+                Key::LINKS => $this->getLinksData($resource, $key)
             ];
 
 
@@ -221,23 +221,24 @@ class ModelTransformer extends AbstractTransformer
      *
      * @param ResourceInterface $resource
      * @param string            $key
-     * @param string            $relatedType
      * @return array
      */
-    protected function getLinksData(ResourceInterface $resource, $key, $relatedType)
+    protected function getLinksData(ResourceInterface $resource, $key)
     {
-        $data = [
-            Key::LINK_SELF => $this->getBaseResourceUrl($resource) . '/'
-                            . $resource->id() . '/'
-                            . $this->getRelationshipsSegment() . '/'
-                            . $key,
-        ];
+        $data = [];
 
-        // If the relation is not morph/variable, add the related link
-        if ($relatedType) {
+        if ($this->addRelationshipsLink()) {
+            $data[ Key::LINK_SELF ] = $this->getBaseResourceUrl($resource) . '/'
+                . $resource->id() . '/'
+                . $this->getRelationshipsLinkSegment()
+                . $key;
+        }
+
+        if ($this->addRelatedLink()) {
             $data[ KEY::LINK_RELATED ] = $this->getBaseResourceUrl($resource) . '/'
-                                       . $resource->id() . '/'
-                                       . $relatedType;
+                . $resource->id() . '/'
+                . $this->getRelatedLinkSegment()
+                . $key;
         }
 
         return $data;
@@ -364,11 +365,47 @@ class ModelTransformer extends AbstractTransformer
     }
 
     /**
+     * @return bool
+     */
+    protected function addRelationshipsLink()
+    {
+        return (bool) config('jsonapi.transform.links.relationships');
+    }
+
+    /**
+     * @return bool
+     */
+    protected function addRelatedLink()
+    {
+        return (bool) config('jsonapi.transform.links.related');
+    }
+
+    /**
      * @return string
      */
-    protected function getRelationshipsSegment()
+    protected function getRelationshipsLinkSegment()
     {
-        return config('jsonapi.transform.links.relationships-segment', 'relationships');
+        $segment = config('jsonapi.transform.links.relationships-segment', 'relationships');
+
+        if ( ! $segment) {
+            return '';
+        }
+
+        return rtrim($segment, '/') . '/';
+    }
+
+    /**
+     * @return string
+     */
+    protected function getRelatedLinkSegment()
+    {
+        $segment = config('jsonapi.transform.links.related-segment', 'related');
+
+        if ( ! $segment) {
+            return '';
+        }
+
+        return rtrim($segment, '/') . '/';
     }
 
     /**
