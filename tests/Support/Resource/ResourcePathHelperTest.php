@@ -19,13 +19,13 @@ class ResourcePathHelperTest extends TestCase
 
         $helper = new ResourcePathHelper;
 
-        static::assertEquals('abstract-test/test-abstract-resource', $helper->makePath($resource));
+        static::assertEquals('abstract-test/test-resource', $helper->makePath($resource));
     }
 
     /**
      * @test
      */
-    function it_uses_full_namespace_if_config_prefix_does_not_match()
+    function it_uses_top_level_type_only_if_config_prefix_does_not_match()
     {
         $this->app['config']->set('jsonapi.repository.resource.namespace', 'Does\\NotMatch\\');
 
@@ -34,7 +34,7 @@ class ResourcePathHelperTest extends TestCase
         $helper = new ResourcePathHelper;
 
         static::assertEquals(
-            'czim/json-api/test/helpers/resources/abstract-test/test-abstract-resource',
+            'test-resource',
             $helper->makePath($resource)
         );
     }

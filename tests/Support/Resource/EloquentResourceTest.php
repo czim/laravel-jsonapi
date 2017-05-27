@@ -73,9 +73,12 @@ class EloquentResourceTest extends TestCase
      */
     function it_returns_the_url()
     {
+        $resource = new TestAbstractEloquentResource;
+        $resource->setModel(new TestSimpleModel);
+
         static::assertEquals(
-            'czim/json-api/test/helpers/resources/abstract-test/test-abstract-eloquent-resource',
-            (new TestAbstractEloquentResource)->url()
+            'http://localhost/api/test-simple-models',
+            $resource->url()
         );
 
         $this->app['config']->set('jsonapi.base_url', 'https://base_url/api');

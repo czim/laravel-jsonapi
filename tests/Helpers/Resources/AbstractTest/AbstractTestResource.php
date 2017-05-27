@@ -13,7 +13,7 @@ abstract class AbstractTestResource extends AbstractJsonApiResource
      */
     public function type()
     {
-        return null;
+        return 'test-resource';
     }
 
     /**

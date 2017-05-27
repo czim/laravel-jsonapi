@@ -30,6 +30,16 @@ class ModelEncodingTest extends AbstractSeededTestCase
 {
 
     /**
+     * {@inheritdoc}
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->app['config']->set('jsonapi.repository.resource.namespace', 'Czim\\JsonApi\\Test\\Helpers\\Resources\\');
+    }
+
+    /**
      * @test
      */
     function it_transforms_a_model_with_related_records()
