@@ -129,6 +129,95 @@ class ModelEncodingTest extends AbstractSeededTestCase
     /**
      * @test
      */
+    function it_transforms_a_model_with_related_records_with_configured_relation_link_segments()
+    {
+        $this->app['config']->set('jsonapi.transform.links.relationships-segment', '');
+        $this->app['config']->set('jsonapi.transform.links.related-segment', 'related');
+
+        /** @var ResourceCollectorInterface|Mockery\Mock $collector */
+        $collector = Mockery::mock(ResourceCollectorInterface::class);
+        $collector->shouldReceive('collect')->andReturn(new Collection);
+
+        $factory    = new TransformerFactory;
+        $repository = new ResourceRepository($collector);
+        $encoder    = new Encoder($factory, $repository);
+        $this->app->instance(ResourceRepositoryInterface::class, $repository);
+
+        $repository->register(TestPost::class, new TestPostResource);
+        $repository->register(TestComment::class, new TestCommentResource);
+        $repository->register(TestAuthor::class, new TestAuthorResource);
+        $repository->register(TestSeo::class, new TestSeoResource);
+
+        $transformer = new ModelTransformer;
+        $transformer->setEncoder($encoder);
+
+        static::assertEquals(
+            [
+                'data' => [
+                    'id'         => '1',
+                    'type'       => 'test-posts',
+                    'attributes' => [
+                        'title'                => 'Some Basic Title',
+                        'body'                 => 'Lorem ipsum dolor sit amet, egg beater batter pan consectetur adipiscing elit.',
+                        'type'                 => 'notice',
+                        'checked'              => true,
+                        'description-adjusted' => 'Prefix: the best possible post for testing',
+                    ],
+                    'relationships' => [
+                        'comments' => [
+                            'links' => [
+                                'self'    => 'http://localhost/api/test-posts/1/comments',
+                                'related' => 'http://localhost/api/test-posts/1/related/comments',
+                            ],
+                            'data' => [
+                                ['id' => '1', 'type' => 'test-comments'],
+                                ['id' => '2', 'type' => 'test-comments'],
+                            ],
+                        ],
+                        'main-author' => [
+                            'links' => [
+                                'self'    => 'http://localhost/api/test-posts/1/main-author',
+                                'related' => 'http://localhost/api/test-posts/1/related/main-author',
+                            ],
+                            'data' => ['type' => 'test-authors', 'id' => '1'],
+                        ],
+                        'seo' => [
+                            'links' => [
+                                'self'    => 'http://localhost/api/test-posts/1/seo',
+                                'related' => 'http://localhost/api/test-posts/1/related/seo',
+                            ],
+                            'data' => null,
+                        ],
+                        'related' => [
+                            'links' => [
+                                'self'    => 'http://localhost/api/test-posts/1/related',
+                                'related' => 'http://localhost/api/test-posts/1/related/related',
+                            ],
+                            'data' => [
+                                ['type' => 'test-posts', 'id' => '2'],
+                                ['type' => 'test-posts', 'id' => '3'],
+                            ],
+                        ],
+                        'pivot-related' => [
+                            'links' => [
+                                'self'    => 'http://localhost/api/test-posts/1/pivot-related',
+                                'related' => 'http://localhost/api/test-posts/1/related/pivot-related',
+                            ],
+                            'data' => [
+                                ['type' => 'test-posts', 'id' => '2'],
+                                ['type' => 'test-posts', 'id' => '3'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            $transformer->transform(TestPost::first())
+        );
+    }
+
+    /**
+     * @test
+     */
     function it_transforms_a_model_with_empty_relations_data()
     {
         // Set up the model to clear relations.
