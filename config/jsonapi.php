@@ -2,6 +2,8 @@
 
 use Czim\JsonApi\Contracts\Support\Error\ErrorDataInterface;
 use Czim\JsonApi\Encoder\Transformers\ErrorDataTransformer;
+use Czim\JsonApi\Encoder\Transformers\ModelRelationshipTransformer;
+use Czim\JsonApi\Support\Resource\RelationshipTransformData;
 
 return [
 
@@ -102,7 +104,8 @@ return [
         // The TransformerFactory will use this to instantiate transformers based on an is_a() match
         // on given content, if no standard match was found.
         'map' => [
-            ErrorDataInterface::class => ErrorDataTransformer::class,
+            ErrorDataInterface::class        => ErrorDataTransformer::class,
+            RelationshipTransformData::class => ModelRelationshipTransformer::class,
             // \Your\ClassHere::class => \Your\Transformer\ClassHere::class
         ],
     ],

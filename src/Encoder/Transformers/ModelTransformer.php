@@ -5,6 +5,7 @@ use Czim\JsonApi\Contracts\Resource\EloquentResourceInterface;
 use Czim\JsonApi\Contracts\Resource\ResourceInterface;
 use Czim\JsonApi\Enums\Key;
 use Czim\JsonApi\Exceptions\EncodingException;
+use Czim\JsonApi\Support\Resource\RelationshipTransformData;
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
 
@@ -70,17 +71,6 @@ class ModelTransformer extends AbstractTransformer
     }
 
     /**
-     * Returns base URI for the resource.
-     *
-     * @param ResourceInterface $resource
-     * @return string
-     */
-    protected function getBaseResourceUrl(ResourceInterface $resource)
-    {
-        return $resource->url();
-    }
-
-    /**
      * Returns serialized meta section for a given resource.
      *
      * @param ResourceInterface $resource
@@ -122,48 +112,19 @@ class ModelTransformer extends AbstractTransformer
 
         foreach ($resource->availableIncludes() as $key) {
 
-            $data[ $key ] = [
-                Key::LINKS => $this->getLinksData($resource, $key)
-            ];
-
-
-            // Set data and side-load includes
-
             $fullyIncluded = $this->shouldIncludeFully($resource, $key, $defaultIncludes);
 
-            // References (type/id) should be added as data for the relationship if:
-            // a. a relationship is included by default or by the client
-            // b. a relationship is marked to always have references included in the resource
-            if ($fullyIncluded || $resource->includeReferencesForRelation($key)) {
+            $transformParameters = new RelationshipTransformData([
+                'resource'   => $resource,
+                'include'    => $key,
+                'sideload'   => $fullyIncluded,
+                'references' => $fullyIncluded || $resource->includeReferencesForRelation($key),
+            ]);
 
-                // Get nested data, either plucking the keys for the related model,
-                // or simply retrieving the entire model/collection.
+            $transformer = $this->encoder->makeTransformer($transformParameters);
+            $transformer->setParent($this->parent . '.' . $key);
 
-                if ($fullyIncluded) {
-
-                    // If fully included, also add the information to the encoder.
-                    // This data must be transformed using a relevant transformer.
-
-                    // If fully included, get the type/id references from the transformed data
-                    // to prevent redundant processing.
-
-                    $singular = $resource->isRelationshipSingular($key);
-
-                    $related = $this->getRelatedFullData($resource, $key);
-
-                    $this->addRelatedDataToEncoder($related, $singular);
-
-                    if (empty(array_get($related, Key::DATA))) {
-                        $data[ $key ][ Key::DATA ] = array_get($related, Key::DATA);
-                    } else {
-                        $data[ $key ][ Key::DATA ] = $this->getRelatedReferencesFromRelatedData($related, $singular);
-                    }
-
-                } else {
-
-                    $data[ $key ][ Key::DATA ] = $this->getRelatedReferenceData($resource, $key);
-                }
-            }
+            $data[ $key ] = $transformer->transform($transformParameters);
         }
 
         return $data;
@@ -215,127 +176,6 @@ class ModelTransformer extends AbstractTransformer
     }
 
     /**
-     * Returns JSON-API links section data.
-     *
-     * @param ResourceInterface $resource
-     * @param string            $key
-     * @return array
-     */
-    protected function getLinksData(ResourceInterface $resource, $key)
-    {
-        $data = [];
-
-        if ($this->addRelationshipsLink()) {
-            $data[ Key::LINK_SELF ] = $this->getBaseResourceUrl($resource) . '/'
-                . $resource->id() . '/'
-                . $this->getRelationshipsLinkSegment()
-                . $key;
-        }
-
-        if ($this->addRelatedLink()) {
-            $data[ KEY::LINK_RELATED ] = $this->getBaseResourceUrl($resource) . '/'
-                . $resource->id() . '/'
-                . $this->getRelatedLinkSegment()
-                . $key;
-        }
-
-        return $data;
-    }
-
-    /**
-     * Returns transformed data for full includes
-     *
-     * @param ResourceInterface $resource
-     * @param string            $includeKey
-     * @return array
-     */
-    protected function getRelatedFullData(ResourceInterface $resource, $includeKey)
-    {
-        $related = $resource->relationshipData($includeKey);
-
-        $transformer = $this->encoder->makeTransformer($related);
-        $transformer->setParent($this->parent . '.' . $includeKey);
-        $transformer->setIsVariable($resource->isRelationshipVariable($includeKey));
-
-        // For nullable singular relations, make sure we return data normalized under a data key
-        // The recursive transformer call cannot detect this, since it will only see a NULL value.
-        if (null === $related) {
-            return [ Key::DATA => null ];
-        }
-
-        return $transformer->transform($related);
-    }
-
-    /**
-     * @param ResourceInterface $resource
-     * @param string            $includeKey
-     * @return array
-     */
-    protected function getRelatedReferenceData(ResourceInterface $resource, $includeKey)
-    {
-        return $resource->relationshipReferences($includeKey);
-    }
-
-    /**
-     * Registers related data with encoder for full top level side-loaded includes.
-     *
-     * @param null|array|array[] $data
-     * @param bool               $singular      whether the relation is singular
-     */
-    protected function addRelatedDataToEncoder($data, $singular = true)
-    {
-        if ( ! is_array($data)) {
-            // @codeCoverageIgnoreStart
-            return;
-            // @codeCoverageIgnoreEnd
-        }
-
-        if ($singular) {
-            $data = [ array_get($data, Key::DATA) ];
-        } else {
-            $data = array_get($data, Key::DATA, []);
-        }
-
-        foreach ($data as $related) {
-            if ( ! is_array($related)) {
-                continue;
-            }
-
-            $identifier = array_get($related, 'type') . ':' . array_get($related, 'id');
-            $this->encoder->addIncludedData($related, $identifier);
-        }
-    }
-
-    /**
-     * Extracts type/id references from full include data
-     *
-     * @param array $data
-     * @param bool  $singular
-     * @return array
-     */
-    protected function getRelatedReferencesFromRelatedData(array $data, $singular = false)
-    {
-        $data = array_get($data, Key::DATA, []);
-
-        if ($singular) {
-            return [
-                'type' => array_get($data, 'type'),
-                'id'   => array_get($data, 'id'),
-            ];
-        }
-
-        return array_map(
-            function ($related) {
-                return [
-                    'type' => array_get($related, 'type'),
-                    'id'   => array_get($related, 'id'),
-                ];
-            },
-            $data
-        );
-    }
-
-    /**
      * Normalizes a model attribute key to a JSON-API attribute key.
      *
      * @param string $key
@@ -360,50 +200,6 @@ class ModelTransformer extends AbstractTransformer
     protected function shouldIgnoreDefaultIncludesWhenRequestedSet()
     {
         return (bool) config('jsonapi.transform.requested-includes-cancel-defaults');
-    }
-
-    /**
-     * @return bool
-     */
-    protected function addRelationshipsLink()
-    {
-        return (bool) config('jsonapi.transform.links.relationships');
-    }
-
-    /**
-     * @return bool
-     */
-    protected function addRelatedLink()
-    {
-        return (bool) config('jsonapi.transform.links.related');
-    }
-
-    /**
-     * @return string
-     */
-    protected function getRelationshipsLinkSegment()
-    {
-        $segment = config('jsonapi.transform.links.relationships-segment', 'relationships');
-
-        if ( ! $segment) {
-            return '';
-        }
-
-        return rtrim($segment, '/') . '/';
-    }
-
-    /**
-     * @return string
-     */
-    protected function getRelatedLinkSegment()
-    {
-        $segment = config('jsonapi.transform.links.related-segment', 'related');
-
-        if ( ! $segment) {
-            return '';
-        }
-
-        return rtrim($segment, '/') . '/';
     }
 
     /**
