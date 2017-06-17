@@ -3,6 +3,7 @@ namespace Czim\JsonApi\Http\Requests;
 
 use Czim\JsonApi\Contracts\Support\Validation\JsonApiValidatorInterface;
 use Czim\JsonApi\Data\Root;
+use Czim\JsonApi\Exceptions\JsonApiValidationException;
 use Czim\JsonApi\Support\Request\RequestQueryParser;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -115,10 +116,8 @@ class JsonApiRequest extends FormRequest
 
         if ( ! $validator->validateSchema($this->getInputSource()->all(), $this->schemaValidationType)) {
 
-            throw new HttpResponseException(
-                $this->response($validator->getErrors()->toArray())
-                    ->setStatusCode(422)
-            );
+            throw (new JsonApiValidationException('JSON-API Schema validation error'))
+                ->setErrors($validator->getErrors()->toArray());
         }
     }
 
