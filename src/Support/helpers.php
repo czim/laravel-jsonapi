@@ -86,7 +86,7 @@ if ( ! function_exists('jsonapi_error')) {
     {
         $encoded = jsonapi_encode($data);
 
-        $status = (int) array_get($encoded, 'error.status', 500);
+        $status = (int) array_get($encoded, 'errors.0.status', 500);
 
         return jsonapi_response($encoded, $status);
     }
