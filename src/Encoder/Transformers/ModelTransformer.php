@@ -122,7 +122,7 @@ class ModelTransformer extends AbstractTransformer
             ]);
 
             $transformer = $this->encoder->makeTransformer($transformParameters);
-            $transformer->setParent($this->parent . '.' . $key);
+            $transformer->setParent($this->parent);
 
             $data[ $key ] = $transformer->transform($transformParameters);
         }
