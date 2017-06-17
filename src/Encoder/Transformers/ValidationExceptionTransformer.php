@@ -48,7 +48,9 @@ class ValidationExceptionTransformer extends ErrorDataTransformer
                     'code'   => (string) $exception->getCode(),
                     'title'  => $exception->getMessage(),
                     'detail' => implode("\n", $errors),
-                    'source' => ['pointer' => $prefix . $key],
+                    'source' => [
+                        'pointer' => $this->formatAttributePointer($key, $prefix),
+                    ],
                 ]);
                 continue;
             }
@@ -60,7 +62,9 @@ class ValidationExceptionTransformer extends ErrorDataTransformer
                     'code'   => (string) $exception->getCode(),
                     'title'  => $exception->getMessage(),
                     'detail' => $error,
-                    'source' => ['pointer' => $prefix . $key],
+                    'source' => [
+                        'pointer' => $this->formatAttributePointer($key, $prefix),
+                    ],
                 ]);
             }
         }
@@ -100,6 +104,18 @@ class ValidationExceptionTransformer extends ErrorDataTransformer
     protected function getTitle(Exception $exception)
     {
         return ucfirst(snake_case(class_basename($exception), ' '));
+    }
+
+    /**
+     * Returns pointer notation with optional prefix for source object.
+     *
+     * @param string      $key
+     * @param string|null $prefix
+     * @return string
+     */
+    protected function formatAttributePointer($key, $prefix = null)
+    {
+        return str_replace('.', '/', $prefix . $key);
     }
 
 }

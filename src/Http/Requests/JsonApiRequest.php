@@ -5,6 +5,7 @@ use Czim\JsonApi\Contracts\Support\Validation\JsonApiValidatorInterface;
 use Czim\JsonApi\Data\Root;
 use Czim\JsonApi\Exceptions\JsonApiValidationException;
 use Czim\JsonApi\Support\Request\RequestQueryParser;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exception\HttpResponseException;
 
@@ -127,6 +128,17 @@ class JsonApiRequest extends FormRequest
     protected function getSchemaValidator()
     {
         return app(JsonApiValidatorInterface::class);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws JsonApiValidationException
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        throw (new JsonApiValidationException('The given data failed to pass validation.'))
+            ->setErrors($this->formatErrors($validator));
     }
 
 }
