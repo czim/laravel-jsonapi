@@ -121,6 +121,10 @@ return [
 
         // Default page size
         'size' => 25,
+
+        // Maximum allowed page size
+        'max_size' => 1000,
+
     ],
 
 

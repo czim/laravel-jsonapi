@@ -62,7 +62,7 @@ interface RequestQueryParserInterface
     public function getPageLimit();
 
     /**
-     * @return int
+     * @return mixed
      */
     public function getPageCursor();
 
