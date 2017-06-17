@@ -15,6 +15,11 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     {
         $app->register(JsonApiServiceProvider::class);
 
+        $app->singleton(
+            \Illuminate\Contracts\Debug\ExceptionHandler::class,
+            \Czim\JsonApi\Test\Helpers\Exceptions\Handler::class
+        );
+
         // Setup default database to use sqlite :memory:
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
