@@ -127,7 +127,7 @@ class ModelRelationshipTransformer extends AbstractTransformer
         $related = $resource->relationshipData($includeKey);
 
         $transformer = $this->encoder->makeTransformer($related);
-        $transformer->setParent($this->parent . '.' . $includeKey);
+        $transformer->setParent(trim($this->parent . '.' . $includeKey, '.'));
         $transformer->setIsVariable($resource->isRelationshipVariable($includeKey));
 
         // For nullable singular relations, make sure we return data normalized under a data key
