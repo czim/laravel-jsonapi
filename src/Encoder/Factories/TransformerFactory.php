@@ -34,6 +34,16 @@ class TransformerFactory implements TransformerFactoryInterface
      */
     protected function determineTransformerClass($data)
     {
+        // Specific class fqn map to transformers with is_a() checking
+
+        if (is_object($data)) {
+            if ($class = $this->determineMappedTransformer($data)) {
+                return $class;
+            }
+        }
+
+        // Fallback: pick best available by type
+
         if ($data instanceof Model) {
             return Transformers\ModelTransformer::class;
         }
@@ -53,13 +63,6 @@ class TransformerFactory implements TransformerFactoryInterface
 
         if ($data instanceof AbstractPaginator && $this->isPaginatorWithOnlyModels($data)) {
             return Transformers\PaginatedModelsTransformer::class;
-        }
-
-        // Fallback: class fqn map to transformers with is_a() checking
-        if (is_object($data)) {
-            if ($class = $this->determineMappedTransformer($data)) {
-                return $class;
-            }
         }
 
         return Transformers\SimpleTransformer::class;
