@@ -13,7 +13,7 @@ class JsonApiValidationException extends Exception
 {
 
     /**
-     * Validation errors by key
+     * Validation errors by key.
      *
      * @var array[]
      */
