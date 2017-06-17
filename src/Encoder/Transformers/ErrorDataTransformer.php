@@ -11,20 +11,40 @@ class ErrorDataTransformer extends AbstractTransformer
     /**
      * Transforms given data.
      *
-     * @param ErrorDataInterface $error
+     * @param ErrorDataInterface|ErrorDataInterface[] $errors
      * @return array
      */
-    public function transform($error)
+    public function transform($errors)
     {
-        if ( ! ($error instanceof ErrorDataInterface)) {
-            throw new InvalidArgumentException("ErrorDataTransformer expects ErrorDataInterface instance");
+        if ( ! is_array($errors)) {
+            $errors = [ $errors ];
         }
 
+        $this->checkErrorDataArray($errors);
+
         return [
-            Key::ERRORS => [
-                $error->toCleanArray()
-            ],
+            Key::ERRORS => array_map(
+                function (ErrorDataInterface $error) {
+                    return $error->toCleanArray();
+                },
+                $errors
+            ),
         ];
+    }
+
+    /**
+     * Checks all error objects in a given array, throw exception if one does not match expected interface.
+     *
+     * @param array $errors
+     */
+    protected function checkErrorDataArray(array $errors)
+    {
+        foreach ($errors as $error) {
+
+            if ( ! ($error instanceof ErrorDataInterface)) {
+                throw new InvalidArgumentException("ErrorDataTransformer expects (array of) ErrorDataInterface instance(s)");
+            }
+        }
     }
 
 }
