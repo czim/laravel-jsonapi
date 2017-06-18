@@ -4,7 +4,6 @@ namespace Czim\JsonApi\Encoder\Transformers;
 use Czim\JsonApi\Contracts\Support\Error\ErrorDataInterface;
 use Czim\JsonApi\Exceptions\JsonApiValidationException;
 use Czim\JsonApi\Support\Error\ErrorData;
-use Exception;
 use InvalidArgumentException;
 
 class ValidationExceptionTransformer extends ErrorDataTransformer
@@ -73,37 +72,12 @@ class ValidationExceptionTransformer extends ErrorDataTransformer
     }
 
     /**
-     * @param Exception $exception
+     * @param JsonApiValidationException $exception
      * @return int|mixed
      */
-    protected function getStatusCode(Exception $exception)
+    protected function getStatusCode(JsonApiValidationException $exception)
     {
-        // special case: fully formed response exception (laravel 5.2 validation)
-        if (is_a($exception, \Illuminate\Http\Exceptions\HttpResponseException::class)) {
-            /** @var \Illuminate\Http\Exceptions\HttpResponseException $exception */
-            return $exception->getResponse()->getStatusCode();
-        }
-
-        $mapping = config('jsonapi.exceptions.status', []);
-
-        if (array_key_exists(get_class($exception), $mapping)) {
-            return $mapping[ get_class($exception) ];
-        }
-
-        if (method_exists($exception, 'getStatusCode')) {
-            return $exception->getStatusCode();
-        }
-
-        return 500;
-    }
-
-    /**
-     * @param Exception $exception
-     * @return string
-     */
-    protected function getTitle(Exception $exception)
-    {
-        return ucfirst(snake_case(class_basename($exception), ' '));
+        return $exception->getStatusCode() ?: 500;
     }
 
     /**
