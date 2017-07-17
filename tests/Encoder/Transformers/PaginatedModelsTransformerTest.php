@@ -52,6 +52,8 @@ class PaginatedModelsTransformerTest extends TestCase
         $encoderMock->shouldReceive('getResourceForModel')->with(Mockery::type(TestSimpleModel::class))
             ->andReturn(new TestSimpleModelResource);
 
+        $encoderMock->shouldReceive('setLink')->with('self', 'http://localhost/models?page[number]=2')
+            ->once()->andReturnSelf();
         $encoderMock->shouldReceive('setLink')->with('first', 'http://localhost/models?page[number]=1')
             ->once()->andReturnSelf();
         $encoderMock->shouldReceive('setLink')->with('next', 'http://localhost/models?page[number]=3')
@@ -132,6 +134,7 @@ class PaginatedModelsTransformerTest extends TestCase
         $encoderMock->shouldReceive('getResourceForModel')->with(Mockery::type(TestSimpleModel::class))
             ->andReturn(new TestSimpleModelResource);
 
+        $encoderMock->shouldReceive('setLink')->with('self', '/testing/path?pg_test=2')->once()->andReturnSelf();
         $encoderMock->shouldReceive('setLink')->with('first', '/testing/path?pg_test=1')->once()->andReturnSelf();
         $encoderMock->shouldReceive('setLink')->with('next', '/testing/path?pg_test=3')->once()->andReturnSelf();
         $encoderMock->shouldReceive('setLink')->with('prev', '/testing/path?pg_test=1')->once()->andReturnSelf();
