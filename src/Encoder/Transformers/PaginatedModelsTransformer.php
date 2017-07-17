@@ -33,6 +33,11 @@ class PaginatedModelsTransformer extends ModelCollectionTransformer
     protected function injectPaginationLinks(AbstractPaginator $paginator)
     {
         $this->encoder->setLink(
+            Key::LINK_SELF,
+            $this->makePaginationLink($paginator, $paginator->currentPage())
+        );
+
+        $this->encoder->setLink(
             Key::PAGE_FIRST,
             $this->makePaginationLink($paginator, static::FIRST_PAGE)
         );
