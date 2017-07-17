@@ -90,12 +90,12 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
      */
     public function attributeValue($name, $default = null)
     {
-        $accessorMethod = 'get' . studly_case($name) . 'Attribute';
+        $accessorMethod = 'get' . studly_case(str_replace('-', ' ', $name)) . 'Attribute';
 
         if (method_exists($this, $accessorMethod)) {
             $value = call_user_func([ $this, $accessorMethod ]);
         } else {
-            $value = $this->model->{$name};
+            $value = $this->model->{$this->getModelAttributeForApiAttribute($name)};
         }
 
         if ($this->isAttributeDate($name, $value)) {
@@ -103,6 +103,17 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
         }
 
         return null !== $value ? $value : $default;
+    }
+
+    /**
+     * Returns the model attribute for a given JSON-API attribute, if available.
+     *
+     * @param string $name
+     * @return string|false
+     */
+    public function getModelAttributeForApiAttribute($name)
+    {
+        return snake_case(str_replace('-', ' ', $name));
     }
 
     /**
