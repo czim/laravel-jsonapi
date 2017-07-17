@@ -44,4 +44,12 @@ interface EloquentResourceInterface extends ResourceInterface
      */
     public function getRelationMethodForInclude($name);
 
+    /**
+     * Returns the model attribute for a given JSON-API attribute, if available.
+     *
+     * @param string $name
+     * @return string|false
+     */
+    public function getModelAttributeForApiAttribute($name);
+
 }
