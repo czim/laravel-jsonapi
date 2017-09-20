@@ -152,7 +152,18 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
         }
 
         if ($this->model->relationLoaded($method)) {
-            $ids = $this->model->{$method}->pluck($relatedModel->getKeyName())->toArray();
+            if ($singular) {
+
+                if ($this->model->{$method}) {
+                    $ids = [ $this->model->{$method}->{$relatedModel->getKeyName()} ];
+                } else {
+                    $ids = [];
+                }
+
+            } else {
+                $ids = $this->model->{$method}->pluck($relatedModel->getKeyName())->toArray();
+            }
+
         } else {
             $ids = $relation->pluck($relatedModel->getQualifiedKeyName())->toArray();
         }
