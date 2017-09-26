@@ -113,7 +113,7 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
      */
     public function getModelAttributeForApiAttribute($name)
     {
-        return snake_case(str_replace('-', ' ', $name));
+        return snake_case(camel_case($name));
     }
 
     /**
