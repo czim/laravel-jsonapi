@@ -137,7 +137,9 @@ class JsonApiRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         throw (new JsonApiValidationException('The given data failed to pass validation.'))
-            ->setErrors($this->formatErrors($validator));
+            ->setErrors(
+                $validator->getMessageBag()->toArray()
+            );
     }
 
 }
