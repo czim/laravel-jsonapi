@@ -23,7 +23,9 @@ class TypeMaker implements TypeMakerInterface
         }
 
         if (is_object($source)) {
-            return str_plural(snake_case(class_basename($source), static::WORD_SEPARATOR));
+            return $this->pluralizeIfConfiguredTo(
+                snake_case(class_basename($source), static::WORD_SEPARATOR)
+            );
         }
 
         if (is_string($source)) {
@@ -46,7 +48,9 @@ class TypeMaker implements TypeMakerInterface
             $offsetNamespace = config('jsonapi.transform.type.trim-namespace');
         }
 
-        $baseDasherized = str_plural(snake_case(class_basename($record), static::WORD_SEPARATOR));
+        $baseDasherized = $this->pluralizeIfConfiguredTo(
+            snake_case(class_basename($record), static::WORD_SEPARATOR)
+        );
 
         if (null !== $offsetNamespace) {
 
@@ -99,5 +103,28 @@ class TypeMaker implements TypeMakerInterface
         );
 
         return implode(static::NAMESPACE_SEPARATOR, $parts);
+    }
+
+    /**
+     * @param string $type
+     * @return string
+     */
+    protected function pluralizeIfConfiguredTo($type)
+    {
+        if ($this->plural()) {
+            return str_plural($type);
+        }
+
+        return $type;
+    }
+
+    /**
+     * Returns whether JSON-API type must be plural.
+     *
+     * @return bool
+     */
+    protected function plural()
+    {
+        return (bool) config('jsonapi.type.plural', true);
     }
 }
