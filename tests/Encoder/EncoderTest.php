@@ -40,6 +40,31 @@ class EncoderTest extends TestCase
     /**
      * @test
      */
+    function it_encodes_simple_data_with_meta_data()
+    {
+        $factoryMock     = $this->getMockFactory();
+        $repositoryMock  = $this->getMockResourceRepository();
+        $transformerMock = $this->getMockTransformer();
+
+        $transformerMock->shouldReceive('setEncoder')->andReturnSelf();
+        $transformerMock->shouldReceive('setIsTop')->andReturnSelf();
+        $transformerMock->shouldReceive('transform')->with('simple')->andReturn(['data' => 'simple']);
+        $factoryMock->shouldReceive('makeFor')->with('simple')->once()->andReturn($transformerMock);
+
+        $encoder = new Encoder($factoryMock, $repositoryMock);
+
+        $encoder->setMeta(['twice' => 'tested']);
+        $encoder->addMeta('test', 'okay');
+
+        static::assertEquals(
+            ['meta' => ['test' => 'okay', 'twice' => 'tested'], 'data' => 'simple'],
+            $encoder->encode('simple')
+        );
+    }
+
+    /**
+     * @test
+     */
     function it_encodes_simple_data_with_requested_includes()
     {
         $factoryMock     = $this->getMockFactory();
