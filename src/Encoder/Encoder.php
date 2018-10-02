@@ -108,6 +108,11 @@ class Encoder implements EncoderInterface
         if ($this->hasLinks()) {
             $encoded[ Key::LINKS ] = $this->serializeLinks();
         }
+        
+        // Append meta information
+        if ($this->getMeta()) {
+            $encoded[ Key::META ] = $this->getMeta();
+        }
 
         // Make sure top resource is not in the included data
         if (array_key_exists(Key::DATA, $encoded)) {
@@ -254,6 +259,14 @@ class Encoder implements EncoderInterface
         $this->links->forget($key);
 
         return $this;
+    }
+    
+    /**
+     * @return bool
+     */
+    public function hasMeta()
+    {
+        return (bool) count($this->getMeta());
     }
 
     /**
