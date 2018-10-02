@@ -262,6 +262,8 @@ class Encoder implements EncoderInterface
     }
     
     /**
+     * Returns whether any meta data has been set.
+     *
      * @return bool
      */
     public function hasMeta()
