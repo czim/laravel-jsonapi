@@ -293,7 +293,7 @@ class EncoderTest extends TestCase
 
 
     /**
-     * @return TransformerFactoryInterface|Mockery\MockInterface
+     * @return TransformerFactoryInterface|Mockery\MockInterface|Mockery\Mock
      */
     protected function getMockFactory()
     {
@@ -301,7 +301,7 @@ class EncoderTest extends TestCase
     }
 
     /**
-     * @return ResourceRepositoryInterface|Mockery\MockInterface
+     * @return ResourceRepositoryInterface|Mockery\MockInterface|Mockery\Mock
      */
     protected function getMockResourceRepository()
     {
@@ -309,7 +309,7 @@ class EncoderTest extends TestCase
     }
 
     /**
-     * @return TransformerInterface|Mockery\MockInterface
+     * @return TransformerInterface|Mockery\MockInterface|Mockery\Mock
      */
     protected function getMockTransformer()
     {
@@ -317,7 +317,7 @@ class EncoderTest extends TestCase
     }
 
     /**
-     * @return ResourceInterface|Mockery\MockInterface
+     * @return ResourceInterface|Mockery\MockInterface|Mockery\Mock
      */
     protected function getMockResource()
     {
