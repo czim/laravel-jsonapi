@@ -108,7 +108,7 @@ class Encoder implements EncoderInterface
         if ($this->getMeta()) {
             $encoded[ Key::META ] = $this->getMeta();
         }
-        
+
         // Serialize collected data and decorate the encoded data with it.
         if ($this->hasLinks()) {
             $encoded[ Key::LINKS ] = $this->serializeLinks();
