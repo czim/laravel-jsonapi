@@ -42,15 +42,15 @@ class ModelTransformer extends AbstractTransformer
             Key::META          => $this->serializeMetaData($resource),
         ];
 
-        if ( ! count($data[ Key::ATTRIBUTES ])) {
+        if ( ! count((array) $data[ Key::ATTRIBUTES ])) {
             unset($data[ Key::ATTRIBUTES ]);
         }
 
-        if ( ! count($data[ Key::RELATIONSHIPS ])) {
+        if ( ! count((array) $data[ Key::RELATIONSHIPS ])) {
             unset($data[ Key::RELATIONSHIPS ]);
         }
 
-        if ( ! count($data[ Key::META ])) {
+        if ( ! count((array) $data[ Key::META ])) {
             unset($data[ Key::META ]);
         }
 
