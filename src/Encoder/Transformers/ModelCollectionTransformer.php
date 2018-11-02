@@ -23,6 +23,7 @@ class ModelCollectionTransformer extends ModelTransformer
      *
      * @param Collection $models
      * @return array
+     * @throws \Czim\JsonApi\Exceptions\EncodingException
      */
     public function transform($models)
     {
@@ -77,6 +78,5 @@ class ModelCollectionTransformer extends ModelTransformer
 
         return $this->resource;
     }
-
 
 }

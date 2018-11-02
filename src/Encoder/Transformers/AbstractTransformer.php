@@ -87,5 +87,4 @@ abstract class AbstractTransformer implements TransformerInterface
         return $this;
     }
 
-
 }

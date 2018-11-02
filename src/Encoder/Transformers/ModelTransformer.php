@@ -103,6 +103,7 @@ class ModelTransformer extends AbstractTransformer
      *
      * @param ResourceInterface $resource
      * @return array
+     * @throws EncodingException
      */
     protected function processRelationships(ResourceInterface $resource)
     {

@@ -121,6 +121,7 @@ class ModelRelationshipTransformer extends AbstractTransformer
      * @param ResourceInterface $resource
      * @param string            $includeKey
      * @return array
+     * @throws EncodingException
      */
     protected function getRelatedFullData(ResourceInterface $resource, $includeKey)
     {
