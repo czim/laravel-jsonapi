@@ -74,11 +74,11 @@ class ModelTransformer extends AbstractTransformer
      * Returns serialized meta section for a given resource.
      *
      * @param ResourceInterface $resource
-     * @return array|null
+     * @return array
      */
     protected function serializeMetaData(ResourceInterface $resource)
     {
-        return $resource->getMeta();
+        return $resource->getMeta() ?: [];
     }
 
     /**
