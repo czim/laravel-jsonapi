@@ -161,11 +161,11 @@ class RequestParserTest extends TestCase
      */
     function it_returns_raw_sorting_string()
     {
-        $this->sort = 'test,include|desc';
+        $this->sort = 'test,-include';
 
         $parser = new RequestQueryParser($this->getSetUpRequest());
 
-        static::assertEquals('test,include|desc', $parser->getRawSort());
+        static::assertEquals('test,-include', $parser->getRawSort());
     }
 
     /**
@@ -180,11 +180,11 @@ class RequestParserTest extends TestCase
         static::assertEquals([], $parser->getSort());
 
 
-        $this->sort = 'test,include|desc';
+        $this->sort = '-test,include';
 
         $parser = new RequestQueryParser($this->getSetUpRequest());
 
-        static::assertEquals(['test', 'include|desc'], $parser->getSort());
+        static::assertEquals(['-test', 'include'], $parser->getSort());
     }
 
 
