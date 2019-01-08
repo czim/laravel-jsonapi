@@ -2,7 +2,10 @@
 namespace Czim\JsonApi\Support\Request;
 
 use Czim\JsonApi\Contracts\Support\Request\RequestQueryParserInterface;
+use Czim\JsonApi\Exceptions\JsonApiQueryStringValidationException;
+use Czim\JsonApi\Exceptions\JsonApiValidationException;
 use Illuminate\Http\Request;
+use Validator;
 
 /**
  * Class RequestQueryParser
@@ -237,7 +240,49 @@ class RequestQueryParser implements RequestQueryParserInterface
         $this->page    = $this->request->query(config('jsonapi.request.keys.page', 'page'), []);
         $this->sort    = $this->request->query(config('jsonapi.request.keys.sort', 'sort'));
 
+        $this->validate();
+
         $this->analyzed = true;
+    }
+
+    /**
+     * @return void
+     */
+    protected function validate()
+    {
+        $data = [
+            'filter'  => $this->filter,
+            'include' => $this->include,
+            'page'    => $this->page,
+            'sort'    => $this->sort,
+        ];
+
+        $validator = Validator::make($data, $this->getValidationRules());
+
+        if ($validator->fails()) {
+            throw (new JsonApiQueryStringValidationException)
+                ->setErrors(
+                    $validator->getMessageBag()->toArray()
+                );
+        }
+    }
+
+    /**
+     * @return array
+     */
+    protected function getValidationRules()
+    {
+        return [
+            'filter'      => 'array|nullable',
+            'include'     => [ 'regex:' . $this->getValidationRegexForIncludeString(), 'nullable' ],
+            'page'        => 'array|nullable',
+            'page.number' => [ $this->getValidationStringForPageNumber(), 'nullable' ],
+            'page.size'   => [ $this->getValidationStringForPageNumber(), 'nullable' ],
+            'page.limit'  => [ $this->getValidationStringForPageNumber(), 'nullable' ],
+            'page.offset' => [ $this->getValidationStringForPageOffset(), 'nullable' ],
+            'page.cursor' => [ $this->getValidationStringForPageOffset(), 'nullable' ],
+            'sort'        => [ 'regex:' . $this->getValidationRegexForSortString(), 'nullable' ],
+        ];
     }
 
     /**
