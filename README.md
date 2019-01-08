@@ -16,12 +16,18 @@ This does *NOT* provide the means to set up the API or the means for user author
 This is very much a work in progress at this time. Interface- and other breaking changes may happen.  
 The old, discontinued version of this project is in the `0.9.5` branch.
 
+
 ## Version Compatibility
 
  Laravel      | Package 
 :-------------|:--------
  5.3.x        | 1.3.x
  5.4.x and up | 1.4.x
+
+
+## Changelog
+
+[View the changelog](CHANGELOG.md).
 
 
 ## Installation
