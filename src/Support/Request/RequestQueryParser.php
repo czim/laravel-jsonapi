@@ -240,4 +240,56 @@ class RequestQueryParser implements RequestQueryParserInterface
         $this->analyzed = true;
     }
 
+    /**
+     * @return string
+     */
+    protected function getValidationRegexForIncludeString()
+    {
+        return '#^' . $this->getRegexForValidIncludeSegment()
+            . '(' . preg_quote($this->includeSeparator)
+            . $this->getRegexForValidIncludeSegment() . ')*$#i';
+    }
+
+    /**
+     * @return string
+     */
+    protected function getValidationRegexForSortString()
+    {
+        return '#^' . '-?' . $this->getRegexForValidSortSegment()
+            . '(' . preg_quote($this->sortSeparator)
+            . '-?' . $this->getRegexForValidSortSegment() . ')*$#i';
+    }
+
+    /**
+     * @return string
+     */
+    protected function getRegexForValidIncludeSegment()
+    {
+        return config('jsonapi.request.validation.query.regex-include-segment', '[a-z0-9.-]+');
+    }
+
+    /**
+     * @return string
+     */
+    protected function getRegexForValidSortSegment()
+    {
+        return config('jsonapi.request.validation.query.regex-sort-segment', '[a-z0-9.-]+');
+    }
+
+    /**
+     * @return string
+     */
+    protected function getValidationStringForPageNumber()
+    {
+        return config('jsonapi.request.validation.query.page-number', 'integer');
+    }
+
+    /**
+     * @return string
+     */
+    protected function getValidationStringForPageOffset()
+    {
+        return config('jsonapi.request.validation.query.page-offset', 'integer');
+    }
+
 }

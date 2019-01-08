@@ -176,6 +176,22 @@ return [
             // The token by which the sort strings are separated, if multiple sort attributes are given.
             'separator' => ',',
         ],
+
+        'validation' => [
+
+            // Validation rules for elements in query string
+            'query' => [
+                // The validation rule regex for an include segment
+                'regex-include-segment' => '[a-z0-9.-]+',
+                // The validation rule regex for a sort segment, excluding the '-' prefix
+                'regex-sort-segment'    => '[a-z0-9.-]+',
+
+                // The validation rule for a page number and limit value
+                'page-number' => 'integer',
+                // The validation rule for a page offset and cursor value
+                'page-offset' => 'integer',
+            ],
+        ],
     ],
 
 
