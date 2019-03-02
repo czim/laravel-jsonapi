@@ -21,8 +21,9 @@ The old, discontinued version of this project is in the `0.9.5` branch.
 
  Laravel      | Package 
 :-------------|:--------
- 5.3.x        | 1.3.x
- 5.4.x and up | 1.4.x
+ 5.3          | 1.3
+ 5.4 to 5.6   | 1.4
+ 5.7 and up   | 1.5
 
 
 ## Changelog

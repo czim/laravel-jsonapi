@@ -1,5 +1,9 @@
 # Changelog
 
+### [1.5.0] - 2019-03-02
+
+Laravel 5.7 support.
+
 ### [1.4.16] - 2019-01-08
 
 Added configurable validation rules for the query string for a request.  
