@@ -44,7 +44,7 @@ abstract class AbstractSeededTestCase extends DatabaseTestCase
             $table->string('title', 50);
             $table->text('body');
             $table->string('description', 255)->nullable();
-            $table->enum('type', ['announcement', 'news', 'notice', 'periodical'])->default('news');
+            $table->enum('type', ['announcement', 'news', 'notice', 'periodical', 'warning'])->default('news');
             $table->boolean('checked')->default(false);
             $table->nullableTimestamps();
         });
