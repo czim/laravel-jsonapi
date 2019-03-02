@@ -4,6 +4,7 @@ namespace Czim\JsonApi\Support\Validation;
 use Czim\JsonApi\Contracts\Support\Validation\JsonApiValidatorInterface;
 use Czim\JsonApi\Enums\SchemaType;
 use Illuminate\Contracts\Support\MessageBag as MessageBagContract;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\MessageBag;
 use JsonSchema\Validator;
@@ -95,7 +96,7 @@ class JsonApiValidator implements JsonApiValidatorInterface
 
         $normalizedErrors = (new Collection($errors))
             ->groupBy(function ($error) {
-                $property = array_get($error, 'property');
+                $property = Arr::get($error, 'property');
                 if ('' === $property || null === $property) {
                     return '*';
                 }

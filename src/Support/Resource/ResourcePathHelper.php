@@ -2,6 +2,7 @@
 namespace Czim\JsonApi\Support\Resource;
 
 use Czim\JsonApi\Contracts\Resource\ResourceInterface;
+use Illuminate\Support\Str;
 
 /**
  * Class ResourcePathHelper
@@ -26,7 +27,7 @@ class ResourcePathHelper
 
         // If no prefix is available, or it cannot be stripped from the resource's namespace,
         // the namespace should just default to the top-level type.
-        if ( ! $prefix || ! starts_with($classname, $prefix)) {
+        if ( ! $prefix || ! Str::startsWith($classname, $prefix)) {
             return $resource->type();
         }
 
@@ -34,7 +35,12 @@ class ResourcePathHelper
 
         // Dasherize path elements
         $segments = explode('\\', $classname);
-        $segments = array_map(function ($segment) { return snake_case($segment, '-'); }, $segments);
+        $segments = array_map(
+            function ($segment) {
+                return Str::snake($segment, '-');
+            },
+            $segments
+        );
 
         // The final segment should not be trusted, but replaced with the resource type,
         // to avoid creating paths that don't match up with defined resource types.

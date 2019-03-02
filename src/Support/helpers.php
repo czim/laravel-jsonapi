@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Arr;
 use Symfony\Component\HttpFoundation\AcceptHeader;
 
 if ( ! function_exists('jsonapi_request')) {
@@ -86,7 +87,7 @@ if ( ! function_exists('jsonapi_error')) {
     {
         $encoded = jsonapi_encode($data);
 
-        $status = (int) array_get($encoded, 'errors.0.status', 500);
+        $status = (int) Arr::get($encoded, 'errors.0.status', 500);
 
         return jsonapi_response($encoded, $status);
     }

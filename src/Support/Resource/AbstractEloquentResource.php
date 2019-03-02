@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Str;
 use RuntimeException;
 use UnexpectedValueException;
 
@@ -89,7 +90,7 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
      */
     public function attributeValue($name, $default = null)
     {
-        $accessorMethod = 'get' . studly_case(str_replace('-', ' ', $name)) . 'Attribute';
+        $accessorMethod = 'get' . Str::studly(str_replace('-', ' ', $name)) . 'Attribute';
 
         if (method_exists($this, $accessorMethod)) {
             $value = call_user_func([ $this, $accessorMethod ]);
@@ -112,7 +113,7 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
      */
     public function getModelAttributeForApiAttribute($name)
     {
-        return snake_case(camel_case($name));
+        return Str::snake($name);
     }
 
     /**
@@ -303,7 +304,7 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
     protected function getModelRelation($method)
     {
         $model          = $this->getModel();
-        $relationMethod = camel_case($method);
+        $relationMethod = Str::camel($method);
 
         if ( ! method_exists($model, $relationMethod)) {
             throw new RuntimeException(

@@ -5,6 +5,7 @@ use Czim\JsonApi\Contracts\Support\Request\RequestQueryParserInterface;
 use Czim\JsonApi\Exceptions\JsonApiQueryStringValidationException;
 use Czim\JsonApi\Exceptions\JsonApiValidationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Validator;
 
 /**
@@ -105,7 +106,7 @@ class RequestQueryParser implements RequestQueryParserInterface
      */
     public function getFilterValue($key, $default = null)
     {
-        return array_get($this->getFilter(), $key, $default);
+        return Arr::get($this->getFilter(), $key, $default);
     }
 
     /**
@@ -155,7 +156,7 @@ class RequestQueryParser implements RequestQueryParserInterface
      */
     public function getPageNumber()
     {
-        return (int) array_get($this->getPageData(), 'number', 1);
+        return (int) Arr::get($this->getPageData(), 'number', 1);
     }
 
     /**
@@ -163,7 +164,7 @@ class RequestQueryParser implements RequestQueryParserInterface
      */
     public function getPageSize()
     {
-        return (int) array_get($this->getPageData(), 'size');
+        return (int) Arr::get($this->getPageData(), 'size');
     }
 
     /**
@@ -171,7 +172,7 @@ class RequestQueryParser implements RequestQueryParserInterface
      */
     public function getPageOffset()
     {
-        return (int) array_get($this->getPageData(), 'offset', 0);
+        return (int) Arr::get($this->getPageData(), 'offset', 0);
     }
 
     /**
@@ -179,7 +180,7 @@ class RequestQueryParser implements RequestQueryParserInterface
      */
     public function getPageLimit()
     {
-        return (int) array_get($this->getPageData(), 'limit');
+        return (int) Arr::get($this->getPageData(), 'limit');
     }
 
     /**
@@ -187,7 +188,7 @@ class RequestQueryParser implements RequestQueryParserInterface
      */
     public function getPageCursor()
     {
-        return (int) array_get($this->getPageData(), 'cursor');
+        return (int) Arr::get($this->getPageData(), 'cursor');
     }
 
     /**

@@ -6,6 +6,7 @@ use Czim\JsonApi\Contracts\Resource\ResourceInterface;
 use Czim\JsonApi\Enums\Key;
 use Czim\JsonApi\Exceptions\EncodingException;
 use Czim\JsonApi\Support\Resource\RelationshipTransformData;
+use Illuminate\Support\Arr;
 use InvalidArgumentException;
 
 class ModelRelationshipTransformer extends AbstractTransformer
@@ -72,8 +73,8 @@ class ModelRelationshipTransformer extends AbstractTransformer
 
                 $this->addRelatedDataToEncoder($related, $singular);
 
-                if (empty(array_get($related, Key::DATA))) {
-                    $data[ Key::DATA ] = array_get($related, Key::DATA);
+                if (empty(Arr::get($related, Key::DATA))) {
+                    $data[ Key::DATA ] = Arr::get($related, Key::DATA);
                 } else {
                     $data[ Key::DATA ] = $this->getRelatedReferencesFromRelatedData($related, $singular);
                 }
@@ -159,20 +160,20 @@ class ModelRelationshipTransformer extends AbstractTransformer
      */
     protected function getRelatedReferencesFromRelatedData(array $data, $singular = false)
     {
-        $data = array_get($data, Key::DATA, []);
+        $data = Arr::get($data, Key::DATA, []);
 
         if ($singular) {
             return [
-                'type' => array_get($data, 'type'),
-                'id'   => array_get($data, 'id'),
+                'type' => Arr::get($data, 'type'),
+                'id'   => Arr::get($data, 'id'),
             ];
         }
 
         return array_map(
             function ($related) {
                 return [
-                    'type' => array_get($related, 'type'),
-                    'id'   => array_get($related, 'id'),
+                    'type' => Arr::get($related, 'type'),
+                    'id'   => Arr::get($related, 'id'),
                 ];
             },
             $data
@@ -194,9 +195,9 @@ class ModelRelationshipTransformer extends AbstractTransformer
         }
 
         if ($singular) {
-            $data = [ array_get($data, Key::DATA) ];
+            $data = [ Arr::get($data, Key::DATA) ];
         } else {
-            $data = array_get($data, Key::DATA, []);
+            $data = Arr::get($data, Key::DATA, []);
         }
 
         foreach ($data as $related) {
@@ -204,7 +205,7 @@ class ModelRelationshipTransformer extends AbstractTransformer
                 continue;
             }
 
-            $identifier = array_get($related, 'type') . ':' . array_get($related, 'id');
+            $identifier = Arr::get($related, 'type') . ':' . Arr::get($related, 'id');
             $this->encoder->addIncludedData($related, $identifier);
         }
     }

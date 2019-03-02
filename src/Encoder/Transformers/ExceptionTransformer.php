@@ -4,6 +4,7 @@ namespace Czim\JsonApi\Encoder\Transformers;
 use Czim\JsonApi\Contracts\Support\Error\ErrorDataInterface;
 use Czim\JsonApi\Support\Error\ErrorData;
 use Exception;
+use Illuminate\Support\Str;
 use InvalidArgumentException;
 
 class ExceptionTransformer extends ErrorDataTransformer
@@ -74,7 +75,7 @@ class ExceptionTransformer extends ErrorDataTransformer
      */
     protected function getTitle(Exception $exception)
     {
-        return ucfirst(snake_case(class_basename($exception), ' '));
+        return ucfirst(Str::snake(class_basename($exception), ' '));
     }
 
 }

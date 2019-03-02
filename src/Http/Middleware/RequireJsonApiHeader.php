@@ -3,6 +3,7 @@ namespace Czim\JsonApi\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Symfony\Component\HttpFoundation\AcceptHeader;
 
 /**
@@ -68,7 +69,7 @@ class RequireJsonApiHeader
 
             return (    empty($attributes)
                     ||  (   count($attributes) === 1
-                        &&  strtolower(array_get($attributes, 'charset')) === 'utf-8'
+                        &&  strtolower(Arr::get($attributes, 'charset')) === 'utf-8'
                         )
                     );
         }

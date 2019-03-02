@@ -7,6 +7,7 @@ use Czim\JsonApi\Enums\Key;
 use Czim\JsonApi\Exceptions\EncodingException;
 use Czim\JsonApi\Support\Resource\RelationshipTransformData;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use InvalidArgumentException;
 
 class ModelTransformer extends AbstractTransformer
@@ -184,7 +185,7 @@ class ModelTransformer extends AbstractTransformer
      */
     protected function normalizeJsonApiAttributeKey($key)
     {
-        return str_replace('_', '-', snake_case($key, '-'));
+        return str_replace('_', '-', Str::snake($key, '-'));
     }
 
     /**

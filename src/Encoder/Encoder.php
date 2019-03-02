@@ -8,7 +8,9 @@ use Czim\JsonApi\Contracts\Encoder\TransformerInterface;
 use Czim\JsonApi\Contracts\Repositories\ResourceRepositoryInterface;
 use Czim\JsonApi\Contracts\Resource\ResourceInterface;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class Encoder implements EncoderInterface
 {
@@ -116,8 +118,8 @@ class Encoder implements EncoderInterface
         
         // Make sure top resource is not in the included data
         if (array_key_exists(Key::DATA, $encoded)) {
-            $id   = array_get($encoded[ Key::DATA ], 'id');
-            $type = array_get($encoded[ Key::DATA ], 'type');
+            $id   = Arr::get($encoded[ Key::DATA ], 'id');
+            $type = Arr::get($encoded[ Key::DATA ], 'type');
 
             if (null !== $type && null !== $id) {
                 $this->removeFromIncludedDataByTypeAndId($type, $id);
@@ -307,7 +309,7 @@ class Encoder implements EncoderInterface
             $this->meta = [];
         }
 
-        $this->meta = array_set($this->meta, $key, $value);
+        $this->meta = Arr::set($this->meta, $key, $value);
 
         return $this;
     }
@@ -324,7 +326,7 @@ class Encoder implements EncoderInterface
             return $this;
         }
 
-        array_forget($this->meta, $key);
+        Arr::forget($this->meta, $key);
 
         return $this;
     }
@@ -378,7 +380,7 @@ class Encoder implements EncoderInterface
     public function isIncludeRequested($key)
     {
         foreach ($this->requestedIncludes as $include) {
-            if ($include === $key || starts_with($include, $key . '.')) {
+            if ($include === $key || Str::startsWith($include, $key . '.')) {
                 return true;
             }
         }

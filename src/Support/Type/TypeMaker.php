@@ -3,6 +3,7 @@ namespace Czim\JsonApi\Support\Type;
 
 use Czim\JsonApi\Contracts\Support\Type\TypeMakerInterface;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use InvalidArgumentException;
 
 class TypeMaker implements TypeMakerInterface
@@ -24,12 +25,12 @@ class TypeMaker implements TypeMakerInterface
 
         if (is_object($source)) {
             return $this->pluralizeIfConfiguredTo(
-                snake_case(class_basename($source), static::WORD_SEPARATOR)
+                Str::snake(class_basename($source), static::WORD_SEPARATOR)
             );
         }
 
         if (is_string($source)) {
-            return snake_case($source, static::WORD_SEPARATOR);
+            return Str::snake($source, static::WORD_SEPARATOR);
         }
 
         throw new InvalidArgumentException("Cannot make type for given source");
@@ -49,7 +50,7 @@ class TypeMaker implements TypeMakerInterface
         }
 
         $baseDasherized = $this->pluralizeIfConfiguredTo(
-            snake_case(class_basename($record), static::WORD_SEPARATOR)
+            Str::snake(class_basename($record), static::WORD_SEPARATOR)
         );
 
         if (null !== $offsetNamespace) {
@@ -75,11 +76,11 @@ class TypeMaker implements TypeMakerInterface
      */
     protected function trimNamespace($namespace, $offset, $trail)
     {
-        if (starts_with($namespace, $offset)) {
+        if (Str::startsWith($namespace, $offset)) {
             $namespace = substr($namespace, strlen($offset));
         }
 
-        if (ends_with($namespace, $trail)) {
+        if (Str::endsWith($namespace, $trail)) {
             $namespace = substr($namespace, 0, -1 * strlen($trail));
         }
 
@@ -97,7 +98,7 @@ class TypeMaker implements TypeMakerInterface
         $parts = explode('\\', $namespace);
         $parts = array_map(
             function ($part) {
-                return snake_case($part, static::WORD_SEPARATOR);
+                return Str::snake($part, static::WORD_SEPARATOR);
             },
             array_filter($parts)
         );
@@ -112,7 +113,7 @@ class TypeMaker implements TypeMakerInterface
     protected function pluralizeIfConfiguredTo($type)
     {
         if ($this->plural()) {
-            return str_plural($type);
+            return Str::plural($type);
         }
 
         return $type;

@@ -5,6 +5,8 @@ use Carbon\Carbon;
 use Czim\JsonApi\Contracts\Resource\ResourceInterface;
 use Czim\JsonApi\Contracts\Support\Rsource\ResourcePathHelperInterface;
 use DateTime;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 abstract class AbstractJsonApiResource implements ResourceInterface
 {
@@ -303,7 +305,7 @@ abstract class AbstractJsonApiResource implements ResourceInterface
      */
     protected function normalizeAttributeName($name)
     {
-        return snake_case(str_replace('_', '-', $name), '-');
+        return Str::snake(str_replace('_', '-', $name), '-');
     }
 
     /**
@@ -326,7 +328,7 @@ abstract class AbstractJsonApiResource implements ResourceInterface
      */
     protected function getConfiguredFormatForAttribute($name)
     {
-        return array_get($this->dateAttributeFormats, $this->normalizeAttributeName($name));
+        return Arr::get($this->dateAttributeFormats, $this->normalizeAttributeName($name));
     }
 
     /**
