@@ -93,11 +93,11 @@ class JsonApiRequest extends FormRequest
     /**
      * {@inheritdoc}
      */
-    public function validate()
+    public function validateResolved()
     {
         $this->validateAgainstSchema();
 
-        parent::validate();
+        parent::validateResolved();
     }
 
     /**
