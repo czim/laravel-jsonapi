@@ -5,7 +5,6 @@ use Czim\JsonApi\Contracts\Repositories\ResourceRepositoryInterface;
 use Czim\JsonApi\Contracts\Resource\EloquentResourceInterface;
 use Czim\JsonApi\Contracts\Support\Type\TypeMakerInterface;
 use Czim\JsonApi\Exceptions\InvalidIncludeException;
-use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations;
 use Illuminate\Database\Eloquent\Relations\Relation;
