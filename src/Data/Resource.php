@@ -26,7 +26,7 @@ class Resource extends AbstractDataObject
      *
      * @return bool
      */
-    public function hasAttributes()
+    public function hasAttributes(): bool
     {
         return array_key_exists('attributes', $this->attributes);
     }
@@ -36,7 +36,7 @@ class Resource extends AbstractDataObject
      *
      * @return bool
      */
-    public function hasRelationships()
+    public function hasRelationships(): bool
     {
         return array_key_exists('relationships', $this->attributes);
     }
@@ -46,7 +46,7 @@ class Resource extends AbstractDataObject
      *
      * @return bool
      */
-    public function hasLinks()
+    public function hasLinks(): bool
     {
         return array_key_exists('links', $this->attributes);
     }
@@ -56,7 +56,7 @@ class Resource extends AbstractDataObject
      *
      * @return bool
      */
-    public function hasMeta()
+    public function hasMeta(): bool
     {
         return array_key_exists('meta', $this->attributes);
     }
@@ -66,7 +66,7 @@ class Resource extends AbstractDataObject
      *
      * @return bool
      */
-    public function isResourceIdentifier()
+    public function isResourceIdentifier(): bool
     {
         return  array_key_exists('id', $this->attributes)
             &&  array_key_exists('type', $this->attributes)

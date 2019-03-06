@@ -13,7 +13,7 @@ class Links extends AbstractDataObject
      * @param string $key
      * @return string|Link
      */
-    public function &getAttributeValue($key)
+    public function &getAttributeValue(string $key)
     {
         if ( ! isset($this->attributes[$key])) {
             $null = null;

@@ -27,7 +27,7 @@ class Root extends AbstractDataObject
     /**
      * {@inheritdoc}
      */
-    public function &getAttributeValue($key)
+    public function &getAttributeValue(string $key)
     {
         if ($key === 'data') {
 
@@ -77,7 +77,7 @@ class Root extends AbstractDataObject
      *
      * @return bool
      */
-    public function hasData()
+    public function hasData(): bool
     {
         return array_key_exists('data', $this->attributes);
     }
@@ -87,7 +87,7 @@ class Root extends AbstractDataObject
      *
      * @return bool
      */
-    public function hasErrors()
+    public function hasErrors(): bool
     {
         return array_key_exists('errors', $this->attributes);
     }
@@ -97,7 +97,7 @@ class Root extends AbstractDataObject
      *
      * @return bool
      */
-    public function hasIncluded()
+    public function hasIncluded(): bool
     {
         return array_key_exists('included', $this->attributes);
     }
@@ -107,7 +107,7 @@ class Root extends AbstractDataObject
      *
      * @return bool
      */
-    public function hasJsonApi()
+    public function hasJsonApi(): bool
     {
         return array_key_exists('jsonapi', $this->attributes);
     }
@@ -117,7 +117,7 @@ class Root extends AbstractDataObject
      *
      * @return bool
      */
-    public function hasLinks()
+    public function hasLinks(): bool
     {
         return array_key_exists('links', $this->attributes);
     }
@@ -127,7 +127,7 @@ class Root extends AbstractDataObject
      *
      * @return bool
      */
-    public function hasMeta()
+    public function hasMeta(): bool
     {
         return array_key_exists('meta', $this->attributes);
     }
@@ -138,7 +138,7 @@ class Root extends AbstractDataObject
      * @return string
      * @see RootType
      */
-    public function getRootType()
+    public function getRootType(): string
     {
         if ($this->hasData()) {
             return RootType::RESOURCE;
@@ -159,7 +159,7 @@ class Root extends AbstractDataObject
      *
      * @return bool
      */
-    public function hasNullData()
+    public function hasNullData(): bool
     {
         return $this->hasData() && null === $this->attributes['data'];
     }
@@ -169,7 +169,7 @@ class Root extends AbstractDataObject
      *
      * @return bool
      */
-    public function hasSingleResourceData()
+    public function hasSingleResourceData(): bool
     {
         if ( ! $this->hasData()) {
             return false;
@@ -183,7 +183,7 @@ class Root extends AbstractDataObject
      *
      * @return bool
      */
-    public function hasMultipleResourceData()
+    public function hasMultipleResourceData(): bool
     {
         if ( ! $this->hasData()) {
             return false;

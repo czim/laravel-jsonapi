@@ -35,7 +35,7 @@ abstract class AbstractDataObject extends CzimAbstractDataObject
      * @param string $key
      * @return mixed|DataObjectInterface
      */
-    public function &getAttributeValue($key)
+    public function &getAttributeValue(string $key)
     {
         if (    ! count($this->objects)
             ||  ! array_key_exists($key, $this->objects)
@@ -105,9 +105,9 @@ abstract class AbstractDataObject extends CzimAbstractDataObject
      * @param string $class
      * @param mixed  $data
      * @param string $key
-     * @return mixed
+     * @return DataObjectInterface
      */
-    protected function makeNestedDataObject($class, $data, $key)
+    protected function makeNestedDataObject(string $class, $data, string $key): DataObjectInterface
     {
         $data = ($data instanceof Arrayable) ? $data->toArray() : $data;
 
@@ -134,7 +134,9 @@ abstract class AbstractDataObject extends CzimAbstractDataObject
     public function offsetGet($offset)
     {
         // let it behave like the magic getter, return null if it doesn't exist
-        if ( ! $this->offsetExists($offset)) return null;
+        if ( ! $this->offsetExists($offset)) {
+            return null;
+        }
 
         return $this->getAttribute($offset);
     }

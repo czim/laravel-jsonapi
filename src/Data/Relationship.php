@@ -19,7 +19,7 @@ class Relationship extends AbstractDataObject
     /**
      * {@inheritdoc}
      */
-    public function &getAttributeValue($key)
+    public function &getAttributeValue(string $key)
     {
         if ($key === 'data') {
 

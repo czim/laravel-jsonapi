@@ -10,7 +10,7 @@ class Relationships extends AbstractDataObject
     /**
      * {@inheritdoc}
      */
-    public function &getAttributeValue($key)
+    public function &getAttributeValue(string $key)
     {
         if ( ! isset($this->attributes[$key])) {
             $null = null;
