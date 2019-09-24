@@ -4,16 +4,17 @@ namespace Czim\JsonApi\Test;
 use Czim\JsonApi\Test\Helpers\Models\TestAuthor;
 use Czim\JsonApi\Test\Helpers\Models\TestComment;
 use Czim\JsonApi\Test\Helpers\Models\TestPost;
-use DB;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 abstract class AbstractSeededTestCase extends DatabaseTestCase
 {
 
-    protected function migrateDatabase()
+    protected function migrateDatabase(): void
     {
         Schema::create('test_simple_models', function ($table) {
-            /** @var \Illuminate\Database\Schema\Blueprint $table */
+            /** @var Blueprint $table */
             $table->increments('id');
             $table->string('unique_field', 255);
             $table->string('second_field', 255);
@@ -25,7 +26,7 @@ abstract class AbstractSeededTestCase extends DatabaseTestCase
         });
 
         Schema::create('test_authors', function ($table) {
-            /** @var \Illuminate\Database\Schema\Blueprint $table */
+            /** @var Blueprint $table */
             $table->increments('id');
             $table->string('name', 255);
             $table->enum('gender', ['m', 'f'])->default('f');
@@ -37,7 +38,7 @@ abstract class AbstractSeededTestCase extends DatabaseTestCase
         });
 
         Schema::create('test_posts', function ($table) {
-            /** @var \Illuminate\Database\Schema\Blueprint $table */
+            /** @var Blueprint $table */
             $table->increments('id');
             $table->integer('test_author_id')->nullable()->unsigned();
             $table->integer('test_genre_id')->nullable()->unsigned();
@@ -50,7 +51,7 @@ abstract class AbstractSeededTestCase extends DatabaseTestCase
         });
 
         Schema::create('test_comments', function ($table) {
-            /** @var \Illuminate\Database\Schema\Blueprint $table */
+            /** @var Blueprint $table */
             $table->increments('id');
             $table->integer('test_post_id')->unsigned();
             $table->integer('test_author_id')->nullable()->unsigned();
@@ -61,7 +62,7 @@ abstract class AbstractSeededTestCase extends DatabaseTestCase
         });
 
         Schema::create('test_seos', function ($table) {
-            /** @var \Illuminate\Database\Schema\Blueprint $table */
+            /** @var Blueprint $table */
             $table->increments('id');
             $table->integer('seoable_id')->unsigned()->nullable();
             $table->string('seoable_type', 255)->nullable();
@@ -70,14 +71,14 @@ abstract class AbstractSeededTestCase extends DatabaseTestCase
         });
 
         Schema::create('post_related', function ($table) {
-            /** @var \Illuminate\Database\Schema\Blueprint $table */
+            /** @var Blueprint $table */
             $table->increments('id');
             $table->integer('from_id')->unsigned()->nullable();
             $table->integer('to_id')->unsigned()->nullable();
         });
 
         Schema::create('post_pivot_related', function ($table) {
-            /** @var \Illuminate\Database\Schema\Blueprint $table */
+            /** @var Blueprint $table */
             $table->increments('id');
             $table->integer('from_id')->unsigned()->nullable();
             $table->integer('to_id')->unsigned()->nullable();
@@ -88,15 +89,15 @@ abstract class AbstractSeededTestCase extends DatabaseTestCase
     }
 
 
-    protected function seedDatabase()
+    protected function seedDatabase(): void
     {
-        $this->seedAuthors()
-            ->seedPosts()
-            ->seedComments();
+        $this->seedAuthors();
+        $this->seedPosts();
+        $this->seedComments();
     }
 
 
-    protected function seedAuthors()
+    protected function seedAuthors(): void
     {
         TestAuthor::create([
             'name' => 'Test Testington',
@@ -105,11 +106,9 @@ abstract class AbstractSeededTestCase extends DatabaseTestCase
         TestAuthor::create([
             'name' => 'Tosti Tortellini Von Testering',
         ]);
-
-        return $this;
     }
 
-    protected function seedPosts()
+    protected function seedPosts(): void
     {
         $post = new TestPost([
             'title'       => 'Some Basic Title',
@@ -150,11 +149,9 @@ abstract class AbstractSeededTestCase extends DatabaseTestCase
 
         DB::table('post_pivot_related')->insert(['from_id' => 1, 'to_id' => 2, 'type' => 'a', 'date' => '2017-01-01']);
         DB::table('post_pivot_related')->insert(['from_id' => 1, 'to_id' => 3, 'type' => 'a', 'date' => '2017-02-01']);
-
-        return $this;
     }
 
-    protected function seedComments()
+    protected function seedComments(): void
     {
         $comment = new TestComment([
             'title'       => 'Comment Title A',
@@ -181,8 +178,6 @@ abstract class AbstractSeededTestCase extends DatabaseTestCase
         ]);
         $comment->author()->associate(TestAuthor::first());
         TestPost::find(3)->comments()->save($comment);
-
-        return $this;
     }
 
 }

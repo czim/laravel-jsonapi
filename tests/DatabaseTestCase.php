@@ -1,13 +1,15 @@
 <?php
 namespace Czim\JsonApi\Test;
 
+use Illuminate\Foundation\Application;
+
 abstract class DatabaseTestCase extends TestCase
 {
 
     /**
      * {@inheritdoc}
      */
-    protected function getEnvironmentSetUp($app)
+    protected function getEnvironmentSetUp($app): void
     {
         parent::getEnvironmentSetUp($app);
 
@@ -17,9 +19,9 @@ abstract class DatabaseTestCase extends TestCase
     }
 
     /**
-     * @param \Illuminate\Foundation\Application $app
+     * @param Application $app
      */
-    protected function setDatabaseConnectionConfig($app)
+    protected function setDatabaseConnectionConfig($app): void
     {
         // Setup default database to use sqlite :memory:
         $app['config']->set('database.connections.testbench', [
@@ -38,11 +40,11 @@ abstract class DatabaseTestCase extends TestCase
     }
 
 
-    protected function migrateDatabase()
+    protected function migrateDatabase(): void
     {
     }
 
-    protected function seedDatabase()
+    protected function seedDatabase(): void
     {
     }
 

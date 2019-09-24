@@ -2,6 +2,7 @@
 namespace Czim\JsonApi\Test;
 
 use Czim\JsonApi\Providers\JsonApiServiceProvider;
+use Illuminate\Foundation\Application;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -9,9 +10,9 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     /**
      * Define environment setup.
      *
-     * @param \Illuminate\Foundation\Application $app
+     * @param Application $app
      */
-    protected function getEnvironmentSetUp($app)
+    protected function getEnvironmentSetUp($app): void
     {
         $app->register(JsonApiServiceProvider::class);
 
