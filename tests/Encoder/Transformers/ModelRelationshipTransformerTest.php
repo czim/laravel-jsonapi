@@ -1,11 +1,16 @@
 <?php
+/** @noinspection ReturnTypeCanBeDeclaredInspection */
+/** @noinspection AccessModifierPresentedInspection */
+
 namespace Czim\JsonApi\Test\Encoder\Transformers;
 
 use Czim\JsonApi\Contracts\Encoder\EncoderInterface;
 use Czim\JsonApi\Contracts\Resource\EloquentResourceInterface;
 use Czim\JsonApi\Encoder\Transformers\ModelRelationshipTransformer;
+use Czim\JsonApi\Exceptions\EncodingException;
 use Czim\JsonApi\Support\Resource\RelationshipTransformData;
 use Czim\JsonApi\Test\TestCase;
+use InvalidArgumentException;
 use Mockery;
 
 /**
@@ -116,10 +121,11 @@ class ModelRelationshipTransformerTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Czim\JsonApi\Exceptions\EncodingException
      */
     function it_throws_an_exception_if_data_does_not_indicate_a_valid_include()
     {
+        $this->expectException(EncodingException::class);
+
         /** @var Mockery\Mock|EloquentResourceInterface $resource */
         $resource = Mockery::mock(EloquentResourceInterface::class);
         $resource->shouldReceive('availableIncludes')->andReturn([]);
@@ -142,10 +148,11 @@ class ModelRelationshipTransformerTest extends TestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     function it_throws_an_exception_if_data_is_not_a_relationship_data_instance()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $transformer = new ModelRelationshipTransformer;
         $transformer->setEncoder($this->getMockEncoder());
 
@@ -154,10 +161,11 @@ class ModelRelationshipTransformerTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Czim\JsonApi\Exceptions\EncodingException
      */
     function it_throws_an_exception_if_no_resource_is_set_in_data()
     {
+        $this->expectException(EncodingException::class);
+
         $transformer = new ModelRelationshipTransformer;
         $transformer->setEncoder($this->getMockEncoder());
 

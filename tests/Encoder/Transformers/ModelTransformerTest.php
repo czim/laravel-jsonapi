@@ -1,12 +1,17 @@
 <?php
+/** @noinspection ReturnTypeCanBeDeclaredInspection */
+/** @noinspection AccessModifierPresentedInspection */
+
 namespace Czim\JsonApi\Test\Encoder\Transformers;
 
 use Czim\JsonApi\Contracts\Encoder\EncoderInterface;
 use Czim\JsonApi\Encoder\Transformers\ModelTransformer;
+use Czim\JsonApi\Exceptions\EncodingException;
 use Czim\JsonApi\Test\Helpers\Models\TestSimpleModel;
 use Czim\JsonApi\Test\Helpers\Resources\TestSimpleModelResource;
 use Czim\JsonApi\Test\Helpers\Resources\TestSimpleModelWithoutAttributesResource;
 use Czim\JsonApi\Test\TestCase;
+use InvalidArgumentException;
 use Mockery;
 
 /**
@@ -88,10 +93,11 @@ class ModelTransformerTest extends TestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     function it_throws_an_exception_if_data_is_not_a_model_instance()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $transformer = new ModelTransformer;
         $transformer->setEncoder($this->getMockEncoder());
 
@@ -100,10 +106,11 @@ class ModelTransformerTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Czim\JsonApi\Exceptions\EncodingException
      */
     function it_throws_an_exception_if_no_resource_is_registered_for_the_model()
     {
+        $this->expectException(EncodingException::class);
+
         $model = new TestSimpleModel;
 
         $encoderMock = $this->getMockEncoder();

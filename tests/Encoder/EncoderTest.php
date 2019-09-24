@@ -1,4 +1,7 @@
 <?php
+/** @noinspection ReturnTypeCanBeDeclaredInspection */
+/** @noinspection AccessModifierPresentedInspection */
+
 namespace Czim\JsonApi\Test\Encoder\Factories;
 
 use Czim\JsonApi\Contracts\Encoder\TransformerFactoryInterface;
@@ -208,7 +211,7 @@ class EncoderTest extends TestCase
 
         static::assertEquals(['first', 'second'], $encoder->getRequestedIncludes());
     }
-    
+
     /**
      * @test
      * @depends it_sets_and_retrieves_requested_includes
@@ -226,7 +229,7 @@ class EncoderTest extends TestCase
         static::assertFalse($encoder->isIncludeRequested('not-included'));
         static::assertFalse($encoder->isIncludeRequested('second.notset'));
     }
-    
+
     /**
      * @test
      */

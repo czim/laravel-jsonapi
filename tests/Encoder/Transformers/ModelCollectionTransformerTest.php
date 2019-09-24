@@ -1,4 +1,7 @@
 <?php
+/** @noinspection ReturnTypeCanBeDeclaredInspection */
+/** @noinspection AccessModifierPresentedInspection */
+
 namespace Czim\JsonApi\Test\Encoder\Transformers;
 
 use Czim\JsonApi\Contracts\Encoder\EncoderInterface;
@@ -9,6 +12,7 @@ use Czim\JsonApi\Test\Helpers\Resources\TestAlternativeModelResource;
 use Czim\JsonApi\Test\Helpers\Resources\TestSimpleModelResource;
 use Czim\JsonApi\Test\TestCase;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 use Mockery;
 
 /**
@@ -169,10 +173,11 @@ class ModelCollectionTransformerTest extends TestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     function it_throws_an_exception_if_data_is_not_a_model_collection()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $transformer = new ModelCollectionTransformer;
         $transformer->setEncoder($this->getMockEncoder());
 

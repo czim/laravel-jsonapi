@@ -1,4 +1,7 @@
 <?php
+/** @noinspection ReturnTypeCanBeDeclaredInspection */
+/** @noinspection AccessModifierPresentedInspection */
+
 namespace Czim\JsonApi\Test\Encoder\Factories;
 
 use Czim\JsonApi\Encoder\Factories\TransformerFactory;
@@ -9,6 +12,7 @@ use Czim\JsonApi\Encoder\Transformers\PaginatedModelsTransformer;
 use Czim\JsonApi\Encoder\Transformers\SimpleTransformer;
 use Czim\JsonApi\Test\Helpers\Models\TestSimpleModel;
 use Czim\JsonApi\Test\TestCase;
+use Exception;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -51,7 +55,7 @@ class TransformerFactoryTest extends TestCase
     {
         $factory = new TransformerFactory;
 
-        static::assertInstanceOf(ExceptionTransformer::class, $factory->makeFor(new \Exception('test')));
+        static::assertInstanceOf(ExceptionTransformer::class, $factory->makeFor(new Exception('test')));
     }
 
     /**

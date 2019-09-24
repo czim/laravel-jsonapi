@@ -1,4 +1,7 @@
 <?php
+/** @noinspection ReturnTypeCanBeDeclaredInspection */
+/** @noinspection AccessModifierPresentedInspection */
+
 namespace Czim\JsonApi\Test\Data;
 
 use Czim\JsonApi\Data\Link;
@@ -6,6 +9,7 @@ use Czim\JsonApi\Data\Meta;
 use Czim\JsonApi\Data\Resource;
 use Czim\JsonApi\Test\Helpers\Data\TestData;
 use Czim\JsonApi\Test\TestCase;
+use UnexpectedValueException;
 
 /**
  * Class AbstractDataTest
@@ -63,10 +67,11 @@ class AbstractDataTest extends TestCase
 
     /**
      * @test
-     * @expectedException \UnexpectedValueException
      */
     function it_throws_an_exception_if_a_value_to_decorate_is_not_an_array()
     {
+        $this->expectException(UnexpectedValueException::class);
+
         $data = new TestData;
 
         static::assertNull($data->meta);

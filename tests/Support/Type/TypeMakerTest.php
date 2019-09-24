@@ -1,10 +1,14 @@
 <?php
+/** @noinspection ReturnTypeCanBeDeclaredInspection */
+/** @noinspection AccessModifierPresentedInspection */
+
 namespace Czim\JsonApi\Test\Support\Type;
 
 use Czim\JsonApi\Enums\RootType;
 use Czim\JsonApi\Support\Type\TypeMaker;
 use Czim\JsonApi\Test\Helpers\Models\TestSimpleModel;
 use Czim\JsonApi\Test\TestCase;
+use InvalidArgumentException;
 
 class TypeMakerTest extends TestCase
 {
@@ -42,10 +46,11 @@ class TypeMakerTest extends TestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     function it_throws_an_exception_if_it_cannot_make_a_type()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $maker = new TypeMaker;
 
         $maker->makeFor(['some', 'array']);
@@ -66,7 +71,7 @@ class TypeMakerTest extends TestCase
 
         static::assertEquals('test-simple-models', $maker->makeForModel($model));
     }
-    
+
     /**
      * @test
      */

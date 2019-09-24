@@ -1,4 +1,7 @@
 <?php
+/** @noinspection ReturnTypeCanBeDeclaredInspection */
+/** @noinspection AccessModifierPresentedInspection */
+
 namespace Czim\JsonApi\Test\Integration\Encoding;
 
 use Czim\JsonApi\Contracts\Repositories\ResourceCollectorInterface;
@@ -20,6 +23,7 @@ use Czim\JsonApi\Test\Helpers\Resources\TestPostResourceWithDefaults;
 use Czim\JsonApi\Test\Helpers\Resources\TestSeoResource;
 use Illuminate\Support\Collection;
 use Mockery;
+use RuntimeException;
 
 /**
  * Class ModelEncodingTest
@@ -390,10 +394,11 @@ class ModelEncodingTest extends AbstractSeededTestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     function it_throws_an_exception_if_no_resource_is_registered_for_a_referenced_related_model()
     {
+        $this->expectException(RuntimeException::class);
+
         // Add seo for model
         $model = TestPost::find(2);
         $model->test_author_id = null;

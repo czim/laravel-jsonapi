@@ -1,10 +1,14 @@
 <?php
+/** @noinspection ReturnTypeCanBeDeclaredInspection */
+/** @noinspection AccessModifierPresentedInspection */
+
 namespace Czim\JsonApi\Test\Http\Middleware;
 
 use Czim\JsonApi\Http\Middleware\RequireJsonApiHeader;
 use Czim\JsonApi\Test\TestCase;
 use Illuminate\Http\Request;
 use Mockery;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Class RequireJsonApiHeaderTest
@@ -46,7 +50,7 @@ class RequireJsonApiHeaderTest extends TestCase
 
         try {
             $middleware->handle($requestMock, $next);
-        } catch (\Symfony\Component\HttpKernel\Exception\HttpException $e) {
+        } catch (HttpException $e) {
             static::assertEquals(406, $e->getStatusCode());
         }
     }
@@ -67,7 +71,7 @@ class RequireJsonApiHeaderTest extends TestCase
 
         try {
             $middleware->handle($requestMock, $next);
-        } catch (\Symfony\Component\HttpKernel\Exception\HttpException $e) {
+        } catch (HttpException $e) {
             static::assertEquals(415, $e->getStatusCode());
         }
     }

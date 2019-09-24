@@ -1,4 +1,7 @@
 <?php
+/** @noinspection ReturnTypeCanBeDeclaredInspection */
+/** @noinspection AccessModifierPresentedInspection */
+
 namespace Czim\JsonApi\Test\Encoder\Transformers;
 
 use Czim\JsonApi\Contracts\Encoder\EncoderInterface;
@@ -6,6 +9,7 @@ use Czim\JsonApi\Encoder\Transformers\ExceptionTransformer;
 use Czim\JsonApi\Test\Helpers\Exceptions\TestStatusException;
 use Czim\JsonApi\Test\TestCase;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use InvalidArgumentException;
 use Mockery;
 
 /**
@@ -117,10 +121,11 @@ class ExceptionTransformerTest extends TestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     function it_throws_an_exception_if_data_is_not_an_exception()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $transformer = new ExceptionTransformer;
         $transformer->setEncoder($this->getMockEncoder());
 

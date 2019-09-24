@@ -1,4 +1,7 @@
 <?php
+/** @noinspection ReturnTypeCanBeDeclaredInspection */
+/** @noinspection AccessModifierPresentedInspection */
+
 namespace Czim\JsonApi\Test\Repositories;
 
 use Czim\JsonApi\Repositories\ResourceCollector;
@@ -8,6 +11,7 @@ use Czim\JsonApi\Test\Helpers\Resources\TestCommentResource;
 use Czim\JsonApi\Test\Helpers\Resources\TestPostResource;
 use Czim\JsonApi\Test\TestCase;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 
 class ResourceCollectorTest extends TestCase
 {
@@ -34,10 +38,11 @@ class ResourceCollectorTest extends TestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     function it_throws_an_exception_if_a_mapped_resource_class_does_not_implement_the_correct_interface()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $this->app['config']->set('jsonapi.repository.resource.collect', false);
         $this->app['config']->set('jsonapi.repository.resource.map', [
             TestPost::class => static::class,

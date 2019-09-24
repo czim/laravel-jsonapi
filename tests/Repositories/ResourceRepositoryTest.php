@@ -1,4 +1,7 @@
 <?php
+/** @noinspection ReturnTypeCanBeDeclaredInspection */
+/** @noinspection AccessModifierPresentedInspection */
+
 namespace Czim\JsonApi\Test\Repositories;
 
 use Czim\JsonApi\Contracts\Repositories\ResourceCollectorInterface;
@@ -10,6 +13,7 @@ use Czim\JsonApi\Test\Helpers\Resources\TestAlternativeModelResource;
 use Czim\JsonApi\Test\Helpers\Resources\TestSimpleModelResource;
 use Czim\JsonApi\Test\TestCase;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 use Mockery;
 
 class ResourceRepositoryTest extends TestCase
@@ -134,10 +138,11 @@ class ResourceRepositoryTest extends TestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     function it_throws_an_exception_if_a_registered_resource_is_invalid()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $collector = $this->getMockCollector();
         $collector->shouldReceive('collect')->andReturn(new Collection);
 

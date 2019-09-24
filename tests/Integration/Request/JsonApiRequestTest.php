@@ -1,4 +1,7 @@
 <?php
+/** @noinspection ReturnTypeCanBeDeclaredInspection */
+/** @noinspection AccessModifierPresentedInspection */
+
 namespace Czim\JsonApi\Test\Integration\Request;
 
 use Czim\JsonApi\Enums\RootType;
@@ -11,7 +14,7 @@ class JsonApiRequestTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    public function getEnvironmentSetUp($app)
+    public function getEnvironmentSetUp($app): void
     {
         parent::getEnvironmentSetUp($app);
 
@@ -79,7 +82,7 @@ class JsonApiRequestTest extends TestCase
 
         $data = json_decode($response->content(), true);
 
-        static::assertInternalType('array', $data, 'Invalid JSON returned');
+        static::assertIsArray($data, 'Invalid JSON returned');
         static::assertEquals(RootType::RESOURCE, $data['data-root-type']);
     }
 
@@ -98,7 +101,7 @@ class JsonApiRequestTest extends TestCase
 
         $data = json_decode($response->content(), true);
 
-        static::assertInternalType('array', $data, 'Invalid JSON returned');
+        static::assertIsArray($data, 'Invalid JSON returned');
         static::assertEquals(RootType::RESOURCE, $data['data-root-type']);
     }
 

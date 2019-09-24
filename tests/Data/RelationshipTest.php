@@ -39,7 +39,7 @@ class RelationshipTest extends TestCase
             ],
         ]);
 
-        static::assertInternalType('array', $data->data);
+        static::assertIsArray($data->data);
         static::assertInstanceOf(Resource::class, head($data->data));
         static::assertNull(last($data->data));
     }

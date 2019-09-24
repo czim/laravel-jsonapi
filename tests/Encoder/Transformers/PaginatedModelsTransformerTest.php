@@ -1,4 +1,7 @@
 <?php
+/** @noinspection ReturnTypeCanBeDeclaredInspection */
+/** @noinspection AccessModifierPresentedInspection */
+
 namespace Czim\JsonApi\Test\Encoder\Transformers;
 
 use Czim\JsonApi\Contracts\Encoder\EncoderInterface;
@@ -8,6 +11,7 @@ use Czim\JsonApi\Test\Helpers\Resources\TestSimpleModelResource;
 use Czim\JsonApi\Test\TestCase;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 use Mockery;
 
 /**
@@ -175,10 +179,11 @@ class PaginatedModelsTransformerTest extends TestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     function it_throws_an_exception_if_data_is_not_a_paginator()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $transformer = new PaginatedModelsTransformer;
         $transformer->setEncoder($this->getMockEncoder());
 

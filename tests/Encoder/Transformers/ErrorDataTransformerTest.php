@@ -1,10 +1,14 @@
 <?php
+/** @noinspection ReturnTypeCanBeDeclaredInspection */
+/** @noinspection AccessModifierPresentedInspection */
+
 namespace Czim\JsonApi\Test\Encoder\Transformers;
 
 use Czim\JsonApi\Contracts\Encoder\EncoderInterface;
 use Czim\JsonApi\Encoder\Transformers\ErrorDataTransformer;
 use Czim\JsonApi\Support\Error\ErrorData;
 use Czim\JsonApi\Test\TestCase;
+use InvalidArgumentException;
 use Mockery;
 
 /**
@@ -40,10 +44,11 @@ class ErrorDataTransformerTest extends TestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     function it_throws_an_exception_if_data_is_not_an_error_object()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $transformer = new ErrorDataTransformer;
         $transformer->setEncoder($this->getMockEncoder());
 

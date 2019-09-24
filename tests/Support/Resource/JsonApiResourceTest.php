@@ -1,4 +1,7 @@
 <?php
+/** @noinspection ReturnTypeCanBeDeclaredInspection */
+/** @noinspection AccessModifierPresentedInspection */
+
 namespace Czim\JsonApi\Test\Support\Resource;
 
 use Czim\JsonApi\Test\Helpers\Resources\AbstractTest\TestAbstractResource;

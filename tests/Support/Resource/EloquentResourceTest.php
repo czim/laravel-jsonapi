@@ -1,7 +1,11 @@
 <?php
+/** @noinspection ReturnTypeCanBeDeclaredInspection */
+/** @noinspection AccessModifierPresentedInspection */
+
 namespace Czim\JsonApi\Test\Support\Resource;
 
 use Czim\JsonApi\Contracts\Support\Type\TypeMakerInterface;
+use Czim\JsonApi\Exceptions\InvalidIncludeException;
 use Czim\JsonApi\Test\Helpers\Models\TestPost;
 use Czim\JsonApi\Test\Helpers\Models\TestSimpleModel;
 use Czim\JsonApi\Test\Helpers\Resources\AbstractTest\TestAbstractEloquentResource;
@@ -10,6 +14,7 @@ use Czim\JsonApi\Test\Helpers\Resources\AbstractTest\TestResourceWithRelativeUrl
 use Czim\JsonApi\Test\TestCase;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Mockery;
+use RuntimeException;
 
 /**
  * Class EloquentResourceTest
@@ -208,10 +213,11 @@ class EloquentResourceTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Czim\JsonApi\Exceptions\InvalidIncludeException
      */
     function it_throws_an_exception_if_the_relation_method_name_is_requested_for_an_unknown_include_key()
     {
+        $this->expectException(InvalidIncludeException::class);
+
         $resource = new TestAbstractEloquentResource;
 
         $resource->setModel(new TestPost);
@@ -257,10 +263,11 @@ class EloquentResourceTest extends TestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     function it_throws_an_exception_if_an_include_relation_method_does_not_exist()
     {
+        $this->expectException(RuntimeException::class);
+
         $resource = new TestAbstractEloquentResource;
 
         $resource->setModel(new TestPost);
@@ -270,10 +277,11 @@ class EloquentResourceTest extends TestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     function it_throws_an_exception_if_an_include_relation_method_is_not_an_eloquent_relation()
     {
+        $this->expectException(RuntimeException::class);
+
         $resource = new TestAbstractEloquentResource;
 
         $resource->setModel(new TestPost);

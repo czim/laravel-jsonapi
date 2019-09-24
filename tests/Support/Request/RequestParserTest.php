@@ -1,4 +1,7 @@
 <?php
+/** @noinspection ReturnTypeCanBeDeclaredInspection */
+/** @noinspection AccessModifierPresentedInspection */
+
 namespace Czim\JsonApi\Test\Support\Request;
 
 use Czim\JsonApi\Support\Request\RequestQueryParser;
@@ -10,9 +13,9 @@ class RequestParserTest extends TestCase
 {
 
     protected $filter  = [];
-    protected $include = null;
+    protected $include;
     protected $page    = [];
-    protected $sort    = null;
+    protected $sort;
 
     /**
      * @test

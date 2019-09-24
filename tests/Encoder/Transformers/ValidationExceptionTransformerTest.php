@@ -1,10 +1,14 @@
 <?php
+/** @noinspection ReturnTypeCanBeDeclaredInspection */
+/** @noinspection AccessModifierPresentedInspection */
+
 namespace Czim\JsonApi\Test\Encoder\Transformers;
 
 use Czim\JsonApi\Contracts\Encoder\EncoderInterface;
 use Czim\JsonApi\Encoder\Transformers\ValidationExceptionTransformer;
 use Czim\JsonApi\Exceptions\JsonApiValidationException;
 use Czim\JsonApi\Test\TestCase;
+use InvalidArgumentException;
 use Mockery;
 
 /**
@@ -84,10 +88,11 @@ class ValidationExceptionTransformerTest extends TestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     function it_throws_an_exception_if_data_is_not_a_jsonapi_validation_exception()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $transformer = new ValidationExceptionTransformer;
         $transformer->setEncoder($this->getMockEncoder());
 
