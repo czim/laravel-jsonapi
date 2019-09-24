@@ -23,7 +23,7 @@ The old, discontinued version of this project is in the `0.9.5` branch.
 :-------------|:--------
  5.3          | 1.3
  5.4 to 5.6   | 1.4
- 5.7 and up   | 1.5
+ 5.7 to 6.0   | 1.5
  
  Note that version 1.5+ requires PHP 7.1.3+ and czim/laravel-dataobject 2.0+.
 
