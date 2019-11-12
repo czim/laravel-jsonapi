@@ -37,6 +37,21 @@ class JsonApiValidatorTest extends TestCase
     /**
      * @test
      */
+    function it_validates_create_json_api_data_with_empty_attributes()
+    {
+        $validator = new JsonApiValidator;
+
+        // Valid data
+        static::assertTrue($validator->validateSchema($this->getValidCreateDataWithEmptyAttributes(), SchemaType::CREATE));
+
+        $errors = $validator->getErrors();
+        static::assertInstanceOf(MessageBag::class, $errors);
+        static::assertTrue($errors->isEmpty());
+    }
+
+    /**
+     * @test
+     */
     function it_validates_normal_request_json_api_data()
     {
         $validator = new JsonApiValidator;
@@ -89,6 +104,26 @@ class JsonApiValidatorTest extends TestCase
                 }
             }',
         true);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getValidCreateDataWithEmptyAttributes()
+    {
+        return json_decode('{
+                "data": {
+                    "type": "photos",
+                    "attributes": {
+                    },
+                    "relationships": {
+                        "photographer": {
+                            "data": { "type": "people", "id": "9" }
+                        }
+                    }
+                }
+            }',
+            true);
     }
 
     /**
