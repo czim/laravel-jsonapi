@@ -27,7 +27,7 @@ class JsonApiRequestTest extends TestCase
      */
     function it_does_not_validate_get_request_parameters_against_json_schema()
     {
-        $response = $this->call(
+        $response = $this->json(
             'GET',
             'request?page[number]=44'
         );
@@ -44,7 +44,7 @@ class JsonApiRequestTest extends TestCase
      */
     function it_parses_query_string_data()
     {
-        $response = $this->call(
+        $response = $this->json(
             'POST',
             'request?page[number]=44',
             $this->getValidRequestData()
@@ -72,7 +72,7 @@ class JsonApiRequestTest extends TestCase
      */
     function it_parses_valid_request_data()
     {
-        $response = $this->call(
+        $response = $this->json(
             'POST',
             'request',
             $this->getValidRequestData()
