@@ -27,16 +27,16 @@ class JsonApiRequestTest extends TestCase
      */
     function it_does_not_validate_get_request_parameters_against_json_schema()
     {
-        $response = $this->call(
+        $response = $this->json(
             'GET',
             'request?page[number]=44'
         );
 
         $response->assertStatus(200);
 
-        $data = json_decode($response->content(), true);
+        $data = json_decode($response->content());
 
-        static::assertEquals(44, $data['query-page-number']);
+        static::assertEquals(44, $data->{'query-page-number'});
     }
 
     /**
@@ -44,7 +44,7 @@ class JsonApiRequestTest extends TestCase
      */
     function it_parses_query_string_data()
     {
-        $response = $this->call(
+        $response = $this->json(
             'POST',
             'request?page[number]=44',
             $this->getValidRequestData()
@@ -52,9 +52,9 @@ class JsonApiRequestTest extends TestCase
 
         $response->assertStatus(200);
 
-        $data = json_decode($response->content(), true);
+        $data = json_decode($response->content());
 
-        static::assertEquals(44, $data['query-page-number']);
+        static::assertEquals(44, $data->{'query-page-number'});
     }
 
     /**
@@ -72,7 +72,7 @@ class JsonApiRequestTest extends TestCase
      */
     function it_parses_valid_request_data()
     {
-        $response = $this->call(
+        $response = $this->json(
             'POST',
             'request',
             $this->getValidRequestData()
@@ -80,10 +80,10 @@ class JsonApiRequestTest extends TestCase
 
         $response->assertStatus(200);
 
-        $data = json_decode($response->content(), true);
+        $data = json_decode($response->content());
 
-        static::assertIsArray($data, 'Invalid JSON returned');
-        static::assertEquals(RootType::RESOURCE, $data['data-root-type']);
+        static::assertIsObject($data, 'Invalid JSON returned');
+        static::assertEquals(RootType::RESOURCE, $data->{'data-root-type'});
     }
 
     /**
@@ -91,7 +91,7 @@ class JsonApiRequestTest extends TestCase
      */
     function it_parses_valid_create_data()
     {
-        $response = $this->call(
+        $response = $this->json(
             'POST',
             'create',
             $this->getValidCreateData()
@@ -99,10 +99,29 @@ class JsonApiRequestTest extends TestCase
 
         $response->assertStatus(200);
 
-        $data = json_decode($response->content(), true);
+        $data = json_decode($response->content());
 
-        static::assertIsArray($data, 'Invalid JSON returned');
-        static::assertEquals(RootType::RESOURCE, $data['data-root-type']);
+        static::assertIsObject($data, 'Invalid JSON returned');
+        static::assertEquals(RootType::RESOURCE, $data->{'data-root-type'});
+    }
+
+    /**
+     * @test
+     */
+    function it_parses_valid_create_data_with_empty_attributes()
+    {
+        $response = $this->json(
+            'POST',
+            'create',
+            $this->getValidCreateDataWithEmptyAttributes()
+        );
+
+        $response->assertStatus(200);
+
+        $data = json_decode($response->content());
+
+        static::assertIsObject($data, 'Invalid JSON returned');
+        static::assertEquals(RootType::RESOURCE, $data->{'data-root-type'});
     }
 
 
@@ -147,4 +166,17 @@ class JsonApiRequestTest extends TestCase
         ];
     }
 
+    /**
+     * @return array
+     */
+    protected function getValidCreateDataWithEmptyAttributes()
+    {
+        return [
+            'data' => [
+                'type'       => 'test-posts',
+                'attributes' => (object) [
+                ],
+            ],
+        ];
+    }
 }
