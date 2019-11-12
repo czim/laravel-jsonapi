@@ -102,8 +102,7 @@ class JsonApiValidatorTest extends TestCase
                         }
                     }
                 }
-            }',
-        true);
+            }');
     }
 
     /**
@@ -122,8 +121,7 @@ class JsonApiValidatorTest extends TestCase
                         }
                     }
                 }
-            }',
-            true);
+            }');
     }
 
     /**
@@ -136,8 +134,7 @@ class JsonApiValidatorTest extends TestCase
                     "type": 3425,
                     "relationships": "test"
                 }
-            }',
-            true);
+            }');
     }
 
     /**
@@ -159,8 +156,7 @@ class JsonApiValidatorTest extends TestCase
                         }
                     }
                 }
-            }',
-            true);
+            }');
     }
 
     /**

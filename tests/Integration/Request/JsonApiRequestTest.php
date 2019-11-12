@@ -34,9 +34,9 @@ class JsonApiRequestTest extends TestCase
 
         $response->assertStatus(200);
 
-        $data = json_decode($response->content(), true);
+        $data = json_decode($response->content());
 
-        static::assertEquals(44, $data['query-page-number']);
+        static::assertEquals(44, $data->{'query-page-number'});
     }
 
     /**
@@ -52,9 +52,9 @@ class JsonApiRequestTest extends TestCase
 
         $response->assertStatus(200);
 
-        $data = json_decode($response->content(), true);
+        $data = json_decode($response->content());
 
-        static::assertEquals(44, $data['query-page-number']);
+        static::assertEquals(44, $data->{'query-page-number'});
     }
 
     /**
@@ -80,10 +80,10 @@ class JsonApiRequestTest extends TestCase
 
         $response->assertStatus(200);
 
-        $data = json_decode($response->content(), true);
+        $data = json_decode($response->content());
 
-        static::assertIsArray($data, 'Invalid JSON returned');
-        static::assertEquals(RootType::RESOURCE, $data['data-root-type']);
+        static::assertIsObject($data, 'Invalid JSON returned');
+        static::assertEquals(RootType::RESOURCE, $data->{'data-root-type'});
     }
 
     /**
@@ -99,10 +99,10 @@ class JsonApiRequestTest extends TestCase
 
         $response->assertStatus(200);
 
-        $data = json_decode($response->content(), true);
+        $data = json_decode($response->content());
 
-        static::assertIsArray($data, 'Invalid JSON returned');
-        static::assertEquals(RootType::RESOURCE, $data['data-root-type']);
+        static::assertIsObject($data, 'Invalid JSON returned');
+        static::assertEquals(RootType::RESOURCE, $data->{'data-root-type'});
     }
 
 
