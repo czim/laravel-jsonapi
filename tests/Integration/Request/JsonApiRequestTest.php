@@ -91,10 +91,29 @@ class JsonApiRequestTest extends TestCase
      */
     function it_parses_valid_create_data()
     {
-        $response = $this->call(
+        $response = $this->json(
             'POST',
             'create',
             $this->getValidCreateData()
+        );
+
+        $response->assertStatus(200);
+
+        $data = json_decode($response->content());
+
+        static::assertIsObject($data, 'Invalid JSON returned');
+        static::assertEquals(RootType::RESOURCE, $data->{'data-root-type'});
+    }
+
+    /**
+     * @test
+     */
+    function it_parses_valid_create_data_with_empty_attributes()
+    {
+        $response = $this->json(
+            'POST',
+            'create',
+            $this->getValidCreateDataWithEmptyAttributes()
         );
 
         $response->assertStatus(200);
@@ -147,4 +166,17 @@ class JsonApiRequestTest extends TestCase
         ];
     }
 
+    /**
+     * @return array
+     */
+    protected function getValidCreateDataWithEmptyAttributes()
+    {
+        return [
+            'data' => [
+                'type'       => 'test-posts',
+                'attributes' => (object) [
+                ],
+            ],
+        ];
+    }
 }
