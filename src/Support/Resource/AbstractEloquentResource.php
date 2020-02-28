@@ -165,7 +165,20 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
             }
 
         } else {
-            $ids = $relation->pluck($relatedModel->getQualifiedKeyName())->toArray();
+            // If the relation is singular, we just need the id so no need to query
+            // the entire model.
+            if ($relation instanceof Relations\BelongsTo) {
+                $foreignKeyName = $relation->getForeignKeyName();
+                $id = $this->model->getAttribute($foreignKeyName);
+
+                if ($id !== null) {
+                    $ids[] = $id;
+                } else {
+                    $ids = [];
+                }
+            } else {
+                $ids = $relation->pluck($relatedModel->getQualifiedKeyName())->toArray();
+            }
         }
 
         if ($singular) {
