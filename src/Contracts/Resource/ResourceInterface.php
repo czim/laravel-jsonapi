@@ -3,7 +3,6 @@ namespace Czim\JsonApi\Contracts\Resource;
 
 interface ResourceInterface
 {
-
     /**
      * Returns the JSON-API type.
      *

@@ -5,7 +5,6 @@ use Czim\JsonApi\Support\Resource\AbstractEloquentResource;
 
 class TestSeoResource extends AbstractEloquentResource
 {
-
     protected $availableAttributes = [
         'slug',
     ];
@@ -13,5 +12,4 @@ class TestSeoResource extends AbstractEloquentResource
     protected $availableIncludes = [
         'seoable',
     ];
-
 }

@@ -7,7 +7,6 @@ use Czim\JsonApi\Exceptions\InvalidIncludeException;
 
 interface EloquentResourceInterface extends ResourceInterface
 {
-
     /**
      * Sets the model instance to use.
      *

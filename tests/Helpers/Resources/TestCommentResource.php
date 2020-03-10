@@ -5,7 +5,6 @@ use Czim\JsonApi\Support\Resource\AbstractEloquentResource;
 
 class TestCommentResource extends AbstractEloquentResource
 {
-
     protected $availableAttributes = [
         'title',
         'body',
@@ -17,5 +16,4 @@ class TestCommentResource extends AbstractEloquentResource
         'post',
         'seos',
     ];
-
 }

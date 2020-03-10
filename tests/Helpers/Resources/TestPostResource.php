@@ -5,7 +5,6 @@ use Czim\JsonApi\Support\Resource\AbstractEloquentResource;
 
 class TestPostResource extends AbstractEloquentResource
 {
-
     protected $availableAttributes = [
         'title',
         'body',
@@ -36,5 +35,4 @@ class TestPostResource extends AbstractEloquentResource
     {
         return 'Prefix: ' . $this->model->description;
     }
-
 }

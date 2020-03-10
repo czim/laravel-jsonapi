@@ -3,7 +3,6 @@ namespace Czim\JsonApi\Test\Helpers\Resources\AbstractTest;
 
 class TestResourceWithBlacklistedReferences extends AbstractTestResource
 {
-
     protected $availableIncludes = [
         'comments',
         'post',
@@ -13,5 +12,4 @@ class TestResourceWithBlacklistedReferences extends AbstractTestResource
     protected $excludeReferences = [
         'comments',
     ];
-
 }

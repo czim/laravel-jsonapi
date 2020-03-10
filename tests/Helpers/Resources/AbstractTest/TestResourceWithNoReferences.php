@@ -3,7 +3,6 @@ namespace Czim\JsonApi\Test\Helpers\Resources\AbstractTest;
 
 class TestResourceWithNoReferences extends AbstractTestResource
 {
-
     protected $availableIncludes = [
         'comments',
         'post',
@@ -11,5 +10,4 @@ class TestResourceWithNoReferences extends AbstractTestResource
     ];
 
     protected $includeReferences = false;
-
 }

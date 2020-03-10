@@ -5,7 +5,6 @@ use Czim\JsonApi\Support\Resource\AbstractEloquentResource;
 
 class TestAuthorResource extends AbstractEloquentResource
 {
-
     protected $availableAttributes = [
         'name',
     ];
@@ -14,5 +13,4 @@ class TestAuthorResource extends AbstractEloquentResource
         'posts',
         'comments',
     ];
-
 }

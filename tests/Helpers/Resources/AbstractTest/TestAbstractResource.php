@@ -3,7 +3,6 @@ namespace Czim\JsonApi\Test\Helpers\Resources\AbstractTest;
 
 class TestAbstractResource extends AbstractTestResource
 {
-
     protected $availableAttributes = [
         'name',
         'title',
@@ -52,5 +51,4 @@ class TestAbstractResource extends AbstractTestResource
     {
         return 'custom';
     }
-
 }

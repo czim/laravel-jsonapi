@@ -5,7 +5,5 @@ use Czim\JsonApi\Support\Resource\AbstractEloquentResource;
 
 class TestSimpleModelWithoutAttributesResource extends AbstractEloquentResource
 {
-
     protected $availableAttributes = [];
-
 }

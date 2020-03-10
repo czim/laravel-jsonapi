@@ -5,7 +5,6 @@ use Czim\JsonApi\Support\Resource\AbstractEloquentResource;
 
 class TestAbstractEloquentResource extends AbstractEloquentResource
 {
-
     protected $availableAttributes = [
         'name',
         'title',
@@ -69,5 +68,4 @@ class TestAbstractEloquentResource extends AbstractEloquentResource
     {
         return '2017-01-02 03:04:05';
     }
-
 }

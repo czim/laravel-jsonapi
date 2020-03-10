@@ -15,7 +15,6 @@ use UnexpectedValueException;
 
 abstract class AbstractEloquentResource extends AbstractJsonApiResource implements EloquentResourceInterface
 {
-
     /**
      * @var Model
      */
@@ -406,5 +405,4 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
     {
         return app(ResourceRepositoryInterface::class);
     }
-
 }

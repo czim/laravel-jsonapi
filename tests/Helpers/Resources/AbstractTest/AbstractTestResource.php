@@ -5,7 +5,6 @@ use Czim\JsonApi\Support\Resource\AbstractJsonApiResource;
 
 abstract class AbstractTestResource extends AbstractJsonApiResource
 {
-
     /**
      * Returns the JSON-API type.
      *
@@ -92,5 +91,4 @@ abstract class AbstractTestResource extends AbstractJsonApiResource
     {
         return false;
     }
-    
 }
