@@ -17,7 +17,7 @@ class ModelTransformer extends AbstractTransformer
      * @return array
      * @throws EncodingException
      */
-    public function transform($model)
+    public function transform($model): array
     {
         if ( ! ($model instanceof Model)) {
             throw new InvalidArgumentException('ModelTransformer expects Eloquent model instance');
@@ -57,35 +57,17 @@ class ModelTransformer extends AbstractTransformer
         ];
     }
 
-    /**
-     * Returns resource for given model instance.
-     *
-     * @param Model $model
-     * @return null|ResourceInterface
-     */
-    protected function getResourceForModel(Model $model)
+    protected function getResourceForModel(Model $model): ?ResourceInterface
     {
         return $this->encoder->getResourceForModel($model);
     }
 
-    /**
-     * Returns serialized meta section for a given resource.
-     *
-     * @param ResourceInterface $resource
-     * @return array
-     */
-    protected function serializeMetaData(ResourceInterface $resource)
+    protected function serializeMetaData(ResourceInterface $resource): array
     {
         return $resource->getMeta() ?: [];
     }
 
-    /**
-     * Returns serialized attributes for a given resource.
-     *
-     * @param ResourceInterface $resource
-     * @return array
-     */
-    protected function serializeAttributes(ResourceInterface $resource)
+    protected function serializeAttributes(ResourceInterface $resource): array
     {
         $data = [];
 
@@ -103,7 +85,7 @@ class ModelTransformer extends AbstractTransformer
      * @return array
      * @throws EncodingException
      */
-    protected function processRelationships(ResourceInterface $resource)
+    protected function processRelationships(ResourceInterface $resource): array
     {
         $data = [];
 
@@ -137,7 +119,7 @@ class ModelTransformer extends AbstractTransformer
      * @param ResourceInterface $resource
      * @return array
      */
-    protected function getDefaultIncludesIndex(ResourceInterface $resource)
+    protected function getDefaultIncludesIndex(ResourceInterface $resource): array
     {
         return array_flip($resource->defaultIncludes());
     }
@@ -148,7 +130,7 @@ class ModelTransformer extends AbstractTransformer
      * @param array|null        $defaults       associative index, keys should be include keys.
      * @return bool
      */
-    protected function shouldIncludeFully(ResourceInterface $resource, $key, array $defaults = null)
+    protected function shouldIncludeFully(ResourceInterface $resource, string $key, ?array $defaults = null): bool
     {
         // Always include relations specifically requested
         if ($this->encoder->isIncludeRequested($this->prefixParentToIncludeKey($key))) {
@@ -174,40 +156,22 @@ class ModelTransformer extends AbstractTransformer
         return array_key_exists($key, $defaults);
     }
 
-    /**
-     * Normalizes a model attribute key to a JSON-API attribute key.
-     *
-     * @param string $key
-     * @return string
-     */
-    protected function normalizeJsonApiAttributeKey($key)
+    protected function normalizeJsonApiAttributeKey(string $key): string
     {
         return str_replace('_', '-', Str::snake($key, '-'));
     }
 
-    /**
-     * @return bool
-     */
-    protected function shouldAllowTopLevelIncludesOnly()
+    protected function shouldAllowTopLevelIncludesOnly(): bool
     {
         return (bool) config('jsonapi.transform.top-level-default-includes-only');
     }
 
-    /**
-     * @return bool
-     */
-    protected function shouldIgnoreDefaultIncludesWhenRequestedSet()
+    protected function shouldIgnoreDefaultIncludesWhenRequestedSet(): bool
     {
         return (bool) config('jsonapi.transform.requested-includes-cancel-defaults');
     }
 
-    /**
-     * Prefixes the parent key chain to an include key.
-     *
-     * @param string $key
-     * @return string
-     */
-    protected function prefixParentToIncludeKey($key)
+    protected function prefixParentToIncludeKey(string $key): string
     {
         if (null === $this->parent) {
             return $key;

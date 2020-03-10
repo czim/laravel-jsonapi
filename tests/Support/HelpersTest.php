@@ -21,9 +21,10 @@ class HelpersTest extends TestCase
      */
     function helper_method_returns_a_jsonapi_request()
     {
-        $this->app->instance(JsonApiRequest::class, 'testing');
+        $request = new JsonApiRequest();
+        $this->app->instance(JsonApiRequest::class, $request);
 
-        static::assertEquals('testing', jsonapi_request());
+        static::assertSame($request, jsonapi_request());
     }
 
     /**
@@ -31,9 +32,10 @@ class HelpersTest extends TestCase
      */
     function helper_method_returns_a_jsonapi_create_request()
     {
-        $this->app->instance(JsonApiCreateRequest::class, 'testing');
+        $request = new JsonApiCreateRequest();
+        $this->app->instance(JsonApiCreateRequest::class, $request);
 
-        static::assertEquals('testing', jsonapi_request_create());
+        static::assertSame($request, jsonapi_request_create());
     }
 
     /**
@@ -41,9 +43,10 @@ class HelpersTest extends TestCase
      */
     function helper_method_returns_a_jsonapi_query_parser()
     {
-        $this->app->instance(RequestQueryParser::class, 'testing');
+        $parser = new RequestQueryParser(new JsonApiRequest());
+        $this->app->instance(RequestQueryParser::class, $parser);
 
-        static::assertEquals('testing', jsonapi_query());
+        static::assertSame($parser, jsonapi_query());
     }
 
     /**
@@ -65,11 +68,11 @@ class HelpersTest extends TestCase
     {
         /** @var EncoderInterface|Mockery\Mock $encoderMock */
         $encoderMock = Mockery::mock(EncoderInterface::class);
-        $encoderMock->shouldReceive('encode')->with('data', ['include'])->once()->andReturn('encoder output');
+        $encoderMock->shouldReceive('encode')->with('data', ['include'])->once()->andReturn(['encoder output']);
 
         $this->app->instance(EncoderInterface::class, $encoderMock);
 
-        static::assertEquals('encoder output', jsonapi_encode('data', ['include']));
+        static::assertEquals(['encoder output'], jsonapi_encode('data', ['include']));
     }
 
     /**
@@ -79,14 +82,14 @@ class HelpersTest extends TestCase
     {
         /** @var EncoderInterface|Mockery\Mock $encoderMock */
         $encoderMock = Mockery::mock(EncoderInterface::class);
-        $encoderMock->shouldReceive('encode')->with('problem', Mockery::any())->once()->andReturn('encoder output');
+        $encoderMock->shouldReceive('encode')->with('problem', Mockery::any())->once()->andReturn(['encoder output']);
 
         $this->app->instance(EncoderInterface::class, $encoderMock);
 
         $response = jsonapi_error('problem');
 
         static::assertInstanceOf(JsonApiResponse::class, $response);
-        static::assertEquals('encoder output', $response->getData());
+        static::assertEquals(['encoder output'], $response->getData());
     }
 
     /**

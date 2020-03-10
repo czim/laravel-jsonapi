@@ -41,10 +41,13 @@ abstract class AbstractTransformer implements TransformerInterface
      * Sets parent encoder instance.
      *
      * @param EncoderInterface $encoder
+     * @return $this
      */
-    public function setEncoder(EncoderInterface $encoder)
+    public function setEncoder(EncoderInterface $encoder): TransformerInterface
     {
         $this->encoder = $encoder;
+
+        return $this;
     }
 
     /**
@@ -53,7 +56,7 @@ abstract class AbstractTransformer implements TransformerInterface
      * @param bool $top
      * @return $this
      */
-    public function setIsTop($top = true)
+    public function setIsTop(bool $top = true): TransformerInterface
     {
         $this->isTop = (bool) $top;
 
@@ -63,10 +66,10 @@ abstract class AbstractTransformer implements TransformerInterface
     /**
      * Sets the dot-notation parent chain.
      *
-     * @param string $parentChain
+     * @param string|null $parentChain
      * @return $this
      */
-    public function setParent($parentChain)
+    public function setParent(?string $parentChain): TransformerInterface
     {
         $this->parent = $parentChain;
 
@@ -79,7 +82,7 @@ abstract class AbstractTransformer implements TransformerInterface
      * @param bool $variable
      * @return $this
      */
-    public function setIsVariable($variable = true)
+    public function setIsVariable(bool $variable = true): TransformerInterface
     {
         $this->isVariable = (bool) $variable;
 

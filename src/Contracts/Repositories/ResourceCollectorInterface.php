@@ -11,6 +11,5 @@ interface ResourceCollectorInterface
      *
      * @return Collection|ResourceInterface[]
      */
-    public function collect();
-
+    public function collect(): Collection;
 }

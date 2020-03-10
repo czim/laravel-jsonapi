@@ -11,7 +11,7 @@ class ErrorDataTransformer extends AbstractTransformer
      * @param ErrorDataInterface|ErrorDataInterface[] $errors
      * @return array
      */
-    public function transform($errors)
+    public function transform($errors): array
     {
         if ( ! is_array($errors)) {
             $errors = [ $errors ];
@@ -34,7 +34,7 @@ class ErrorDataTransformer extends AbstractTransformer
      *
      * @param array $errors
      */
-    protected function checkErrorDataArray(array $errors)
+    protected function checkErrorDataArray(array $errors): void
     {
         foreach ($errors as $error) {
 

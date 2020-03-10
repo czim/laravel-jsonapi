@@ -11,7 +11,7 @@ if ( ! function_exists('jsonapi_request')) {
      *
      * @return \Czim\JsonApi\Http\Requests\JsonApiRequest
      */
-    function jsonapi_request()
+    function jsonapi_request(): \Czim\JsonApi\Http\Requests\JsonApiRequest
     {
         return app(\Czim\JsonApi\Http\Requests\JsonApiRequest::class);
     }
@@ -25,7 +25,7 @@ if ( ! function_exists('jsonapi_request_create')) {
      *
      * @return \Czim\JsonApi\Http\Requests\JsonApiCreateRequest
      */
-    function jsonapi_request_create()
+    function jsonapi_request_create(): \Czim\JsonApi\Http\Requests\JsonApiCreateRequest
     {
         return app(\Czim\JsonApi\Http\Requests\JsonApiCreateRequest::class);
     }
@@ -37,7 +37,7 @@ if ( ! function_exists('jsonapi_query')) {
      *
      * @return \Czim\JsonApi\Support\Request\RequestQueryParser
      */
-    function jsonapi_query()
+    function jsonapi_query(): \Czim\JsonApi\Support\Request\RequestQueryParser
     {
         return app(\Czim\JsonApi\Support\Request\RequestQueryParser::class);
     }
@@ -53,7 +53,7 @@ if ( ! function_exists('jsonapi_response')) {
      * @param  int    $options
      * @return \Czim\JsonApi\Http\Responses\JsonApiResponse
      */
-    function jsonapi_response($data = null, $status = 200, $headers = [], $options = 0)
+    function jsonapi_response($data = null, int $status = 200, array $headers = [], int $options = 0): \Czim\JsonApi\Http\Responses\JsonApiResponse
     {
         return new \Czim\JsonApi\Http\Responses\JsonApiResponse($data, $status, $headers, $options);
     }
@@ -67,7 +67,7 @@ if ( ! function_exists('jsonapi_encode')) {
      * @param  array  $includes
      * @return array
      */
-    function jsonapi_encode($data, array $includes = null)
+    function jsonapi_encode($data, array $includes = null): array
     {
         /** @var \Czim\JsonApi\Contracts\Encoder\EncoderInterface $encoder */
         $encoder = app(\Czim\JsonApi\Contracts\Encoder\EncoderInterface::class);
@@ -83,7 +83,7 @@ if ( ! function_exists('jsonapi_error')) {
      * @param  mixed $data
      * @return \Czim\JsonApi\Http\Responses\JsonApiResponse
      */
-    function jsonapi_error($data)
+    function jsonapi_error($data): \Czim\JsonApi\Http\Responses\JsonApiResponse
     {
         $encoded = jsonapi_encode($data);
 
@@ -99,7 +99,7 @@ if ( ! function_exists('is_jsonapi_request')) {
      *
      * @return bool
      */
-    function is_jsonapi_request()
+    function is_jsonapi_request(): bool
     {
         $acceptHeader = AcceptHeader::fromString(request()->header('accept'));
 

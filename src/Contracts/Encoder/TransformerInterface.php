@@ -9,32 +9,33 @@ interface TransformerInterface
      * Sets parent encoder instance.
      *
      * @param EncoderInterface $encoder
+     * @return $this|TransformerInterface
      */
-    public function setEncoder(EncoderInterface $encoder);
+    public function setEncoder(EncoderInterface $encoder): TransformerInterface;
 
     /**
      * Sets that the transformation is for a top-level resource.
      *
      * @param bool $top
-     * @return $this
+     * @return $this|TransformerInterface
      */
-    public function setIsTop($top = true);
+    public function setIsTop(bool $top = true): TransformerInterface;
 
     /**
      * Sets the dot-notation parent chain.
      *
-     * @param string $parentChain
-     * @return $this
+     * @param string|null $parentChain
+     * @return $this|TransformerInterface
      */
-    public function setParent($parentChain);
+    public function setParent(?string $parentChain): TransformerInterface;
 
     /**
      * Sets whether the collection may contain more than one type of model.
      *
      * @param bool $variable
-     * @return $this
+     * @return $this|TransformerInterface
      */
-    public function setIsVariable($variable = true);
+    public function setIsVariable(bool $variable = true): TransformerInterface;
 
     /**
      * Transforms given data.
@@ -43,6 +44,5 @@ interface TransformerInterface
      * @return array
      * @throws EncodingException
      */
-    public function transform($data);
-
+    public function transform($data): array;
 }

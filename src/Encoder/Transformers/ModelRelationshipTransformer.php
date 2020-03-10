@@ -12,13 +12,11 @@ use InvalidArgumentException;
 class ModelRelationshipTransformer extends AbstractTransformer
 {
     /**
-     * Transforms given data.
-     *
-     * @param RelationshipTransformData $parameters
+     * @param mixed|RelationshipTransformData $parameters
      * @return array
      * @throws EncodingException
      */
-    public function transform($parameters)
+    public function transform($parameters): array
     {
         if ( ! ($parameters instanceof RelationshipTransformData)) {
             throw new InvalidArgumentException('ModelRelationshipTransformer expects RelationshipTransformData instance');
@@ -94,7 +92,7 @@ class ModelRelationshipTransformer extends AbstractTransformer
      * @param string            $key
      * @return array
      */
-    protected function getLinksData(ResourceInterface $resource, $key)
+    protected function getLinksData(ResourceInterface $resource, string $key): array
     {
         $data = [];
 
@@ -123,7 +121,7 @@ class ModelRelationshipTransformer extends AbstractTransformer
      * @return array
      * @throws EncodingException
      */
-    protected function getRelatedFullData(ResourceInterface $resource, $includeKey)
+    protected function getRelatedFullData(ResourceInterface $resource, string $includeKey): array
     {
         $related = $resource->relationshipData($includeKey);
 
@@ -143,9 +141,9 @@ class ModelRelationshipTransformer extends AbstractTransformer
     /**
      * @param ResourceInterface $resource
      * @param string            $includeKey
-     * @return array
+     * @return array|null
      */
-    protected function getRelatedReferenceData(ResourceInterface $resource, $includeKey)
+    protected function getRelatedReferenceData(ResourceInterface $resource, string $includeKey): ?array
     {
         return $resource->relationshipReferences($includeKey);
     }
@@ -157,7 +155,7 @@ class ModelRelationshipTransformer extends AbstractTransformer
      * @param bool  $singular
      * @return array
      */
-    protected function getRelatedReferencesFromRelatedData(array $data, $singular = false)
+    protected function getRelatedReferencesFromRelatedData(array $data, bool $singular = false): array
     {
         $data = Arr::get($data, Key::DATA, []);
 
@@ -185,7 +183,7 @@ class ModelRelationshipTransformer extends AbstractTransformer
      * @param null|array|array[] $data
      * @param bool               $singular      whether the relation is singular
      */
-    protected function addRelatedDataToEncoder($data, $singular = true)
+    protected function addRelatedDataToEncoder(?array $data, bool $singular = true): void
     {
         if ( ! is_array($data)) {
             // @codeCoverageIgnoreStart
@@ -209,26 +207,17 @@ class ModelRelationshipTransformer extends AbstractTransformer
         }
     }
 
-    /**
-     * @return bool
-     */
-    protected function addRelationshipsLink()
+    protected function addRelationshipsLink(): bool
     {
         return (bool) config('jsonapi.transform.links.relationships');
     }
 
-    /**
-     * @return bool
-     */
-    protected function addRelatedLink()
+    protected function addRelatedLink(): bool
     {
         return (bool) config('jsonapi.transform.links.related');
     }
 
-    /**
-     * @return string
-     */
-    protected function getRelationshipsLinkSegment()
+    protected function getRelationshipsLinkSegment(): string
     {
         $segment = config('jsonapi.transform.links.relationships-segment', 'relationships');
 
@@ -239,10 +228,7 @@ class ModelRelationshipTransformer extends AbstractTransformer
         return rtrim($segment, '/') . '/';
     }
 
-    /**
-     * @return string
-     */
-    protected function getRelatedLinkSegment()
+    protected function getRelatedLinkSegment(): string
     {
         $segment = config('jsonapi.transform.links.related-segment', 'related');
 

@@ -11,6 +11,5 @@ interface ResourcePathHelperInterface
      * @param ResourceInterface $resource
      * @return string
      */
-    public function makePath(ResourceInterface $resource);
-
+    public function makePath(ResourceInterface $resource): string;
 }

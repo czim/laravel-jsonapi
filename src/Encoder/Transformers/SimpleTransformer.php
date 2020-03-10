@@ -11,7 +11,7 @@ class SimpleTransformer extends AbstractTransformer
      * @param mixed $data
      * @return array
      */
-    public function transform($data)
+    public function transform($data): array
     {
         if ($data instanceof Arrayable) {
             $data = $data->toArray();

@@ -15,7 +15,7 @@ class ExceptionTransformer extends ErrorDataTransformer
      * @param mixed $exception
      * @return array
      */
-    public function transform($exception)
+    public function transform($exception): array
     {
         if ( ! ($exception instanceof Exception)) {
             throw new InvalidArgumentException("ExceptionTransformer expects Exception instance");
@@ -27,13 +27,7 @@ class ExceptionTransformer extends ErrorDataTransformer
     }
 
 
-    /**
-     * Converts exception instance to ErrorDataInterface instance
-     *
-     * @param Exception $exception
-     * @return ErrorDataInterface
-     */
-    protected function convertExceptionToErrorData(Exception $exception)
+    protected function convertExceptionToErrorData(Exception $exception): ErrorDataInterface
     {
         return new ErrorData([
             'status' => (string) $this->getStatusCode($exception),
@@ -68,11 +62,7 @@ class ExceptionTransformer extends ErrorDataTransformer
         return 500;
     }
 
-    /**
-     * @param Exception $exception
-     * @return string
-     */
-    protected function getTitle(Exception $exception)
+    protected function getTitle(Exception $exception): string
     {
         return ucfirst(Str::snake(class_basename($exception), ' '));
     }

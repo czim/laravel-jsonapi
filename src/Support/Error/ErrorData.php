@@ -27,7 +27,7 @@ class ErrorData extends AbstractDataObject implements ErrorDataInterface
     /**
      * @return array
      */
-    public function links()
+    public function links(): array
     {
         return $this->links ?: [];
     }
@@ -35,7 +35,7 @@ class ErrorData extends AbstractDataObject implements ErrorDataInterface
     /**
      * @return string
      */
-    public function status()
+    public function status(): string
     {
         return (string) $this->status ?: '';
     }
@@ -43,7 +43,7 @@ class ErrorData extends AbstractDataObject implements ErrorDataInterface
     /**
      * @return string
      */
-    public function code()
+    public function code(): string
     {
         return (string) $this->code ?: '';
     }
@@ -51,7 +51,7 @@ class ErrorData extends AbstractDataObject implements ErrorDataInterface
     /**
      * @return string
      */
-    public function title()
+    public function title(): string
     {
         return $this->title ?: '';
     }
@@ -59,7 +59,7 @@ class ErrorData extends AbstractDataObject implements ErrorDataInterface
     /**
      * @return string
      */
-    public function detail()
+    public function detail(): string
     {
         return $this->detail ?: '';
     }
@@ -67,7 +67,7 @@ class ErrorData extends AbstractDataObject implements ErrorDataInterface
     /**
      * @return array
      */
-    public function source()
+    public function source(): array
     {
         return $this->source ?: [];
     }
@@ -75,7 +75,7 @@ class ErrorData extends AbstractDataObject implements ErrorDataInterface
     /**
      * @return array
      */
-    public function meta()
+    public function meta(): array
     {
         return $this->meta ?: [];
     }
@@ -85,7 +85,7 @@ class ErrorData extends AbstractDataObject implements ErrorDataInterface
      *
      * @return array
      */
-    public function toCleanArray()
+    public function toCleanArray(): array
     {
         return array_filter($this->toArray());
     }

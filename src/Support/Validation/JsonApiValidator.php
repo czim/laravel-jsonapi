@@ -11,8 +11,8 @@ use JsonSchema\Validator;
 
 class JsonApiValidator implements JsonApiValidatorInterface
 {
-    const SCHEMA_CREATE_PATH   = '../schemas/create.json';
-    const SCHEMA_REQUEST_PATH  = '../schemas/request.json';
+    public const SCHEMA_CREATE_PATH   = '../schemas/create.json';
+    public const SCHEMA_REQUEST_PATH  = '../schemas/request.json';
 
     /**
      * @var false|MessageBagContract
@@ -26,7 +26,7 @@ class JsonApiValidator implements JsonApiValidatorInterface
      * @param string       $type  the type of schema to validate against
      * @return bool
      */
-    public function validateSchema($data, $type = SchemaType::REQUEST)
+    public function validateSchema($data, string $type = SchemaType::REQUEST): bool
     {
         $validator = new Validator;
 
@@ -37,7 +37,7 @@ class JsonApiValidator implements JsonApiValidatorInterface
         $validator->validate(
             $data,
             (object) [
-                '$ref' => 'file://' . $this->getSchemaPath($type)
+                '$ref' => 'file://' . $this->getSchemaOrgPath($type)
             ]
         );
 
@@ -51,7 +51,7 @@ class JsonApiValidator implements JsonApiValidatorInterface
      *
      * @return MessageBagContract
      */
-    public function getErrors()
+    public function getErrors(): MessageBagContract
     {
         if ( ! $this->lastErrors) {
             return new MessageBag;
@@ -60,13 +60,7 @@ class JsonApiValidator implements JsonApiValidatorInterface
         return $this->lastErrors;
     }
 
-    /**
-     * Returns the path to the JSON-API schema.org data.
-     *
-     * @param string $type
-     * @return string
-     */
-    protected function getSchemaPath($type = SchemaType::REQUEST)
+    protected function getSchemaOrgPath(string $type = SchemaType::REQUEST): string
     {
         switch ($type) {
 
@@ -87,7 +81,7 @@ class JsonApiValidator implements JsonApiValidatorInterface
      *
      * @param array $errors
      */
-    protected function storeErrors(array $errors)
+    protected function storeErrors(array $errors): void
     {
         if ( ! count($errors)) {
             $this->lastErrors = false;

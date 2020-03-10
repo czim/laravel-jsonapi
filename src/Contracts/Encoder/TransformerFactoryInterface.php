@@ -9,6 +9,5 @@ interface TransformerFactoryInterface
      * @param mixed $data
      * @return TransformerInterface
      */
-    public function makeFor($data);
-
+    public function makeFor($data): TransformerInterface;
 }

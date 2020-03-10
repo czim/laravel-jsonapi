@@ -8,8 +8,8 @@ use InvalidArgumentException;
 
 class TypeMaker implements TypeMakerInterface
 {
-    const WORD_SEPARATOR      = '-';
-    const NAMESPACE_SEPARATOR = '--';
+    public const WORD_SEPARATOR      = '-';
+    public const NAMESPACE_SEPARATOR = '--';
 
     /**
      * Makes a JSON-API type string for any source content.
@@ -17,10 +17,14 @@ class TypeMaker implements TypeMakerInterface
      * @param mixed $source
      * @return string
      */
-    public function makeFor($source)
+    public function makeFor($source): string
     {
         if ($source instanceof Model) {
-            return $this->makeForModel($source);
+            return $this->makeForModelClass(get_class($source));
+        }
+
+        if (is_a($source, Model::class, true)) {
+            return $this->makeForModelClass($source);
         }
 
         if (is_object($source)) {
@@ -33,30 +37,30 @@ class TypeMaker implements TypeMakerInterface
             return Str::snake($source, static::WORD_SEPARATOR);
         }
 
-        throw new InvalidArgumentException("Cannot make type for given source");
+        throw new InvalidArgumentException('Cannot make type for given source');
     }
 
     /**
-     * Makes a JSON-API type for a given model instance.
+     * Makes a JSON-API type for a given model FQN.
      *
-     * @param Model       $record
+     * @param string      $class
      * @param null|string $offsetNamespace
      * @return string
      */
-    public function makeForModel(Model $record, $offsetNamespace = null)
+    public function makeForModelClass(string $class, ?string $offsetNamespace = null): string
     {
         if (null === $offsetNamespace) {
             $offsetNamespace = config('jsonapi.transform.type.trim-namespace');
         }
 
         $baseDasherized = $this->pluralizeIfConfiguredTo(
-            Str::snake(class_basename($record), static::WORD_SEPARATOR)
+            Str::snake(class_basename($class), static::WORD_SEPARATOR)
         );
 
         if (null !== $offsetNamespace) {
 
             $namespaceDasherized = $this->dasherizeNamespace(
-                $this->trimNamespace(get_class($record), $offsetNamespace, class_basename($record))
+                $this->trimNamespace($class, $offsetNamespace, class_basename($class))
             );
 
             $baseDasherized = ($namespaceDasherized ? $namespaceDasherized . static::NAMESPACE_SEPARATOR : null)
@@ -74,7 +78,7 @@ class TypeMaker implements TypeMakerInterface
      * @param string $trail     bit to cut off the end
      * @return string
      */
-    protected function trimNamespace($namespace, $offset, $trail)
+    protected function trimNamespace(string $namespace, string $offset, string $trail): string
     {
         if (Str::startsWith($namespace, $offset)) {
             $namespace = substr($namespace, strlen($offset));
@@ -89,11 +93,7 @@ class TypeMaker implements TypeMakerInterface
         return $namespace;
     }
 
-    /**
-     * @param string $namespace
-     * @return string
-     */
-    protected function dasherizeNamespace($namespace)
+    protected function dasherizeNamespace(string $namespace): string
     {
         $parts = explode('\\', $namespace);
         $parts = array_map(
@@ -106,25 +106,16 @@ class TypeMaker implements TypeMakerInterface
         return implode(static::NAMESPACE_SEPARATOR, $parts);
     }
 
-    /**
-     * @param string $type
-     * @return string
-     */
-    protected function pluralizeIfConfiguredTo($type)
+    protected function pluralizeIfConfiguredTo(string $type): string
     {
-        if ($this->plural()) {
+        if ($this->shouldBePlural()) {
             return Str::plural($type);
         }
 
         return $type;
     }
 
-    /**
-     * Returns whether JSON-API type must be plural.
-     *
-     * @return bool
-     */
-    protected function plural()
+    protected function shouldBePlural(): bool
     {
         return (bool) config('jsonapi.type.plural', true);
     }

@@ -12,13 +12,12 @@ interface JsonApiValidatorInterface
      * @param string       $type  the type of schema to validate against
      * @return bool
      */
-    public function validateSchema($data, $type = 'request');
+    public function validateSchema($data, string $type = 'request'): bool;
 
     /**
      * Returns the errors detected in the last validate call.
      *
      * @return MessageBag
      */
-    public function getErrors();
-
+    public function getErrors(): Messagebag;
 }

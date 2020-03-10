@@ -16,7 +16,7 @@ class ResourcePathHelper
      * @param ResourceInterface $resource
      * @return string
      */
-    public function makePath(ResourceInterface $resource)
+    public function makePath(ResourceInterface $resource): string
     {
         $classname = get_class($resource);
 

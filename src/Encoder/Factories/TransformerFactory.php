@@ -18,7 +18,7 @@ class TransformerFactory implements TransformerFactoryInterface
      * @param mixed $data
      * @return TransformerInterface
      */
-    public function makeFor($data)
+    public function makeFor($data): TransformerInterface
     {
         $class = $this->determineTransformerClass($data);
 
@@ -32,7 +32,7 @@ class TransformerFactory implements TransformerFactoryInterface
      * @param mixed $data
      * @return string
      */
-    protected function determineTransformerClass($data)
+    protected function determineTransformerClass($data): string
     {
         // Specific class fqn map to transformers with is_a() checking
 
@@ -68,26 +68,14 @@ class TransformerFactory implements TransformerFactoryInterface
         return Transformers\SimpleTransformer::class;
     }
 
-    /**
-     * Returns whether a collection contains only models.
-     *
-     * @param Collection $collection
-     * @return bool
-     */
-    protected function isCollectionWithOnlyModels(Collection $collection)
+    protected function isCollectionWithOnlyModels(Collection $collection): bool
     {
         $filtered = $collection->filter(function ($item) { return $item instanceof Model; });
 
         return $collection->count() === $filtered->count();
     }
 
-    /**
-     * Returns whether a paginator contains only models.
-     *
-     * @param AbstractPaginator $paginator
-     * @return bool
-     */
-    protected function isPaginatorWithOnlyModels(AbstractPaginator $paginator)
+    protected function isPaginatorWithOnlyModels(AbstractPaginator $paginator): bool
     {
         $collection = $paginator->getCollection();
 
@@ -104,7 +92,7 @@ class TransformerFactory implements TransformerFactoryInterface
      * @param object $object
      * @return null|string
      */
-    protected function determineMappedTransformer($object)
+    protected function determineMappedTransformer($object): ?string
     {
         $map = config('jsonapi.transform.map', []);
 

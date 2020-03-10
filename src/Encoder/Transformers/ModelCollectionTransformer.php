@@ -24,7 +24,7 @@ class ModelCollectionTransformer extends ModelTransformer
      * @return array
      * @throws \Czim\JsonApi\Exceptions\EncodingException
      */
-    public function transform($models)
+    public function transform($models): array
     {
         if ( ! ($models instanceof Collection)) {
             throw new InvalidArgumentException('ModelTransformer expects collection instance with models');
@@ -59,7 +59,7 @@ class ModelCollectionTransformer extends ModelTransformer
      * @param Collection $models
      * @return null|ResourceInterface
      */
-    protected function getResourceForCollection(Collection $models)
+    protected function getResourceForCollection(Collection $models): ?ResourceInterface
     {
         return $this->encoder->getResourceForModel($models->first());
     }
@@ -69,7 +69,7 @@ class ModelCollectionTransformer extends ModelTransformer
      *
      * {@inheritdoc}
      */
-    protected function getResourceForModel(Model $model)
+    protected function getResourceForModel(Model $model): ?ResourceInterface
     {
         if (null === $this->resource) {
             return parent::getResourceForModel($model);

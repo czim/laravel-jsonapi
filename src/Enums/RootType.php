@@ -8,8 +8,8 @@ use MyCLabs\Enum\Enum;
  */
 class RootType extends Enum
 {
-    const ERROR    = 'error';
-    const META     = 'meta';
-    const RESOURCE = 'resource';
-    const UNKNOWN  = 'unknown';
+    public const ERROR    = 'error';
+    public const META     = 'meta';
+    public const RESOURCE = 'resource';
+    public const UNKNOWN  = 'unknown';
 }

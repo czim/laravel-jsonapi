@@ -22,35 +22,20 @@ use Illuminate\Support\ServiceProvider;
 
 class JsonApiServiceProvider extends ServiceProvider
 {
-
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
         $this->bootConfig();
     }
 
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
+    public function register(): void
     {
-        $this
-            ->registerConfig()
-            ->registerInterfaces()
-            ->loadAliases();
+        $this->registerConfig();
+        $this->registerInterfaces();
+        $this->loadAliases();
     }
 
 
-    /**
-     * @return $this
-     */
-    protected function registerInterfaces()
+    protected function registerInterfaces(): void
     {
         $this->app->singleton(RequestQueryParserInterface::class, RequestQueryParser::class);
         $this->app->singleton(JsonApiValidatorInterface::class, JsonApiValidator::class);
@@ -60,37 +45,22 @@ class JsonApiServiceProvider extends ServiceProvider
         $this->app->singleton(EncoderInterface::class, Encoder::class);
         $this->app->singleton(TransformerFactoryInterface::class, TransformerFactory::class);
         $this->app->singleton(ResourcePathHelperInterface::class, ResourcePathHelper::class);
-
-        return $this;
     }
 
-    /**
-     * @return $this
-     */
-    protected function loadAliases()
+    protected function loadAliases(): void
     {
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
 
         $loader->alias('JsonApiRequest', Facades\JsonApiRequestFacade::class);
         $loader->alias('JsonApiEncoder', Facades\JsonApiEncoderFacade::class);
-
-        return $this;
     }
 
-    /**
-     * @return $this
-     */
-    protected function registerConfig()
+    protected function registerConfig(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../../config/jsonapi.php', 'jsonapi');
-
-        return $this;
     }
 
-    /**
-     * @return $this
-     */
-    protected function bootConfig()
+    protected function bootConfig(): void
     {
         $this->publishes(
             [
@@ -98,7 +68,5 @@ class JsonApiServiceProvider extends ServiceProvider
             ],
             'jsonapi'
         );
-
-        return $this;
     }
 }

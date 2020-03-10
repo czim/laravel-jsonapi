@@ -31,11 +31,7 @@ class RequireJsonApiHeader
         return $next($request);
     }
 
-    /**
-     * @param Request $request
-     * @return bool
-     */
-    protected function acceptHeaderValid(Request $request)
+    protected function acceptHeaderValid(Request $request): bool
     {
         $acceptHeader = AcceptHeader::fromString($request->header('accept'));
 
@@ -46,17 +42,14 @@ class RequireJsonApiHeader
         return false;
     }
 
-    /**
-     * @param Request $request
-     * @return bool
-     */
-    protected function contentTypeHeaderValid(Request $request)
+    protected function contentTypeHeaderValid(Request $request): bool
     {
         $contentTypeHeader = AcceptHeader::fromString($request->header('content-type'));
 
         // also allowed to be multipart formdata and exceptional standard json
-        if (    $contentTypeHeader->has('multipart/form-data')
-            ||  $contentTypeHeader->has('application/json')
+        if (
+            $contentTypeHeader->has('multipart/form-data')
+            || $contentTypeHeader->has('application/json')
         ) {
             return true;
         }
@@ -64,11 +57,13 @@ class RequireJsonApiHeader
         if ($contentTypeHeader->has('application/vnd.api+json')) {
             $attributes = $contentTypeHeader->get('application/vnd.api+json')->getAttributes();
 
-            return (    empty($attributes)
-                    ||  (   count($attributes) === 1
-                        &&  strtolower(Arr::get($attributes, 'charset')) === 'utf-8'
-                        )
-                    );
+            return (
+                empty($attributes)
+                || (
+                    count($attributes) === 1
+                    && strtolower(Arr::get($attributes, 'charset')) === 'utf-8'
+                )
+            );
         }
 
         return false;

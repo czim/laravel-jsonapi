@@ -16,7 +16,7 @@ class ResourceCollector implements ResourceCollectorInterface
      *
      * @return Collection|ResourceInterface[]   keyed by model class string
      */
-    public function collect()
+    public function collect(): Collection
     {
         $resources = new Collection;
 
@@ -44,7 +44,7 @@ class ResourceCollector implements ResourceCollectorInterface
      *
      * @return Collection|ResourceInterface[]   keyed by model class string
      */
-    protected function collectByMapping()
+    protected function collectByMapping(): Collection
     {
         $mapping = config('jsonapi.repository.resource.map', []);
         $mapped  = new Collection;
@@ -65,7 +65,7 @@ class ResourceCollector implements ResourceCollectorInterface
      *
      * @return Collection|ResourceInterface[]   keyed by model class string
      */
-    protected function collectByNamespace()
+    protected function collectByNamespace(): Collection
     {
         // todo
         // launch resource-reader
@@ -81,7 +81,7 @@ class ResourceCollector implements ResourceCollectorInterface
      * @param string $class
      * @return ResourceInterface|EloquentResourceInterface
      */
-    protected function instantiateResource($class)
+    protected function instantiateResource(string $class): ResourceInterface
     {
         $resource = app($class);
 

@@ -8,7 +8,7 @@ interface RequestQueryParserInterface
      *
      * @return array
      */
-    public function getFilter();
+    public function getFilter(): array;
 
     /**
      * Returns a specific key's value from the filter.
@@ -17,48 +17,48 @@ interface RequestQueryParserInterface
      * @param mixed  $default
      * @return mixed
      */
-    public function getFilterValue($key, $default = null);
+    public function getFilterValue(string $key, $default = null);
 
     /**
      * Returns raw JSON-API include string.
      *
-     * @return string
+     * @return string|null
      */
-    public function getRawIncludes();
+    public function getRawIncludes(): ?string;
 
     /**
      * Returns JSON-API includes as array of strings.
      *
      * @return string[]
      */
-    public function getIncludes();
+    public function getIncludes(): array;
 
     /**
      * Returns full page data.
      *
      * @return array
      */
-    public function getPageData();
+    public function getPageData(): array;
 
     /**
      * @return int
      */
-    public function getPageNumber();
+    public function getPageNumber(): int;
 
     /**
      * @return int
      */
-    public function getPageSize();
+    public function getPageSize(): int;
 
     /**
      * @return int
      */
-    public function getPageOffset();
+    public function getPageOffset(): int;
 
     /**
      * @return int
      */
-    public function getPageLimit();
+    public function getPageLimit(): int;
 
     /**
      * @return mixed
@@ -70,7 +70,7 @@ interface RequestQueryParserInterface
      *
      * @return string|null
      */
-    public function getRawSort();
+    public function getRawSort(): ?string;
 
     /**
      * Returns sort as array of sort strings.
@@ -79,6 +79,5 @@ interface RequestQueryParserInterface
      *
      * @return string[]
      */
-    public function getSort();
-
+    public function getSort(): array;
 }

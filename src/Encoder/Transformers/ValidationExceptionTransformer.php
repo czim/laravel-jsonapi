@@ -86,9 +86,8 @@ class ValidationExceptionTransformer extends ErrorDataTransformer
      * @param string|null $prefix
      * @return string
      */
-    protected function formatAttributePointer($key, $prefix = null)
+    protected function formatAttributePointer(string $key, ?string $prefix = null): string
     {
         return str_replace('.', '/', $prefix . $key);
     }
-
 }

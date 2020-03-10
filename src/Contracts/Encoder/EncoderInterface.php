@@ -13,7 +13,7 @@ interface EncoderInterface
      * @param array|null $includes      requested includes, if not null
      * @return array
      */
-    public function encode($data, array $includes = null);
+    public function encode($data, array $includes = null): array;
 
     /**
      * Returns transformer for given data in this context.
@@ -22,7 +22,7 @@ interface EncoderInterface
      * @param bool  $topLevel
      * @return TransformerInterface
      */
-    public function makeTransformer($data, $topLevel = false);
+    public function makeTransformer($data, bool $topLevel = false): TransformerInterface;
 
 
     /**
@@ -30,14 +30,14 @@ interface EncoderInterface
      *
      * @return string
      */
-    public function getBaseUrl();
+    public function getBaseUrl(): string;
 
     /**
      * Returns the base URI for the top resource, if any is set.
      *
      * @return null|string
      */
-    public function getTopResourceUrl();
+    public function getTopResourceUrl(): ?string;
 
     /**
      * Sets the base top resource URI.
@@ -46,26 +46,26 @@ interface EncoderInterface
      *
      * @param string $url
      * @param bool   $absolute
-     * @return $this
+     * @return $this|EncoderInterface
      */
-    public function setTopResourceUrl($url, $absolute = false);
+    public function setTopResourceUrl(string $url, bool $absolute = false): EncoderInterface;
 
     /**
      * Sets a top-level link.
      *
-     * @param string $key
-     * @param string $link
-     * @return $this
+     * @param string       $key
+     * @param string|array $link
+     * @return $this|EncoderInterface
      */
-    public function setLink($key, $link);
+    public function setLink(string $key, $link): EncoderInterface;
 
     /**
      * Removes a top level link.
      *
      * @param string $key
-     * @return $this
+     * @return $this|EncoderInterface
      */
-    public function removeLink($key);
+    public function removeLink(string $key): EncoderInterface;
 
     /**
      * Returns currently set top-level meta section content.
@@ -78,49 +78,49 @@ interface EncoderInterface
      * Overwrites the meta section with data.
      *
      * @param array $data
-     * @return $this
+     * @return $this|EncoderInterface
      */
-    public function setMeta(array $data);
+    public function setMeta(array $data): EncoderInterface;
 
     /**
      * Sets a top-level meta section value for a key.
      *
      * @param string $key
      * @param mixed  $value
-     * @return $this
+     * @return $this|EncoderInterface
      */
-    public function addMeta($key, $value);
+    public function addMeta(string $key, $value): EncoderInterface;
 
     /**
      * Removes a top-level meta section value by key.
      *
      * @param string $key
-     * @return $this
+     * @return $this|EncoderInterface
      */
-    public function removeMetaKey($key);
+    public function removeMetaKey(string $key): EncoderInterface;
 
 
     /**
      * Sets requested includes for transformation.
      *
      * @param array $includes
-     * @return $this
+     * @return $this|EncoderInterface
      */
-    public function setRequestedIncludes(array $includes);
+    public function setRequestedIncludes(array $includes): EncoderInterface;
 
     /**
      * Returns currently registered requested includes.
      *
      * @return string[]
      */
-    public function getRequestedIncludes();
+    public function getRequestedIncludes(): array;
 
     /**
      * Returns whether any includes are requested.
      *
      * @return bool
      */
-    public function hasRequestedIncludes();
+    public function hasRequestedIncludes(): bool;
 
     /**
      * Returns whether a dot-notated include is requested.
@@ -130,16 +130,16 @@ interface EncoderInterface
      * @param string $key
      * @return bool
      */
-    public function isIncludeRequested($key);
+    public function isIncludeRequested(string $key): bool;
 
     /**
      * Adds data to be included by side-loading.
      *
      * @param mixed       $data
      * @param string|null $identifier    uniquely identifies the included data, if possible
-     * @return $this
+     * @return $this|EncoderInterface
      */
-    public function addIncludedData($data, $identifier = null);
+    public function addIncludedData($data, ?string $identifier = null): EncoderInterface;
 
 
     /**
@@ -148,7 +148,7 @@ interface EncoderInterface
      * @param Model $model
      * @return null|ResourceInterface
      */
-    public function getResourceForModel(Model $model);
+    public function getResourceForModel(Model $model): ?ResourceInterface;
 
     /**
      * Returns resource for given JSON-API resource type.
@@ -156,6 +156,5 @@ interface EncoderInterface
      * @param string $type
      * @return null|ResourceInterface
      */
-    public function getResourceForType($type);
-
+    public function getResourceForType(string $type): ?ResourceInterface;
 }

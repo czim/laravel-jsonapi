@@ -12,8 +12,8 @@ use Validator;
  */
 class RequestQueryParser implements RequestQueryParserInterface
 {
-    const DEFAULT_INCLUDE_SEPARATOR = ',';
-    const DEFAULT_SORT_SEPARATOR    = ',';
+    public const DEFAULT_INCLUDE_SEPARATOR = ',';
+    public const DEFAULT_SORT_SEPARATOR    = ',';
 
     /**
      * @var Request
@@ -84,7 +84,7 @@ class RequestQueryParser implements RequestQueryParserInterface
      *
      * @return array
      */
-    public function getFilter()
+    public function getFilter(): array
     {
         $this->analyze();
 
@@ -98,7 +98,7 @@ class RequestQueryParser implements RequestQueryParserInterface
      * @param mixed  $default
      * @return mixed
      */
-    public function getFilterValue($key, $default = null)
+    public function getFilterValue(string $key, $default = null)
     {
         return Arr::get($this->getFilter(), $key, $default);
     }
@@ -108,7 +108,7 @@ class RequestQueryParser implements RequestQueryParserInterface
      *
      * @return string
      */
-    public function getRawIncludes()
+    public function getRawIncludes(): ?string
     {
         $this->analyze();
 
@@ -120,7 +120,7 @@ class RequestQueryParser implements RequestQueryParserInterface
      *
      * @return string[]
      */
-    public function getIncludes()
+    public function getIncludes(): array
     {
         $includeString = $this->getRawIncludes();
 
@@ -138,41 +138,29 @@ class RequestQueryParser implements RequestQueryParserInterface
      *
      * @return array
      */
-    public function getPageData()
+    public function getPageData(): array
     {
         $this->analyze();
 
         return $this->page;
     }
 
-    /**
-     * @return int
-     */
-    public function getPageNumber()
+    public function getPageNumber(): int
     {
         return (int) Arr::get($this->getPageData(), 'number', 1);
     }
 
-    /**
-     * @return int
-     */
-    public function getPageSize()
+    public function getPageSize(): int
     {
         return (int) Arr::get($this->getPageData(), 'size');
     }
 
-    /**
-     * @return int
-     */
-    public function getPageOffset()
+    public function getPageOffset(): int
     {
         return (int) Arr::get($this->getPageData(), 'offset', 0);
     }
 
-    /**
-     * @return int
-     */
-    public function getPageLimit()
+    public function getPageLimit(): int
     {
         return (int) Arr::get($this->getPageData(), 'limit');
     }
@@ -190,7 +178,7 @@ class RequestQueryParser implements RequestQueryParserInterface
      *
      * @return string|null
      */
-    public function getRawSort()
+    public function getRawSort(): ?string
     {
         $this->analyze();
 
@@ -204,7 +192,7 @@ class RequestQueryParser implements RequestQueryParserInterface
      *
      * @return string[]
      */
-    public function getSort()
+    public function getSort(): array
     {
         $sortString = $this->getRawSort();
 
@@ -224,7 +212,7 @@ class RequestQueryParser implements RequestQueryParserInterface
      *
      * @param bool $force
      */
-    protected function analyze($force = false)
+    protected function analyze(bool $force = false): void
     {
         if ( ! $force && $this->analyzed) {
             return;
@@ -240,10 +228,7 @@ class RequestQueryParser implements RequestQueryParserInterface
         $this->analyzed = true;
     }
 
-    /**
-     * @return void
-     */
-    protected function validate()
+    protected function validate(): void
     {
         $data = [
             'filter'  => $this->filter,
@@ -262,10 +247,7 @@ class RequestQueryParser implements RequestQueryParserInterface
         }
     }
 
-    /**
-     * @return array
-     */
-    protected function getValidationRules()
+    protected function getValidationRules(): array
     {
         return [
             'filter'      => 'array|nullable',
@@ -280,54 +262,36 @@ class RequestQueryParser implements RequestQueryParserInterface
         ];
     }
 
-    /**
-     * @return string
-     */
-    protected function getValidationRegexForIncludeString()
+    protected function getValidationRegexForIncludeString(): string
     {
         return '#^' . $this->getRegexForValidIncludeSegment()
             . '(' . preg_quote($this->includeSeparator)
             . $this->getRegexForValidIncludeSegment() . ')*$#i';
     }
 
-    /**
-     * @return string
-     */
-    protected function getValidationRegexForSortString()
+    protected function getValidationRegexForSortString(): string
     {
         return '#^' . '-?' . $this->getRegexForValidSortSegment()
             . '(' . preg_quote($this->sortSeparator)
             . '-?' . $this->getRegexForValidSortSegment() . ')*$#i';
     }
 
-    /**
-     * @return string
-     */
-    protected function getRegexForValidIncludeSegment()
+    protected function getRegexForValidIncludeSegment(): string
     {
         return config('jsonapi.request.validation.query.regex-include-segment', '[a-z0-9.-]+');
     }
 
-    /**
-     * @return string
-     */
-    protected function getRegexForValidSortSegment()
+    protected function getRegexForValidSortSegment(): string
     {
         return config('jsonapi.request.validation.query.regex-sort-segment', '[a-z0-9.-]+');
     }
 
-    /**
-     * @return string
-     */
-    protected function getValidationStringForPageNumber()
+    protected function getValidationStringForPageNumber(): string
     {
         return config('jsonapi.request.validation.query.page-number', 'integer');
     }
 
-    /**
-     * @return string
-     */
-    protected function getValidationStringForPageOffset()
+    protected function getValidationStringForPageOffset(): string
     {
         return config('jsonapi.request.validation.query.page-offset', 'integer');
     }

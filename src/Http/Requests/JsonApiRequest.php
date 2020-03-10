@@ -40,17 +40,21 @@ class JsonApiRequest extends FormRequest
     /**
      * {@inheritdoc}
      */
-    public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
-    {
+    public function __construct(
+        array $query = [],
+        array $request = [],
+        array $attributes = [],
+        array $cookies = [],
+        array $files = [],
+        array $server = [],
+        $content = null
+    ) {
         parent::__construct();
 
         $this->jsonApiQuery = new RequestQueryParser($this);
     }
 
-    /**
-     * @return RequestQueryParser
-     */
-    public function jsonApiQuery()
+    public function jsonApiQuery(): RequestQueryParser
     {
         return $this->jsonApiQuery;
     }
@@ -60,7 +64,7 @@ class JsonApiRequest extends FormRequest
      *
      * @return Root
      */
-    public function data()
+    public function data(): Root
     {
         if ( ! $this->rootData) {
             $this->rootData = new Root($this->all());
@@ -74,7 +78,7 @@ class JsonApiRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -84,7 +88,7 @@ class JsonApiRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [];
     }
@@ -92,7 +96,7 @@ class JsonApiRequest extends FormRequest
     /**
      * {@inheritdoc}
      */
-    public function validateResolved()
+    public function validateResolved(): void
     {
         $this->validateAgainstSchema();
 
@@ -102,7 +106,7 @@ class JsonApiRequest extends FormRequest
     /**
      * Validates the request's contents against the relevant JSON Schema.
      */
-    protected function validateAgainstSchema()
+    protected function validateAgainstSchema(): void
     {
         if (    ! $this->schemaValidation
             ||  ! $this->schemaValidationType
@@ -120,10 +124,7 @@ class JsonApiRequest extends FormRequest
         }
     }
 
-    /**
-     * @return JsonApiValidatorInterface
-     */
-    protected function getSchemaValidator()
+    protected function getSchemaValidator(): JsonApiValidatorInterface
     {
         return app(JsonApiValidatorInterface::class);
     }
@@ -133,7 +134,7 @@ class JsonApiRequest extends FormRequest
      *
      * @throws JsonApiValidationException
      */
-    protected function failedValidation(Validator $validator)
+    protected function failedValidation(Validator $validator): void
     {
         throw (new JsonApiValidationException('The given data failed to pass validation.'))
             ->setErrors(

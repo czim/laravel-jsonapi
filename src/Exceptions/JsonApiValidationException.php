@@ -35,9 +35,9 @@ class JsonApiValidationException extends Exception
      * Sets the validation errors.
      *
      * @param array $errors
-     * @return $this
+     * @return $this|JsonApiValidationException
      */
-    public function setErrors(array $errors)
+    public function setErrors(array $errors): JsonApiValidationException
     {
         $this->errors = $errors;
 
@@ -46,9 +46,9 @@ class JsonApiValidationException extends Exception
 
     /**
      * @param string $prefix
-     * @return $this
+     * @return $this|JsonApiValidationException
      */
-    public function setPrefix($prefix)
+    public function setPrefix($prefix): JsonApiValidationException
     {
         $this->prefix = $prefix;
 
@@ -58,23 +58,17 @@ class JsonApiValidationException extends Exception
     /**
      * @return array[]
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getPrefix()
+    public function getPrefix(): ?string
     {
         return $this->prefix;
     }
 
-    /**
-     * @return int
-     */
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
         return $this->statusCode;
     }

@@ -11,43 +11,42 @@ interface ErrorDataInterface
     /**
      * @return array
      */
-    public function links();
+    public function links(): array;
 
     /**
      * @return string
      */
-    public function status();
+    public function status(): string;
 
     /**
      * @return string
      */
-    public function code();
+    public function code(): string;
 
     /**
      * @return string
      */
-    public function title();
+    public function title(): string;
 
     /**
      * @return string
      */
-    public function detail();
+    public function detail(): string;
 
     /**
      * @return array
      */
-    public function source();
+    public function source(): array;
 
     /**
      * @return array
      */
-    public function meta();
+    public function meta(): array;
 
     /**
      * Returns array without empty values.
      *
      * @return array
      */
-    public function toCleanArray();
-
+    public function toCleanArray(): array;
 }

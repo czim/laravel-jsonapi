@@ -5,17 +5,17 @@ use MyCLabs\Enum\Enum;
 
 class Key extends Enum
 {
-    const ATTRIBUTES    = 'attributes';
-    const DATA          = 'data';
-    const ERRORS        = 'errors';
-    const INCLUDED      = 'included';
-    const LINKS         = 'links';
-    const LINK_SELF     = 'self';
-    const LINK_RELATED  = 'related';
-    const META          = 'meta';
-    const PAGE_FIRST    = 'first';
-    const PAGE_LAST     = 'last';
-    const PAGE_PREV     = 'prev';
-    const PAGE_NEXT     = 'next';
-    const RELATIONSHIPS = 'relationships';
+    public const ATTRIBUTES    = 'attributes';
+    public const DATA          = 'data';
+    public const ERRORS        = 'errors';
+    public const INCLUDED      = 'included';
+    public const LINKS         = 'links';
+    public const LINK_SELF     = 'self';
+    public const LINK_RELATED  = 'related';
+    public const META          = 'meta';
+    public const PAGE_FIRST    = 'first';
+    public const PAGE_LAST     = 'last';
+    public const PAGE_PREV     = 'prev';
+    public const PAGE_NEXT     = 'next';
+    public const RELATIONSHIPS = 'relationships';
 }

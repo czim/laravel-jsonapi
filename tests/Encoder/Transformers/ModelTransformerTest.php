@@ -113,7 +113,7 @@ class ModelTransformerTest extends TestCase
         $model = new TestSimpleModel;
 
         $encoderMock = $this->getMockEncoder();
-        $encoderMock->shouldReceive('getResourceForModel')->with($model)->andReturn(false);
+        $encoderMock->shouldReceive('getResourceForModel')->with($model)->andReturn(null);
 
         $transformer = new ModelTransformer;
         $transformer->setEncoder($encoderMock);

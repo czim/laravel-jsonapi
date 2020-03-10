@@ -8,7 +8,7 @@ use InvalidArgumentException;
 
 class PaginatedModelsTransformer extends ModelCollectionTransformer
 {
-    const FIRST_PAGE = 1;
+    public const FIRST_PAGE = 1;
 
     /**
      * Transforms given data.
@@ -16,7 +16,7 @@ class PaginatedModelsTransformer extends ModelCollectionTransformer
      * @param AbstractPaginator $paginator
      * @return array
      */
-    public function transform($paginator)
+    public function transform($paginator): array
     {
         if ( ! ($paginator instanceof AbstractPaginator)) {
             throw new InvalidArgumentException('ModelTransformer expects AbstractPaginator instance');
@@ -27,9 +27,6 @@ class PaginatedModelsTransformer extends ModelCollectionTransformer
         return parent::transform($paginator->getCollection());
     }
 
-    /**
-     * @param AbstractPaginator $paginator
-     */
     protected function injectPaginationLinks(AbstractPaginator $paginator)
     {
         $this->encoder->setLink(
@@ -65,12 +62,7 @@ class PaginatedModelsTransformer extends ModelCollectionTransformer
         }
     }
 
-    /**
-     * @param AbstractPaginator $paginator
-     * @param int               $page
-     * @return string
-     */
-    protected function makePaginationLink(AbstractPaginator $paginator, $page)
+    protected function makePaginationLink(AbstractPaginator $paginator, int $page): string
     {
         if ($topUrl = $this->encoder->getTopResourceUrl()) {
             return $topUrl . '?' . config('jsonapi.request.keys.page') . '[number]=' . $page;

@@ -93,7 +93,7 @@ class Encoder implements EncoderInterface
      * @param array|null $includes
      * @return array
      */
-    public function encode($data, array $includes = null)
+    public function encode($data, array $includes = null): array
     {
         if (null !== $includes) {
             $this->setRequestedIncludes($includes);
@@ -137,7 +137,7 @@ class Encoder implements EncoderInterface
     /**
      * Prepares the encoder for the next encode.
      */
-    protected function beforeEncode()
+    protected function beforeEncode(): void
     {
         if (null === $this->topResourceUrl && config('jsonapi.transform.auto-determine-top-resource-url')) {
             $this->topResourceUrl      = url()->current();
@@ -148,7 +148,7 @@ class Encoder implements EncoderInterface
     /**
      * Resets encoder state, ready for next encode.
      */
-    protected function afterEncode()
+    protected function afterEncode(): void
     {
         $this->topResourceUrl      = null;
         $this->topResourceAbsolute = false;
@@ -161,7 +161,7 @@ class Encoder implements EncoderInterface
      * @param bool  $topLevel
      * @return TransformerInterface
      */
-    public function makeTransformer($data, $topLevel = false)
+    public function makeTransformer($data, bool $topLevel = false): TransformerInterface
     {
         $transformer = $this->transformerFactory->makeFor($data);
 
@@ -181,9 +181,9 @@ class Encoder implements EncoderInterface
      * and may add included data on this encoder to be side-loaded.
      *
      * @param mixed $data
-     * @return mixed
+     * @return array
      */
-    protected function transform($data)
+    protected function transform($data): array
     {
         $transformer = $this->makeTransformer($data, true);
 
@@ -199,7 +199,7 @@ class Encoder implements EncoderInterface
      *
      * @return string
      */
-    public function getBaseUrl()
+    public function getBaseUrl(): string
     {
         return rtrim(config('jsonapi.base_url'), '/');
     }
@@ -209,7 +209,7 @@ class Encoder implements EncoderInterface
      *
      * @return null|string
      */
-    public function getTopResourceUrl()
+    public function getTopResourceUrl(): ?string
     {
         if ( ! is_string($this->topResourceUrl) || $this->topResourceAbsolute) {
             return $this->topResourceUrl;
@@ -227,7 +227,7 @@ class Encoder implements EncoderInterface
      * @param bool   $absolute
      * @return $this
      */
-    public function setTopResourceUrl($url, $absolute = false)
+    public function setTopResourceUrl(string $url, bool $absolute = false): EncoderInterface
     {
         $this->topResourceUrl      = $url;
         $this->topResourceAbsolute = (bool) $absolute;
@@ -242,7 +242,7 @@ class Encoder implements EncoderInterface
      * @param string|array $link    may be string or [ href, meta ] array
      * @return $this
      */
-    public function setLink($key, $link)
+    public function setLink(string $key, $link): EncoderInterface
     {
         $this->links->put($key, $link);
 
@@ -255,7 +255,7 @@ class Encoder implements EncoderInterface
      * @param string $key
      * @return $this
      */
-    public function removeLink($key)
+    public function removeLink(string $key): EncoderInterface
     {
         $this->links->forget($key);
 
@@ -267,7 +267,7 @@ class Encoder implements EncoderInterface
      *
      * @return bool
      */
-    public function hasMeta()
+    public function hasMeta(): bool
     {
         return (bool) count($this->getMeta());
     }
@@ -277,7 +277,7 @@ class Encoder implements EncoderInterface
      *
      * @return array
      */
-    public function getMeta()
+    public function getMeta(): array
     {
         return $this->meta ?: [];
     }
@@ -288,7 +288,7 @@ class Encoder implements EncoderInterface
      * @param array $data
      * @return $this
      */
-    public function setMeta(array $data)
+    public function setMeta(array $data): EncoderInterface
     {
         $this->meta = $data;
 
@@ -302,7 +302,7 @@ class Encoder implements EncoderInterface
      * @param mixed  $value
      * @return $this
      */
-    public function addMeta($key, $value)
+    public function addMeta(string $key, $value): EncoderInterface
     {
         if ( ! is_array($this->meta)) {
             $this->meta = [];
@@ -319,7 +319,7 @@ class Encoder implements EncoderInterface
      * @param string $key
      * @return $this
      */
-    public function removeMetaKey($key)
+    public function removeMetaKey(string $key): EncoderInterface
     {
         if ( ! is_array($this->meta)) {
             return $this;
@@ -338,10 +338,10 @@ class Encoder implements EncoderInterface
     /**
      * Sets requested includes for transformation.
      *
-     * @param array $includes
+     * @param string[] $includes
      * @return $this
      */
-    public function setRequestedIncludes(array $includes)
+    public function setRequestedIncludes(array $includes): EncoderInterface
     {
         $this->requestedIncludes = $includes;
 
@@ -353,7 +353,7 @@ class Encoder implements EncoderInterface
      *
      * @return string[]
      */
-    public function getRequestedIncludes()
+    public function getRequestedIncludes(): array
     {
         return $this->requestedIncludes;
     }
@@ -363,7 +363,7 @@ class Encoder implements EncoderInterface
      *
      * @return bool
      */
-    public function hasRequestedIncludes()
+    public function hasRequestedIncludes(): bool
     {
         return (bool) count($this->requestedIncludes);
     }
@@ -376,7 +376,7 @@ class Encoder implements EncoderInterface
      * @param string $key
      * @return bool
      */
-    public function isIncludeRequested($key)
+    public function isIncludeRequested(string $key): bool
     {
         foreach ($this->requestedIncludes as $include) {
             if ($include === $key || Str::startsWith($include, $key . '.')) {
@@ -392,7 +392,7 @@ class Encoder implements EncoderInterface
      *
      * @return bool
      */
-    protected function hasLinks()
+    protected function hasLinks(): bool
     {
         return $this->links->isNotEmpty();
     }
@@ -402,7 +402,7 @@ class Encoder implements EncoderInterface
      *
      * @return array
      */
-    protected function serializeLinks()
+    protected function serializeLinks(): array
     {
         $links = $this->links->toArray();
 
@@ -423,7 +423,7 @@ class Encoder implements EncoderInterface
      * @param string|null $identifier    uniquely identifies the included data, if possible
      * @return $this
      */
-    public function addIncludedData($data, $identifier = null)
+    public function addIncludedData($data, ?string $identifier = null): EncoderInterface
     {
         if (null === $identifier) {
             $this->included->push($data);
@@ -440,7 +440,7 @@ class Encoder implements EncoderInterface
      * @param string $identifier
      * @return $this
      */
-    public function removeIncludedData($identifier)
+    public function removeIncludedData(string $identifier): EncoderInterface
     {
         $this->included->forget($identifier);
 
@@ -454,7 +454,7 @@ class Encoder implements EncoderInterface
      * @param string $id
      * @return $this
      */
-    public function removeFromIncludedDataByTypeAndId($type, $id)
+    public function removeFromIncludedDataByTypeAndId(string $type, string $id): EncoderInterface
     {
         return $this->removeIncludedData($type . ':' . $id);
     }
@@ -464,7 +464,7 @@ class Encoder implements EncoderInterface
      *
      * @return bool
      */
-    protected function hasIncludedData()
+    protected function hasIncludedData(): bool
     {
         return $this->included->isNotEmpty();
     }
@@ -474,7 +474,7 @@ class Encoder implements EncoderInterface
      *
      * @return array
      */
-    protected function serializeIncludedData()
+    protected function serializeIncludedData(): array
     {
         return $this->included->values()->toArray();
     }
@@ -490,7 +490,7 @@ class Encoder implements EncoderInterface
      * @param Model $model
      * @return null|ResourceInterface
      */
-    public function getResourceForModel(Model $model)
+    public function getResourceForModel(Model $model): ?ResourceInterface
     {
         $resource = $this->resourceRepository->getByModel($model);
 
@@ -507,7 +507,7 @@ class Encoder implements EncoderInterface
      * @param string $type
      * @return null|ResourceInterface
      */
-    public function getResourceForType($type)
+    public function getResourceForType(string $type): ?ResourceInterface
     {
         return $this->resourceRepository->getByType($type);
     }

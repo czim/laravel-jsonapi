@@ -53,7 +53,7 @@ class ResourceRepository implements ResourceRepositoryInterface
     /**
      * Initializes repository, registering resources where possible.
      */
-    public function initialize()
+    public function initialize(): void
     {
         if ($this->initialized) {
             return;
@@ -82,7 +82,7 @@ class ResourceRepository implements ResourceRepositoryInterface
      * @param ResourceInterface|string $resource
      * @return $this
      */
-    public function register($model, $resource)
+    public function register($model, $resource): ResourceRepositoryInterface
     {
         if ($model instanceof Model) {
             $model = get_class($model);
@@ -111,7 +111,7 @@ class ResourceRepository implements ResourceRepositoryInterface
      *
      * @return Collection|ResourceInterface[]
      */
-    public function getAll()
+    public function getAll(): Collection
     {
         $this->initialize();
 
@@ -124,7 +124,7 @@ class ResourceRepository implements ResourceRepositoryInterface
      * @param string $type
      * @return ResourceInterface|null
      */
-    public function getByType($type)
+    public function getByType(string $type): ?ResourceInterface
     {
         $this->initialize();
 
@@ -141,7 +141,7 @@ class ResourceRepository implements ResourceRepositoryInterface
      * @param Model $model
      * @return null|ResourceInterface
      */
-    public function getByModel(Model $model)
+    public function getByModel(Model $model): ?ResourceInterface
     {
         return $this->getByModelClass(get_class($model));
     }
@@ -152,7 +152,7 @@ class ResourceRepository implements ResourceRepositoryInterface
      * @param string $modelClass
      * @return ResourceInterface|null
      */
-    public function getByModelClass($modelClass)
+    public function getByModelClass(string $modelClass): ?ResourceInterface
     {
         $this->initialize();
 
@@ -166,7 +166,7 @@ class ResourceRepository implements ResourceRepositoryInterface
     /**
      * Generates a fresh class map.
      */
-    protected function generateClassMap()
+    protected function generateClassMap(): void
     {
         $this->classMap = [];
 
@@ -188,7 +188,7 @@ class ResourceRepository implements ResourceRepositoryInterface
      * @param string $class
      * @return ResourceInterface
      */
-    protected function instantiateResource($class)
+    protected function instantiateResource(string $class): ?ResourceInterface
     {
         $resource = app($class);
 

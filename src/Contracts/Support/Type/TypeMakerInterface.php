@@ -9,7 +9,7 @@ interface TypeMakerInterface
      * @param mixed $source
      * @return string
      */
-    public function makeFor($source);
+    public function makeFor($source): string;
 
     /**
      * Makes a JSON-API type for a given model FQN.
