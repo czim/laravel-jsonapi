@@ -19,9 +19,9 @@ Laravel 5.7 support.
 
 ### [1.4.16] - 2019-01-08
 
-Added configurable validation rules for the query string for a request.  
+Added configurable validation rules for the query string for a request.
 This prevents incorrect filter, include, sort and pagination parameters.
-Adds the `jsonapi.request.validaton` configuration section. 
+Adds the `jsonapi.request.validaton` configuration section.
 
 [1.5.3]: https://github.com/czim/laravel-jsonapi/compare/1.5.2...1.5.3
 [1.5.2]: https://github.com/czim/laravel-jsonapi/compare/1.5.1...1.5.2
