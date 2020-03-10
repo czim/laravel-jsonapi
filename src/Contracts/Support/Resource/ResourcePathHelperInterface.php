@@ -1,5 +1,5 @@
 <?php
-namespace Czim\JsonApi\Contracts\Support\Rsource;
+namespace Czim\JsonApi\Contracts\Support\Resource;
 
 use Czim\JsonApi\Contracts\Resource\ResourceInterface;
 

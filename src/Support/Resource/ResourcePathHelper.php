@@ -2,13 +2,14 @@
 namespace Czim\JsonApi\Support\Resource;
 
 use Czim\JsonApi\Contracts\Resource\ResourceInterface;
+use Czim\JsonApi\Contracts\Support\Resource\ResourcePathHelperInterface;
 use Illuminate\Support\Str;
 
 /**
  * Helps deal with paths for resources, based on (relative) namespaces
  * and standardized dasherization for URLs.
  */
-class ResourcePathHelper
+class ResourcePathHelper implements ResourcePathHelperInterface
 {
     /**
      * Makes a relative URL path for a given resource.

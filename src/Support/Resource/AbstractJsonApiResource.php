@@ -3,7 +3,7 @@ namespace Czim\JsonApi\Support\Resource;
 
 use Carbon\Carbon;
 use Czim\JsonApi\Contracts\Resource\ResourceInterface;
-use Czim\JsonApi\Contracts\Support\Rsource\ResourcePathHelperInterface;
+use Czim\JsonApi\Contracts\Support\Resource\ResourcePathHelperInterface;
 use DateTime;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;

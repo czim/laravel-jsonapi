@@ -6,7 +6,7 @@ use Czim\JsonApi\Contracts\Encoder\TransformerFactoryInterface;
 use Czim\JsonApi\Contracts\Repositories\ResourceCollectorInterface;
 use Czim\JsonApi\Contracts\Repositories\ResourceRepositoryInterface;
 use Czim\JsonApi\Contracts\Support\Request\RequestQueryParserInterface;
-use Czim\JsonApi\Contracts\Support\Rsource\ResourcePathHelperInterface;
+use Czim\JsonApi\Contracts\Support\Resource\ResourcePathHelperInterface;
 use Czim\JsonApi\Contracts\Support\Type\TypeMakerInterface;
 use Czim\JsonApi\Contracts\Support\Validation\JsonApiValidatorInterface;
 use Czim\JsonApi\Encoder\Encoder;
