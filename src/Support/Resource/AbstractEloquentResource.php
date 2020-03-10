@@ -68,7 +68,7 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
      */
     public function type()
     {
-        return $this->getTypeMaker()->makeForModel($this->model);
+        return $this->getTypeMaker()->makeForModelClass($this->getModelClass());
     }
 
     /**
@@ -381,6 +381,14 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
     protected function isVariableRelation(Relation $relation)
     {
         return $relation instanceof Relations\MorphTo;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getModelClass()
+    {
+        return get_class($this->model);
     }
 
     /**

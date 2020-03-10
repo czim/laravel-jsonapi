@@ -15,12 +15,11 @@ interface TypeMakerInterface
     public function makeFor($source);
 
     /**
-     * Makes a JSON-API type for a given model instance.
+     * Makes a JSON-API type for a given model FQN.
      *
-     * @param Model       $record
+     * @param string      $class
      * @param null|string $offsetNamespace
      * @return string
      */
-    public function makeForModel(Model $record, $offsetNamespace = null);
-
+    public function makeForModelClass(string $class, ?string $offsetNamespace = null): string;
 }

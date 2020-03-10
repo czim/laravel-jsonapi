@@ -27,6 +27,17 @@ class TypeMakerTest extends TestCase
     /**
      * @test
      */
+    function it_makes_a_type_for_a_model_fqn()
+    {
+        $maker = new TypeMaker;
+
+        static::assertEquals('test-simple-models', $maker->makeFor(TestSimpleModel::class));
+    }
+
+
+    /**
+     * @test
+     */
     function it_makes_a_type_from_an_object()
     {
         $maker = new TypeMaker;
@@ -67,9 +78,8 @@ class TypeMakerTest extends TestCase
     function it_dasherizes_and_pluralizes_a_model_class_name()
     {
         $maker = new TypeMaker;
-        $model = new TestSimpleModel;
 
-        static::assertEquals('test-simple-models', $maker->makeForModel($model));
+        static::assertEquals('test-simple-models', $maker->makeForModelClass(TestSimpleModel::class));
     }
 
     /**
@@ -78,9 +88,8 @@ class TypeMakerTest extends TestCase
     function it_can_use_the_entire_classname_for_empty_parameter()
     {
         $maker = new TypeMaker;
-        $model = new TestSimpleModel;
 
-        static::assertEquals('czim--json-api--test--helpers--models--test-simple-models', $maker->makeForModel($model, ''));
+        static::assertEquals('czim--json-api--test--helpers--models--test-simple-models', $maker->makeForModelClass(TestSimpleModel::class, ''));
     }
 
     /**
@@ -89,9 +98,8 @@ class TypeMakerTest extends TestCase
     function it_can_trim_part_of_the_classname_given_as_parameter()
     {
         $maker = new TypeMaker;
-        $model = new TestSimpleModel;
 
-        static::assertEquals('test--helpers--models--test-simple-models', $maker->makeForModel($model, 'Czim\\JsonApi\\'));
+        static::assertEquals('test--helpers--models--test-simple-models', $maker->makeForModelClass(TestSimpleModel::class, 'Czim\\JsonApi\\'));
     }
 
     /**
@@ -102,9 +110,8 @@ class TypeMakerTest extends TestCase
         $this->app['config']->set('jsonapi.transform.type.trim-namespace', 'Czim\\JsonApi\\Test');
 
         $maker = new TypeMaker;
-        $model = new TestSimpleModel;
 
-        static::assertEquals('helpers--models--test-simple-models', $maker->makeForModel($model));
+        static::assertEquals('helpers--models--test-simple-models', $maker->makeForModelClass(TestSimpleModel::class));
     }
 
 }
