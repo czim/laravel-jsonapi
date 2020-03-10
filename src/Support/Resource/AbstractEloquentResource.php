@@ -43,19 +43,14 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
      * @param Model $model
      * @return $this
      */
-    public function setModel(Model $model)
+    public function setModel(Model $model): EloquentResourceInterface
     {
         $this->model = $model;
 
         return $this;
     }
 
-    /**
-     * Returns the model instance used.
-     *
-     * @return Model
-     */
-    public function getModel()
+    public function getModel(): ?Model
     {
         return $this->model;
     }
@@ -65,7 +60,7 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
      *
      * @return string
      */
-    public function type()
+    public function type(): string
     {
         return $this->getTypeMaker()->makeForModelClass($this->getModelClass());
     }
@@ -75,7 +70,7 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
      *
      * @return string
      */
-    public function id()
+    public function id(): string
     {
         return (string) $this->model->getKey();
     }
@@ -87,7 +82,7 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
      * @param mixed  $default
      * @return mixed
      */
-    public function attributeValue($name, $default = null)
+    public function attributeValue(string $name, $default = null)
     {
         $accessorMethod = 'get' . Str::studly(str_replace('-', ' ', $name)) . 'Attribute';
 
@@ -108,9 +103,9 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
      * Returns the model attribute for a given JSON-API attribute, if available.
      *
      * @param string $name
-     * @return string|false
+     * @return string|null
      */
-    public function getModelAttributeForApiAttribute($name)
+    public function getModelAttributeForApiAttribute(string $name): ?string
     {
         return Str::snake($name);
     }
@@ -121,14 +116,14 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
      * @todo deal with variable relation content (variable keys, & json-api types)
      *
      * @param string $include
-     * @return array|\array[]|null
+     * @return array|array[]|null
      */
-    public function relationshipReferences($include)
+    public function relationshipReferences(string $include): ?array
     {
         $method   = $this->getRelationMethodForInclude($include);
         $relation = $this->getModelRelation($method);
         $singular = $this->isSingularRelation($relation);
-        $variable = $this->isVariableRelation($relation);
+        $variable = $this->isVariableModelRelation($relation);
 
         $relatedModel = $this->getRelatedModelForRelation($relation);
 
@@ -202,7 +197,7 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
      * @param string $include
      * @return Model|\Illuminate\Support\Collection|null
      */
-    public function relationshipData($include)
+    public function relationshipData(string $include)
     {
         $includeKey = $include;
         $method     = $this->getRelationMethodForInclude($includeKey);
@@ -216,12 +211,12 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
      * @param string $include
      * @return null|string
      */
-    public function relationshipType($include)
+    public function relationshipType(string $include): ?string
     {
         // If the relationship is variable, we can only give a type if it is both singular and filled
         $relation = $this->includeRelation($include);
 
-        if ($this->isVariableRelation($relation)) {
+        if ($this->isVariableModelRelation($relation)) {
             // @codeCoverageIgnoreStart
             if ( ! $this->isSingularRelation($relation)) {
                 return null;
@@ -252,7 +247,7 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
      * @param string $include
      * @return bool
      */
-    public function isRelationshipSingular($include)
+    public function isRelationshipSingular(string $include): bool
     {
         return $this->isSingularRelation(
             $this->includeRelation($include)
@@ -265,9 +260,9 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
      * @param string $include
      * @return bool
      */
-    public function isRelationshipVariable($include)
+    public function isRelationshipVariable(string $include): bool
     {
-        return $this->isVariableRelation(
+        return $this->isVariableModelRelation(
             $this->includeRelation($include)
         );
     }
@@ -280,7 +275,7 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
      * @return Relation|null
      * @throws InvalidIncludeException
      */
-    public function includeRelation($name)
+    public function includeRelation(string $name): ?Relation
     {
         $method = $this->getRelationMethodForInclude($name);
 
@@ -294,7 +289,7 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
      * @return string
      * @throws InvalidIncludeException
      */
-    public function getRelationMethodForInclude($name)
+    public function getRelationMethodForInclude(string $name): string
     {
         if ( ! in_array($name, $this->availableIncludes())) {
             throw new InvalidIncludeException("'{$name}' is not a valid include for '" . get_class($this) . "'");
@@ -313,7 +308,7 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
      * @param string $method
      * @return Relation|Builder
      */
-    protected function getModelRelation($method)
+    protected function getModelRelation(string $method)
     {
         $model          = $this->getModel();
         $relationMethod = Str::camel($method);
@@ -341,7 +336,7 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
      * @param Relation $relation
      * @return Model|null
      */
-    protected function getRelatedModelForRelation(Relation $relation)
+    protected function getRelatedModelForRelation(Relation $relation): ?Model
     {
         if ($relation instanceof Relations\MorphTo) {
 
@@ -357,13 +352,7 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
         return $relation->getRelated();
     }
 
-    /**
-     * Returns whether given relation is singular.
-     *
-     * @param Relation $relation
-     * @return bool
-     */
-    protected function isSingularRelation(Relation $relation)
+    protected function isSingularRelation(Relation $relation): bool
     {
         return  $relation instanceof Relations\BelongsTo
             ||  $relation instanceof Relations\HasOne
@@ -371,37 +360,22 @@ abstract class AbstractEloquentResource extends AbstractJsonApiResource implemen
             ||  $relation instanceof Relations\MorphTo;
     }
 
-    /**
-     * Returns whether given relation may return varying model types.
-     *
-     * @param Relation $relation
-     * @return bool
-     */
-    protected function isVariableRelation(Relation $relation)
+    protected function isVariableModelRelation(Relation $relation): bool
     {
         return $relation instanceof Relations\MorphTo;
     }
 
-    /**
-     * @return string
-     */
-    protected function getModelClass()
+    protected function getModelClass(): string
     {
         return get_class($this->model);
     }
 
-    /**
-     * @return TypeMakerInterface
-     */
-    protected function getTypeMaker()
+    protected function getTypeMaker(): TypeMakerInterface
     {
         return app(TypeMakerInterface::class);
     }
 
-    /**
-     * @return ResourceRepositoryInterface
-     */
-    protected function getResourceRepository()
+    protected function getResourceRepository(): ResourceRepositoryInterface
     {
         return app(ResourceRepositoryInterface::class);
     }

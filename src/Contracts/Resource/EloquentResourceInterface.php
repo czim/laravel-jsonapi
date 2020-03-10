@@ -14,16 +14,11 @@ interface EloquentResourceInterface extends ResourceInterface
      * a model is guaranteed to be set using the constructor.
      *
      * @param Model $model
-     * @return $this
+     * @return $this|EloquentResourceInterface
      */
-    public function setModel(Model $model);
+    public function setModel(Model $model): EloquentResourceInterface;
 
-    /**
-     * Returns the model instance used.
-     *
-     * @return Model
-     */
-    public function getModel();
+    public function getModel(): ?Model;
 
     /**
      * Returns the Eloquent relation method for an include key/name, if possible.
@@ -32,7 +27,7 @@ interface EloquentResourceInterface extends ResourceInterface
      * @return Relation|null
      * @throws InvalidIncludeException
      */
-    public function includeRelation($name);
+    public function includeRelation(string $name): ?Relation;
 
     /**
      * Returns the Eloquent relation method for a given include name.
@@ -41,14 +36,13 @@ interface EloquentResourceInterface extends ResourceInterface
      * @return string
      * @throws InvalidIncludeException
      */
-    public function getRelationMethodForInclude($name);
+    public function getRelationMethodForInclude(string $name): ?string;
 
     /**
      * Returns the model attribute for a given JSON-API attribute, if available.
      *
      * @param string $name
-     * @return string|false
+     * @return string|null
      */
-    public function getModelAttributeForApiAttribute($name);
-
+    public function getModelAttributeForApiAttribute(string $name): ?string;
 }

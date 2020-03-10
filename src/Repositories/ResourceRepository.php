@@ -94,7 +94,7 @@ class ResourceRepository implements ResourceRepositoryInterface
 
         // Resource must have a model set before type() is guaranteed to work.
         if ( ! $resource->getModel()) {
-            $resource->setModel( new $model );
+            $resource->setModel(new $model);
         }
 
         $type = $resource->type();

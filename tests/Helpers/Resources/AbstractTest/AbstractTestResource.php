@@ -10,7 +10,7 @@ abstract class AbstractTestResource extends AbstractJsonApiResource
      *
      * @return string
      */
-    public function type()
+    public function type(): string
     {
         return 'test-resource';
     }
@@ -20,7 +20,7 @@ abstract class AbstractTestResource extends AbstractJsonApiResource
      *
      * @return string
      */
-    public function id()
+    public function id(): string
     {
         return null;
     }
@@ -32,7 +32,7 @@ abstract class AbstractTestResource extends AbstractJsonApiResource
      * @param mixed  $default
      * @return mixed
      */
-    public function attributeValue($name, $default = null)
+    public function attributeValue(string $name, $default = null)
     {
         return null;
     }
@@ -43,7 +43,7 @@ abstract class AbstractTestResource extends AbstractJsonApiResource
      * @param string $include
      * @return array|array[]|null
      */
-    public function relationshipReferences($include)
+    public function relationshipReferences(string $include): ?array
     {
         return null;
     }
@@ -54,7 +54,7 @@ abstract class AbstractTestResource extends AbstractJsonApiResource
      * @param string $include
      * @return mixed
      */
-    public function relationshipData($include)
+    public function relationshipData(string $include)
     {
         return null;
     }
@@ -65,7 +65,7 @@ abstract class AbstractTestResource extends AbstractJsonApiResource
      * @param string $include
      * @return null|string
      */
-    public function relationshipType($include)
+    public function relationshipType(string $include): ?string
     {
         return null;
     }
@@ -76,7 +76,7 @@ abstract class AbstractTestResource extends AbstractJsonApiResource
      * @param string $include
      * @return bool
      */
-    public function isRelationshipSingular($include)
+    public function isRelationshipSingular(string $include): bool
     {
         return true;
     }
@@ -87,7 +87,7 @@ abstract class AbstractTestResource extends AbstractJsonApiResource
      * @param string $include
      * @return bool
      */
-    public function isRelationshipVariable($include)
+    public function isRelationshipVariable(string $include): bool
     {
         return false;
     }

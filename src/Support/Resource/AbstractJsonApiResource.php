@@ -115,21 +115,21 @@ abstract class AbstractJsonApiResource implements ResourceInterface
      *
      * @return string
      */
-    abstract public function type();
+    abstract public function type(): string;
 
     /**
      * Returns the JSON-API ID.
      *
      * @return string
      */
-    abstract public function id();
+    abstract public function id(): string;
 
     /**
      * Returns the full URL for this resource.
      *
      * @return string
      */
-    public function url()
+    public function url(): string
     {
         $url = $this->url;
 
@@ -151,7 +151,7 @@ abstract class AbstractJsonApiResource implements ResourceInterface
      * @param mixed  $default
      * @return mixed
      */
-    abstract public function attributeValue($name, $default = null);
+    abstract public function attributeValue(string $name, $default = null);
 
     /**
      * Returns reference-only data for relationship include key.
@@ -159,7 +159,7 @@ abstract class AbstractJsonApiResource implements ResourceInterface
      * @param string $include
      * @return array|array[]|null
      */
-    abstract public function relationshipReferences($include);
+    abstract public function relationshipReferences(string $include): ?array;
 
     /**
      * Returns full data for relationship include key.
@@ -167,7 +167,7 @@ abstract class AbstractJsonApiResource implements ResourceInterface
      * @param string $include
      * @return mixed
      */
-    abstract public function relationshipData($include);
+    abstract public function relationshipData(string $include);
 
     /**
      * Returns whether a given include belongs to a singular relationship.
@@ -175,7 +175,7 @@ abstract class AbstractJsonApiResource implements ResourceInterface
      * @param string $include
      * @return bool
      */
-    abstract public function isRelationshipSingular($include);
+    abstract public function isRelationshipSingular(string $include): bool;
 
     /**
      * Returns whether a given include belongs to a relationship with variable content.
@@ -183,7 +183,7 @@ abstract class AbstractJsonApiResource implements ResourceInterface
      * @param string $include
      * @return bool
      */
-    abstract public function isRelationshipVariable($include);
+    abstract public function isRelationshipVariable(string $include): bool;
 
     /**
      * Returns list of attributes to include by key.
@@ -193,7 +193,7 @@ abstract class AbstractJsonApiResource implements ResourceInterface
      *
      * @return string[]
      */
-    public function availableAttributes()
+    public function availableAttributes(): array
     {
         return $this->availableAttributes;
     }
@@ -209,7 +209,7 @@ abstract class AbstractJsonApiResource implements ResourceInterface
      *
      * @return string[]
      */
-    public function availableIncludes()
+    public function availableIncludes(): array
     {
         return $this->availableIncludes;
     }
@@ -219,7 +219,7 @@ abstract class AbstractJsonApiResource implements ResourceInterface
      *
      * @return string[]
      */
-    public function defaultIncludes()
+    public function defaultIncludes(): array
     {
         return $this->defaultIncludes;
     }
@@ -230,7 +230,7 @@ abstract class AbstractJsonApiResource implements ResourceInterface
      * @param string $name
      * @return bool
      */
-    public function includeReferencesForRelation($name)
+    public function includeReferencesForRelation(string $name): bool
     {
         if (count($this->excludeReferences) && array_intersect($this->excludeReferences, [ $name ])) {
             return false;
@@ -248,7 +248,7 @@ abstract class AbstractJsonApiResource implements ResourceInterface
      *
      * @return string[]
      */
-    public function availableFilters()
+    public function availableFilters(): array
     {
         return $this->availableFilters;
     }
@@ -260,7 +260,7 @@ abstract class AbstractJsonApiResource implements ResourceInterface
      *
      * @return null|array
      */
-    public function defaultFilters()
+    public function defaultFilters(): ?array
     {
         return $this->defaultFilters;
     }
@@ -270,7 +270,7 @@ abstract class AbstractJsonApiResource implements ResourceInterface
      *
      * @return string[]
      */
-    public function availableSortAttributes()
+    public function availableSortAttributes(): array
     {
         return $this->availableSortAttributes;
     }
@@ -291,7 +291,7 @@ abstract class AbstractJsonApiResource implements ResourceInterface
      * @return array|null   ignored if null
      * @codeCoverageIgnore
      */
-    public function getMeta()
+    public function getMeta(): ?array
     {
         return null;
     }
@@ -302,7 +302,7 @@ abstract class AbstractJsonApiResource implements ResourceInterface
      * @param string $name
      * @return string
      */
-    protected function normalizeAttributeName($name)
+    protected function normalizeAttributeName(string $name): string
     {
         return Str::snake(str_replace('_', '-', $name), '-');
     }
@@ -314,7 +314,7 @@ abstract class AbstractJsonApiResource implements ResourceInterface
      * @param mixed  $value
      * @return bool
      */
-    protected function isAttributeDate($name, $value)
+    protected function isAttributeDate(string $name, $value): bool
     {
         return $value instanceof DateTime || in_array($this->normalizeAttributeName($name), $this->dateAttributes);
     }
@@ -325,7 +325,7 @@ abstract class AbstractJsonApiResource implements ResourceInterface
      * @param string $name
      * @return string|null
      */
-    protected function getConfiguredFormatForAttribute($name)
+    protected function getConfiguredFormatForAttribute(string $name): ?string
     {
         return Arr::get($this->dateAttributeFormats, $this->normalizeAttributeName($name));
     }
@@ -337,7 +337,7 @@ abstract class AbstractJsonApiResource implements ResourceInterface
      * @param string|null     $format
      * @return string
      */
-    protected function formatDate($value, $format = null)
+    protected function formatDate($value, ?string $format = null): string
     {
         $format = $format ?: config('jsonapi.transform.default-datetime-format', 'c');
 
@@ -351,7 +351,7 @@ abstract class AbstractJsonApiResource implements ResourceInterface
     /**
      * @return ResourcePathHelperInterface
      */
-    protected function getResourcePathHelper()
+    protected function getResourcePathHelper(): ResourcePathHelperInterface
     {
         return app(ResourcePathHelperInterface::class);
     }
@@ -362,7 +362,7 @@ abstract class AbstractJsonApiResource implements ResourceInterface
      * @param string $url
      * @return bool
      */
-    protected function isUrlAbsolute($url)
+    protected function isUrlAbsolute(string $url): bool
     {
         return (bool) preg_match('#^(https?:)//#', $url);
     }

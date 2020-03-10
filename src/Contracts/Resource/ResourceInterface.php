@@ -8,21 +8,21 @@ interface ResourceInterface
      *
      * @return string
      */
-    public function type();
+    public function type(): string;
 
     /**
      * Returns the JSON-API ID.
      *
      * @return string
      */
-    public function id();
+    public function id(): string;
 
     /**
      * Returns the full URL for this resource.
      *
      * @return string
      */
-    public function url();
+    public function url(): string;
 
     /**
      * Returns list of attributes to include by key.
@@ -32,7 +32,7 @@ interface ResourceInterface
      *
      * @return string[]
      */
-    public function availableAttributes();
+    public function availableAttributes(): array;
 
     /**
      * Returns an attribute value, directly from the model, or decorated for the resource.
@@ -41,7 +41,7 @@ interface ResourceInterface
      * @param mixed  $default
      * @return mixed
      */
-    public function attributeValue($name, $default = null);
+    public function attributeValue(string $name, $default = null);
 
     /**
      * Returns reference-only data for relationship include key.
@@ -49,7 +49,7 @@ interface ResourceInterface
      * @param string $include
      * @return array|array[]|null
      */
-    public function relationshipReferences($include);
+    public function relationshipReferences(string $include): ?array;
 
     /**
      * Returns full data for relationship include key.
@@ -57,7 +57,7 @@ interface ResourceInterface
      * @param string $include
      * @return mixed
      */
-    public function relationshipData($include);
+    public function relationshipData(string $include);
 
     /**
      * Returns the JSON-API type for a given include
@@ -65,7 +65,7 @@ interface ResourceInterface
      * @param string $include
      * @return null|string
      */
-    public function relationshipType($include);
+    public function relationshipType(string $include): ?string;
 
     /**
      * Returns whether a given include belongs to a singular relationship.
@@ -73,7 +73,7 @@ interface ResourceInterface
      * @param string $include
      * @return bool
      */
-    public function isRelationshipSingular($include);
+    public function isRelationshipSingular(string $include): bool;
 
     /**
      * Returns whether a given include belongs to a relationship with variable content.
@@ -81,7 +81,7 @@ interface ResourceInterface
      * @param string $include
      * @return bool
      */
-    public function isRelationshipVariable($include);
+    public function isRelationshipVariable(string $include): bool;
 
     /**
      * Returns a list of available includes.
@@ -94,14 +94,14 @@ interface ResourceInterface
      *
      * @return string[]
      */
-    public function availableIncludes();
+    public function availableIncludes(): array;
 
     /**
      * Returns a list of includes that should be included by default.
      *
      * @return string[]
      */
-    public function defaultIncludes();
+    public function defaultIncludes(): array;
 
     /**
      * Returns whether type references should be included for a given include relation by name/key.
@@ -109,7 +109,7 @@ interface ResourceInterface
      * @param string $name
      * @return bool
      */
-    public function includeReferencesForRelation($name);
+    public function includeReferencesForRelation(string $name): bool;
 
 
     /**
@@ -117,7 +117,7 @@ interface ResourceInterface
      *
      * @return string[]
      */
-    public function availableFilters();
+    public function availableFilters(): array;
 
     /**
      * Returns optional default filter values to apply.
@@ -126,7 +126,7 @@ interface ResourceInterface
      *
      * @return null|array
      */
-    public function defaultFilters();
+    public function defaultFilters(): ?array;
 
 
     /**
@@ -134,7 +134,7 @@ interface ResourceInterface
      *
      * @return string[]
      */
-    public function availableSortAttributes();
+    public function availableSortAttributes(): array;
 
     /**
      * Returns default sort definition.
@@ -148,6 +148,5 @@ interface ResourceInterface
      *
      * @return array|null   ignored if null
      */
-    public function getMeta();
-
+    public function getMeta(): ?array;
 }
