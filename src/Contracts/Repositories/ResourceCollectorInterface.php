@@ -6,7 +6,6 @@ use Illuminate\Support\Collection;
 
 interface ResourceCollectorInterface
 {
-
     /**
      * Collects all relevant resources.
      *

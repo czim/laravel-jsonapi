@@ -3,7 +3,6 @@ namespace Czim\JsonApi\Contracts\Support\Error;
 
 interface ErrorDataInterface
 {
-
     /**
      * @return mixed
      */

@@ -10,7 +10,6 @@ use InvalidArgumentException;
 
 class ResourceRepository implements ResourceRepositoryInterface
 {
-
     /**
      * @var ResourceCollectorInterface
      */
@@ -199,5 +198,4 @@ class ResourceRepository implements ResourceRepositoryInterface
 
         return $resource;
     }
-
 }

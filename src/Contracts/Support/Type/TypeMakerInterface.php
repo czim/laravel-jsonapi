@@ -1,11 +1,8 @@
 <?php
 namespace Czim\JsonApi\Contracts\Support\Type;
 
-use Illuminate\Database\Eloquent\Model;
-
 interface TypeMakerInterface
 {
-
     /**
      * Makes a JSON-API type string for any source content.
      *

@@ -5,14 +5,11 @@ use Czim\JsonApi\Contracts\Resource\ResourceInterface;
 use Illuminate\Support\Str;
 
 /**
- * Class ResourcePathHelper
- *
  * Helps deal with paths for resources, based on (relative) namespaces
  * and standardized dasherization for URLs.
  */
 class ResourcePathHelper
 {
-
     /**
      * Makes a relative URL path for a given resource.
      *
@@ -50,6 +47,5 @@ class ResourcePathHelper
 
         return implode('/', $segments);
     }
-
 }
 

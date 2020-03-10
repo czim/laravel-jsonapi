@@ -111,5 +111,4 @@ class JsonApiValidator implements JsonApiValidatorInterface
 
         $this->lastErrors = new MessageBag($normalizedErrors);
     }
-
 }

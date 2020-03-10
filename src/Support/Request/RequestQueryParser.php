@@ -3,14 +3,11 @@ namespace Czim\JsonApi\Support\Request;
 
 use Czim\JsonApi\Contracts\Support\Request\RequestQueryParserInterface;
 use Czim\JsonApi\Exceptions\JsonApiQueryStringValidationException;
-use Czim\JsonApi\Exceptions\JsonApiValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Validator;
 
 /**
- * Class RequestQueryParser
- *
  * Parses contextual data set in the query string (filters, includes, sorting, etc).
  */
 class RequestQueryParser implements RequestQueryParserInterface
@@ -73,9 +70,6 @@ class RequestQueryParser implements RequestQueryParserInterface
     protected $sortSeparator;
 
 
-    /**
-     * @param Request $request
-     */
     public function __construct(Request $request)
     {
         $this->request = $request;
@@ -337,5 +331,4 @@ class RequestQueryParser implements RequestQueryParserInterface
     {
         return config('jsonapi.request.validation.query.page-offset', 'integer');
     }
-
 }

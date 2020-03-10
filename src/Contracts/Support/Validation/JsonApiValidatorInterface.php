@@ -5,7 +5,6 @@ use Illuminate\Contracts\Support\MessageBag;
 
 interface JsonApiValidatorInterface
 {
-
     /**
      * Returns whether given array data validates against the basic JSON-API schema.
      *

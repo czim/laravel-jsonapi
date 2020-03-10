@@ -21,7 +21,6 @@ use Mockery;
  */
 class ModelTransformerTest extends TestCase
 {
-
     /**
      * @test
      */
@@ -129,5 +128,4 @@ class ModelTransformerTest extends TestCase
     {
         return Mockery::mock(EncoderInterface::class);
     }
-
 }

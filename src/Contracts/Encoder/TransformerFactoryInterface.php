@@ -3,7 +3,6 @@ namespace Czim\JsonApi\Contracts\Encoder;
 
 interface TransformerFactoryInterface
 {
-
     /**
      * Makes a transformer for given data.
      *

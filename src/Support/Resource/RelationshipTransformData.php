@@ -5,8 +5,6 @@ use Czim\DataObject\AbstractDataObject;
 use Czim\JsonApi\Contracts\Resource\ResourceInterface;
 
 /**
- * Class RelationshipTransformData
- *
  * Data for transforming a model/resource's relationship.
  *
  * @property ResourceInterface $resource
@@ -16,7 +14,6 @@ use Czim\JsonApi\Contracts\Resource\ResourceInterface;
  */
 class RelationshipTransformData extends AbstractDataObject
 {
-
     /**
      * @var array
      */
@@ -24,6 +21,5 @@ class RelationshipTransformData extends AbstractDataObject
         'references' => true,
         'sideload'   => true,
     ];
-
 }
 

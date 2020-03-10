@@ -78,5 +78,4 @@ class PaginatedModelsTransformer extends ModelCollectionTransformer
 
         return $paginator->url($page);
     }
-
 }

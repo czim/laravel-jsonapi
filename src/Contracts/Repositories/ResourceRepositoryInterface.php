@@ -7,7 +7,6 @@ use Illuminate\Support\Collection;
 
 interface ResourceRepositoryInterface
 {
-
     /**
      * Initializes repository, registering resources where possible.
      */

@@ -101,5 +101,4 @@ class JsonApiServiceProvider extends ServiceProvider
 
         return $this;
     }
-
 }

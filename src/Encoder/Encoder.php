@@ -14,7 +14,6 @@ use Illuminate\Support\Str;
 
 class Encoder implements EncoderInterface
 {
-
     /**
      * Sideloaded included data.
      *
@@ -115,7 +114,7 @@ class Encoder implements EncoderInterface
         if ($this->hasLinks()) {
             $encoded[ Key::LINKS ] = $this->serializeLinks();
         }
-        
+
         // Make sure top resource is not in the included data
         if (array_key_exists(Key::DATA, $encoded)) {
             $id   = Arr::get($encoded[ Key::DATA ], 'id');
@@ -262,7 +261,7 @@ class Encoder implements EncoderInterface
 
         return $this;
     }
-    
+
     /**
      * Returns whether any meta data has been set.
      *
@@ -512,5 +511,4 @@ class Encoder implements EncoderInterface
     {
         return $this->resourceRepository->getByType($type);
     }
-
 }

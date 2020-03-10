@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 /**
- * Class RelationData
- *
  * @property string   $key          resource/relation name or key
  * @property bool     $variable     whether related models may vary in class/type
  * @property bool     $singular     whether the relation is singular
@@ -16,7 +14,6 @@ use Illuminate\Database\Eloquent\Relations\Relation;
  */
 class RelationData extends AbstractDataObject
 {
-
     /**
      * @var array
      */
@@ -24,6 +21,5 @@ class RelationData extends AbstractDataObject
         'variable' => false,
         'singular' => false,
     ];
-
 }
 

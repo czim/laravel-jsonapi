@@ -10,7 +10,6 @@ use Illuminate\Support\Str;
 
 abstract class AbstractJsonApiResource implements ResourceInterface
 {
-
     /**
      * The relative path or absolute URL for this resource.
      *
@@ -367,5 +366,4 @@ abstract class AbstractJsonApiResource implements ResourceInterface
     {
         return (bool) preg_match('#^(https?:)//#', $url);
     }
-
 }

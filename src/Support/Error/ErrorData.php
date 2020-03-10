@@ -5,8 +5,6 @@ use Czim\DataObject\AbstractDataObject;
 use Czim\JsonApi\Contracts\Support\Error\ErrorDataInterface;
 
 /**
- * Class ErrorData
- *
  * @property mixed $id
  * @property array $links       array with 'about' key
  * @property string $status
@@ -18,7 +16,6 @@ use Czim\JsonApi\Contracts\Support\Error\ErrorDataInterface;
  */
 class ErrorData extends AbstractDataObject implements ErrorDataInterface
 {
-
     /**
      * @return mixed
      */
@@ -92,5 +89,4 @@ class ErrorData extends AbstractDataObject implements ErrorDataInterface
     {
         return array_filter($this->toArray());
     }
-
 }

@@ -12,10 +12,7 @@ use InvalidArgumentException;
 
 class ModelTransformer extends AbstractTransformer
 {
-
     /**
-     * Transforms given data.
-     *
      * @param Model $model
      * @return array
      * @throws EncodingException
@@ -218,5 +215,4 @@ class ModelTransformer extends AbstractTransformer
 
         return $this->parent . '.'  . $key;
     }
-
 }

@@ -9,7 +9,6 @@ use InvalidArgumentException;
 
 class ResourceCollector implements ResourceCollectorInterface
 {
-
     /**
      * Collects all relevant resources.
      *
@@ -92,5 +91,4 @@ class ResourceCollector implements ResourceCollectorInterface
 
         return $resource;
     }
-
 }

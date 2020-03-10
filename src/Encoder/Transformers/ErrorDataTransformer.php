@@ -7,10 +7,7 @@ use InvalidArgumentException;
 
 class ErrorDataTransformer extends AbstractTransformer
 {
-
     /**
-     * Transforms given data.
-     *
      * @param ErrorDataInterface|ErrorDataInterface[] $errors
      * @return array
      */
@@ -46,5 +43,4 @@ class ErrorDataTransformer extends AbstractTransformer
             }
         }
     }
-
 }

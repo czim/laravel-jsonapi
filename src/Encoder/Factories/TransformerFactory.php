@@ -12,7 +12,6 @@ use Illuminate\Support\Collection;
 
 class TransformerFactory implements TransformerFactoryInterface
 {
-
     /**
      * Makes a transformer for given data.
      *
@@ -25,6 +24,7 @@ class TransformerFactory implements TransformerFactoryInterface
 
         return app($class);
     }
+
 
     /**
      * Returns classname of transformer to make for given data.
@@ -123,5 +123,4 @@ class TransformerFactory implements TransformerFactoryInterface
 
         return null;
     }
-
 }

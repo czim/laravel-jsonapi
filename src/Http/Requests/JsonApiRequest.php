@@ -10,7 +10,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class JsonApiRequest extends FormRequest
 {
-
     /**
      * @var RequestQueryParser
      */
@@ -141,5 +140,4 @@ class JsonApiRequest extends FormRequest
                 $validator->getMessageBag()->toArray()
             );
     }
-
 }

@@ -7,13 +7,10 @@ use Illuminate\Support\Arr;
 use Symfony\Component\HttpFoundation\AcceptHeader;
 
 /**
- * Class JsonApiHeaders
- *
  * This throw the JSON-API prescribed 415 error if headers are incorrect.
  */
 class RequireJsonApiHeader
 {
-
     /**
      * Handle an incoming request.
      *
@@ -76,5 +73,4 @@ class RequireJsonApiHeader
 
         return false;
     }
-
 }

@@ -9,7 +9,6 @@ use InvalidArgumentException;
 
 class ModelCollectionTransformer extends ModelTransformer
 {
-
     /**
      * The resource that describes the current set of models.
      *
@@ -78,5 +77,4 @@ class ModelCollectionTransformer extends ModelTransformer
 
         return $this->resource;
     }
-
 }

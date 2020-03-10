@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 interface EncoderInterface
 {
-
     /**
      * Encodes given data as JSON-API encoded data array.
      *

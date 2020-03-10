@@ -4,8 +4,6 @@ namespace Czim\JsonApi\Enums;
 use MyCLabs\Enum\Enum;
 
 /**
- * Class RootType
- *
  * The root JSON-API type, based on presence of keys and content.
  */
 class RootType extends Enum

@@ -6,7 +6,6 @@ use Illuminate\Foundation\Application;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
-
     /**
      * Define environment setup.
      *
@@ -29,5 +28,4 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'prefix'   => '',
         ]);
     }
-
 }

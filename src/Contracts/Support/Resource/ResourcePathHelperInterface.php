@@ -5,7 +5,6 @@ use Czim\JsonApi\Contracts\Resource\ResourceInterface;
 
 interface ResourcePathHelperInterface
 {
-
     /**
      * Makes a relative URL path for a given resource.
      *

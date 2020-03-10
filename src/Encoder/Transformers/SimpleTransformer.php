@@ -5,7 +5,6 @@ use Illuminate\Contracts\Support\Arrayable;
 
 class SimpleTransformer extends AbstractTransformer
 {
-
     /**
      * Transforms given data.
      *
@@ -24,5 +23,4 @@ class SimpleTransformer extends AbstractTransformer
 
         return compact('data');
     }
-
 }

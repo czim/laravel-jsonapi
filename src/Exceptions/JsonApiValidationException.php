@@ -4,14 +4,11 @@ namespace Czim\JsonApi\Exceptions;
 use Exception;
 
 /**
- * Class JsonApiValidationException
- *
  * Exception container for 422 validation exceptions so they can be
  * uniformly rendered as an array of JSON-API error objects.
  */
 class JsonApiValidationException extends Exception
 {
-
     /**
      * Validation errors by key.
      *
@@ -81,5 +78,4 @@ class JsonApiValidationException extends Exception
     {
         return $this->statusCode;
     }
-
 }

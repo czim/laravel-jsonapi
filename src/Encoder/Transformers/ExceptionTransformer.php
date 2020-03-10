@@ -9,7 +9,6 @@ use InvalidArgumentException;
 
 class ExceptionTransformer extends ErrorDataTransformer
 {
-
     /**
      * Transforms given data.
      *
@@ -77,5 +76,4 @@ class ExceptionTransformer extends ErrorDataTransformer
     {
         return ucfirst(Str::snake(class_basename($exception), ' '));
     }
-
 }

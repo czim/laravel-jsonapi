@@ -3,7 +3,6 @@ namespace Czim\JsonApi\Contracts\Support\Request;
 
 interface RequestQueryParserInterface
 {
-
     /**
      * Returns full filter data.
      *

@@ -6,7 +6,6 @@ use Czim\JsonApi\Contracts\Encoder\TransformerInterface;
 
 abstract class AbstractTransformer implements TransformerInterface
 {
-
     /**
      * Parent encoder instance.
      *
@@ -86,5 +85,4 @@ abstract class AbstractTransformer implements TransformerInterface
 
         return $this;
     }
-
 }

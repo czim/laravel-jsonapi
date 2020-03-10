@@ -5,7 +5,6 @@ use Illuminate\Http\JsonResponse;
 
 class JsonApiResponse extends JsonResponse
 {
-
     /**
      * {@inheritdoc}
      */
@@ -15,5 +14,4 @@ class JsonApiResponse extends JsonResponse
 
         $this->header('content-type', 'application/vnd.api+json');
     }
-
 }

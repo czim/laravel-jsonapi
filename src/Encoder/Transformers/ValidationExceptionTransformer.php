@@ -8,14 +8,13 @@ use InvalidArgumentException;
 
 class ValidationExceptionTransformer extends ErrorDataTransformer
 {
-
     /**
      * Transforms given data.
      *
      * @param mixed $exception
      * @return array
      */
-    public function transform($exception)
+    public function transform($exception): array
     {
         if ( ! ($exception instanceof JsonApiValidationException)) {
             throw new InvalidArgumentException("ValidationExceptionTransformer expects JsonApiValidationException instance");
@@ -27,12 +26,12 @@ class ValidationExceptionTransformer extends ErrorDataTransformer
     }
 
     /**
-     * Converts exception instance to ErrorDataInterface instance
+     * Converts exception instance to ErrorDataInterface instance array.
      *
      * @param JsonApiValidationException $exception
      * @return ErrorDataInterface[]
      */
-    protected function convertExceptionToErrorData(JsonApiValidationException $exception)
+    protected function convertExceptionToErrorData(JsonApiValidationException $exception): array
     {
         $errorsData = [];
 

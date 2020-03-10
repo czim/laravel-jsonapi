@@ -11,7 +11,6 @@ use InvalidArgumentException;
 
 class ModelRelationshipTransformer extends AbstractTransformer
 {
-
     /**
      * Transforms given data.
      *
@@ -253,5 +252,4 @@ class ModelRelationshipTransformer extends AbstractTransformer
 
         return rtrim($segment, '/') . '/';
     }
-
 }

@@ -5,7 +5,6 @@ use Czim\JsonApi\Exceptions\EncodingException;
 
 interface TransformerInterface
 {
-
     /**
      * Sets parent encoder instance.
      *
